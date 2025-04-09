@@ -6,28 +6,14 @@ import { Menu, X, ArrowRight } from "lucide-react";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Get scroll position
-      const scrollY = window.scrollY;
-      // Calculate transition threshold (50px for scrolled state)
-      const threshold = 50;
-      // Calculate viewport height
-      const viewportHeight = window.innerHeight;
-      
-      // Set scrolled state based on threshold
-      if (scrollY > threshold) {
+      if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
-      
-      // Calculate scroll progress for smooth transitions
-      // This ensures a gradual transition between 0 and viewport height
-      const progress = Math.min(scrollY / viewportHeight, 1);
-      setScrollProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -40,25 +26,23 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Calculate opacity for hero content based on scroll progress
-  const heroContentOpacity = Math.max(1 - scrollProgress * 2, 0);
-  
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
       }`}
     >
-      {/* Фоновое изображение в шапке (с плавным затуханием при прокрутке) */}
-      <div className="absolute inset-0 -z-10 h-screen w-full transition-opacity duration-300" 
-           style={{ opacity: 1 - scrollProgress * 0.7 }}>
-        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40 w-full h-full"></div>
-        <img 
-          src="/lovable-uploads/bd6e1f11-5009-4d95-a578-082eb853a850.png" 
-          alt="Здание с освещением" 
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
+      {/* Фоновое изображение в шапке (видно только когда не прокручено) */}
+      {!isScrolled && (
+        <div className="absolute inset-0 -z-10 h-screen">
+          <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
+          <img 
+            src="/lovable-uploads/bd6e1f11-5009-4d95-a578-082eb853a850.png" 
+            alt="Здание с освещением" 
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
@@ -141,30 +125,29 @@ const Header = () => {
         </div>
       )}
 
-      {/* Hero Content with fade out effect based on scroll */}
-      <div 
-        className="container mx-auto px-4 z-10 text-center h-screen flex items-center justify-center transition-opacity duration-300"
-        style={{ opacity: heroContentOpacity }}
-      >
-        <div className="space-y-6 max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-            Современные решения <span className="gold-text">освещения</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-zasvet-white/80 max-w-2xl mx-auto">
-            Производственная компания Zасвет создает инновационные системы освещения для различных отраслей и потребностей
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black font-semibold px-8 py-6 text-lg">
-              Наша продукция
-            </Button>
-            <Button className="bg-transparent border-2 border-zasvet-white hover:bg-zasvet-white/10 text-zasvet-white font-semibold px-8 py-6 text-lg">
-              Связаться с нами <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+      {/* Hero Content */}
+      {!isScrolled && (
+        <div className="container mx-auto px-4 z-10 text-center h-screen flex items-center justify-center">
+          <div className="space-y-6 max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              Современные решения <span className="gold-text">освещения</span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-zasvet-white/80 max-w-2xl mx-auto">
+              Производственная компания Zасвет создает инновационные системы освещения для различных отраслей и потребностей
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+              <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black font-semibold px-8 py-6 text-lg">
+                Наша продукция
+              </Button>
+              <Button className="bg-transparent border-2 border-zasvet-white hover:bg-zasvet-white/10 text-zasvet-white font-semibold px-8 py-6 text-lg">
+                Связаться с нами <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };
