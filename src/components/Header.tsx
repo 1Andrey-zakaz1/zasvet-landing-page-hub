@@ -37,8 +37,8 @@ const Header = () => {
         isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
       }`}
     >
-      {/* Background image in header (visible at top of page) */}
-      <div className="absolute inset-0 -z-10 h-screen">
+      {/* Background image in header (reduced height) */}
+      <div className="absolute inset-0 -z-10 h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
         <img 
           src="/lovable-uploads/bd6e1f11-5009-4d95-a578-082eb853a850.png" 
@@ -128,8 +128,8 @@ const Header = () => {
         </div>
       )}
 
-      {/* Hero Content */}
-      <div className="container mx-auto px-4 z-10 text-center h-screen flex items-center justify-center">
+      {/* Hero Content - reduced height */}
+      <div className="container mx-auto px-4 z-10 text-center h-[60vh] flex items-center justify-center">
         <div className="space-y-6 max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             Современные решения <span className="gold-text">освещения</span>

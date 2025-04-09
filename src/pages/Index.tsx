@@ -13,7 +13,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-zasvet-black text-zasvet-white">
       <Header />
-      <div className="mt-screen"> {/* Add space to account for the header height */}
+      <div className="pt-[70vh]"> {/* Adjust this padding-top to match header height */}
         <OwnersSection />
         <EnergeticsSection />
         <BuyersSection />
