@@ -5,27 +5,38 @@ import { Menu, X, ArrowRight } from "lucide-react";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       // Get scroll position
-      const scrollY = window.scrollY;
+      const currentScrollY = window.scrollY;
       const threshold = 50;
       
       // Set scrolled state for header background
-      if (scrollY > threshold) {
+      if (currentScrollY > threshold) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
+
+      // Hide header when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        setHideHeader(true); // Hide when scrolling down
+      } else {
+        setHideHeader(false); // Show when scrolling up or at top
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [lastScrollY]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -35,6 +46,8 @@ const Header = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
+      } ${
+        hideHeader ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
       {/* Background image in header (reduced height) */}
