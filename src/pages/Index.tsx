@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-zasvet-black text-zasvet-white">
       <Header />
-      <div className="pt-screen">
+      <div className="min-h-screen"> {/* Remove pt-screen to prevent abrupt jumps */}
         <HeroSection />
         <OwnersSection />
         <EnergeticsSection />

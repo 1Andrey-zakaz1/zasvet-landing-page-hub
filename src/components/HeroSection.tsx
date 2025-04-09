@@ -4,15 +4,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      // Calculate scroll progress (0 to 1)
+      const maxScroll = window.innerHeight;
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+      setScrollProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -21,13 +20,19 @@ const HeroSection = () => {
     };
   }, []);
 
-  if (!isScrolled) {
-    // Don't render when not scrolled, as content is in header
+  // Calculate opacity based on scroll progress for a smooth fade-in
+  const opacity = Math.min(scrollProgress * 1.5, 1); // Fade in faster than scroll
+
+  // Only start rendering when we've scrolled a bit (10%)
+  if (scrollProgress < 0.1) {
     return null;
   }
 
   return (
-    <section className="hero-section flex items-center justify-center relative overflow-hidden py-24 mt-24">
+    <section 
+      className="hero-section flex items-center justify-center relative overflow-hidden py-24 mt-24"
+      style={{ opacity }}
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/90 to-zasvet-black"></div>
       
       <div className="container mx-auto px-4 z-10 text-center">
