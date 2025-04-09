@@ -41,7 +41,7 @@ const Header = () => {
   };
 
   // Calculate opacity for hero content based on scroll progress
-  const heroContentOpacity = Math.max(1 - scrollProgress * 2.5, 0);
+  const heroContentOpacity = Math.max(1 - scrollProgress * 2, 0);
   
   return (
     <header 
@@ -50,9 +50,9 @@ const Header = () => {
       }`}
     >
       {/* Фоновое изображение в шапке (с плавным затуханием при прокрутке) */}
-      <div className="absolute inset-0 -z-10 h-screen transition-opacity duration-300" 
-           style={{ opacity: 1 - scrollProgress }}>
-        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
+      <div className="absolute inset-0 -z-10 h-screen w-full transition-opacity duration-300" 
+           style={{ opacity: 1 - scrollProgress * 0.7 }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40 w-full h-full"></div>
         <img 
           src="/lovable-uploads/bd6e1f11-5009-4d95-a578-082eb853a850.png" 
           alt="Здание с освещением" 

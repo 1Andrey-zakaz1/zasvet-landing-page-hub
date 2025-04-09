@@ -13,26 +13,29 @@ const HeroSection = () => {
       const viewportHeight = window.innerHeight;
       
       // Start showing this section as we approach viewport height
-      if (scrollY > viewportHeight * 0.5) {
+      if (scrollY > viewportHeight * 0.7) {
         setIsVisible(true);
         
         // Calculate opacity based on scroll progress
         // Full opacity at viewport height
-        const fadeInStart = viewportHeight * 0.5;
-        const fadeInEnd = viewportHeight * 0.9;
+        const fadeInStart = viewportHeight * 0.7;
+        const fadeInEnd = viewportHeight * 1.1;
         const fadeRange = fadeInEnd - fadeInStart;
         
         if (scrollY > fadeInStart && scrollY < fadeInEnd) {
           // Calculate opacity value between 0 and 1
           const newOpacity = (scrollY - fadeInStart) / fadeRange;
-          setOpacity(newOpacity);
+          setOpacity(Math.min(newOpacity, 1));
         } else if (scrollY >= fadeInEnd) {
           setOpacity(1);
         } else {
           setOpacity(0);
         }
       } else {
-        setIsVisible(false);
+        // Only hide when completely scrolled back up
+        if (scrollY < viewportHeight * 0.5) {
+          setIsVisible(false);
+        }
         setOpacity(0);
       }
     };
