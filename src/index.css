@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +90,43 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-zasvet-black text-zasvet-white m-0 p-0;
   }
+}
+
+.gold-gradient {
+  background: linear-gradient(145deg, #FFD700, #D4AF37);
+}
+
+.gold-text {
+  background: linear-gradient(145deg, #FFD700, #D4AF37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.hero-section {
+  min-height: 100vh;
+  background-color: #000000;
+  background-image: radial-gradient(rgba(50, 50, 50, 0.3) 1px, transparent 0);
+  background-size: 30px 30px;
+  background-position: -19px -19px;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-bold mb-12 relative inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  @apply bg-zasvet-gold;
 }

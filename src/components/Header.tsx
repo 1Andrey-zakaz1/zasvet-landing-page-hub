@@ -1,0 +1,119 @@
+
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  return (
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <img 
+            src="/lovable-uploads/4c2a654c-e07e-459b-841c-f2f10a50db05.png" 
+            alt="Zасвет" 
+            className="h-12 md:h-16"
+          />
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex space-x-8">
+          <a href="#owners" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Собственникам</a>
+          <a href="#buyers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Закупщикам</a>
+          <a href="#designers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Проектировщикам</a>
+          <a href="#installers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Монтажникам</a>
+          <a href="#products" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Продукция</a>
+        </nav>
+
+        <Button 
+          className="hidden md:flex bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all"
+        >
+          Связаться
+        </Button>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-zasvet-white focus:outline-none"
+          onClick={toggleMobileMenu}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-zasvet-black/95 py-4 animate-fade-in">
+          <nav className="flex flex-col space-y-4 px-4">
+            <a 
+              href="#owners" 
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Собственникам
+            </a>
+            <a 
+              href="#buyers" 
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Закупщикам
+            </a>
+            <a 
+              href="#designers" 
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Проектировщикам
+            </a>
+            <a 
+              href="#installers" 
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Монтажникам
+            </a>
+            <a 
+              href="#products" 
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Продукция
+            </a>
+            <Button 
+              className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
+            >
+              Связаться
+            </Button>
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;

@@ -1,12 +1,85 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import TargetSection from '@/components/TargetSection';
+import ProductSlider from '@/components/ProductSlider';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-zasvet-black text-zasvet-white">
+      <Header />
+      <HeroSection />
+      
+      <TargetSection 
+        id="owners"
+        title="Для собственников"
+        description="Мы предлагаем решения, которые помогают собственникам зданий и объектов оптимизировать затраты на освещение и повысить энергоэффективность."
+        benefits={[
+          "Снижение расходов на электроэнергию до 70%",
+          "Длительный срок службы оборудования (до 100 000 часов)",
+          "Минимальные затраты на обслуживание",
+          "Повышение статуса объекта за счет современного освещения",
+          "Возможность удаленного управления системами освещения"
+        ]}
+        imageSrc="/placeholder.svg"
+        imageAlt="Для собственников"
+        buttonText="Узнать больше"
+      />
+      
+      <TargetSection 
+        id="buyers"
+        title="Для закупщиков"
+        description="Наша продукция соответствует высоким стандартам качества и имеет все необходимые сертификаты, что делает процесс закупок прозрачным и надежным."
+        benefits={[
+          "Оптимальное соотношение цены и качества",
+          "Все необходимые сертификаты и документация",
+          "Гибкая система скидок для оптовых закупок",
+          "Оперативная доставка в любой регион",
+          "Возможность изготовления нестандартных решений"
+        ]}
+        imageSrc="/placeholder.svg"
+        imageAlt="Для закупщиков"
+        buttonText="Получить прайс-лист"
+        reverse={true}
+      />
+      
+      <TargetSection 
+        id="designers"
+        title="Для проектировщиков"
+        description="Мы предоставляем проектировщикам все необходимые инструменты и документацию для реализации самых сложных светотехнических проектов."
+        benefits={[
+          "Подробные технические данные и спецификации",
+          "BIM-модели и CAD-чертежи всей продукции",
+          "Программа расчета освещенности",
+          "Техническая поддержка на всех этапах проектирования",
+          "Каталоги решений для различных типов помещений"
+        ]}
+        imageSrc="/placeholder.svg"
+        imageAlt="Для проектировщиков"
+        buttonText="Скачать документацию"
+      />
+      
+      <TargetSection 
+        id="installers"
+        title="Для монтажников"
+        description="Наша продукция разработана с учетом простоты монтажа и подключения, что позволяет сократить время и затраты на установку."
+        benefits={[
+          "Интуитивно понятные инструкции по монтажу",
+          "Стандартизированные компоненты и соединения",
+          "Минимальное количество инструментов для установки",
+          "Техническая поддержка при монтаже и настройке",
+          "Обучающие материалы и видеоинструкции"
+        ]}
+        imageSrc="/placeholder.svg"
+        imageAlt="Для монтажников"
+        buttonText="Связаться с техподдержкой"
+        reverse={true}
+      />
+      
+      <ProductSlider />
+      <Footer />
     </div>
   );
 };
