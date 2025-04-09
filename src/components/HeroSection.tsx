@@ -2,21 +2,25 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Background image */}
-      <div 
-        className="absolute inset-0" 
-        style={{
-          backgroundImage: `url('/lovable-uploads/7e9e809e-b491-42a7-987f-aadb6e32c8bf.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.9,
-        }}
-      ></div>
+      {/* Background with AspectRatio */}
+      <div className="absolute inset-0">
+        <AspectRatio ratio={16 / 9} className="h-full">
+          <div 
+            className="w-full h-full" 
+            style={{
+              backgroundImage: `url('/lovable-uploads/7e9e809e-b491-42a7-987f-aadb6e32c8bf.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          ></div>
+        </AspectRatio>
+      </div>
       
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/30"></div>
