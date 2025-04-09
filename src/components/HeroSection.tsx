@@ -5,9 +5,21 @@ import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-zasvet-black overflow-hidden">
-      {/* Dark background for the section */}
-      <div className="absolute inset-0 bg-zasvet-black"></div>
+    <section className="relative min-h-screen overflow-hidden">
+      {/* Background image */}
+      <div 
+        className="absolute inset-0" 
+        style={{
+          backgroundImage: `url('/lovable-uploads/5a6fad7c-b33c-4449-8fa4-925a3a8e58a0.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.6,
+        }}
+      ></div>
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/50"></div>
       
       {/* Hero Content */}
       <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-10">
