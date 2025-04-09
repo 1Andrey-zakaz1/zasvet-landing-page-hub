@@ -1,7 +1,6 @@
 
 import React from 'react';
 import Header from '@/components/Header';
-import HeroSection from '@/components/HeroSection';
 import OwnersSection from '@/components/sections/OwnersSection';
 import EnergeticsSection from '@/components/sections/EnergeticsSection';
 import BuyersSection from '@/components/sections/BuyersSection';
@@ -14,8 +13,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-zasvet-black text-zasvet-white">
       <Header />
-      <div className="min-h-screen"> {/* Remove pt-screen to prevent abrupt jumps */}
-        <HeroSection />
+      <div className="mt-screen"> {/* Add space to account for the header height */}
         <OwnersSection />
         <EnergeticsSection />
         <BuyersSection />

@@ -6,7 +6,6 @@ import { Menu, X, ArrowRight } from "lucide-react";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,11 +19,6 @@ const Header = () => {
       } else {
         setIsScrolled(false);
       }
-      
-      // Calculate scroll progress for smooth transitions (0 to 1)
-      const maxScroll = window.innerHeight;
-      const progress = Math.min(scrollY / maxScroll, 1);
-      setScrollProgress(progress);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -37,16 +31,13 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Calculate opacity based on scroll progress
-  const heroOpacity = 1 - scrollProgress * 1.5; // Fade out faster than scroll
-
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
       }`}
     >
-      {/* Фоновое изображение в шапке (видно только когда не прокручено) */}
+      {/* Background image in header (visible at top of page) */}
       <div className="absolute inset-0 -z-10 h-screen">
         <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
         <img 
@@ -137,11 +128,8 @@ const Header = () => {
         </div>
       )}
 
-      {/* Hero Content - fades out when scrolling */}
-      <div 
-        className="container mx-auto px-4 z-10 text-center h-screen flex items-center justify-center"
-        style={{ opacity: Math.max(heroOpacity, 0) }}
-      >
+      {/* Hero Content */}
+      <div className="container mx-auto px-4 z-10 text-center h-screen flex items-center justify-center">
         <div className="space-y-6 max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             Современные решения <span className="gold-text">освещения</span>
