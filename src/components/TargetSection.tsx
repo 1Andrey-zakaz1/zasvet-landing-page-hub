@@ -1,66 +1,90 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins } from "lucide-react";
+
+type ServiceItem = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
 
 type TargetSectionProps = {
   id: string;
   title: string;
-  description: string;
-  benefits: string[];
+  subtitle: string;
+  services: ServiceItem[];
   imageSrc: string;
   imageAlt: string;
   buttonText: string;
   reverse?: boolean;
+  bgColor?: string;
 };
 
 const TargetSection = ({
   id,
   title,
-  description,
-  benefits,
+  subtitle,
+  services,
   imageSrc,
   imageAlt,
   buttonText,
   reverse = false,
+  bgColor = "bg-zasvet-black",
 }: TargetSectionProps) => {
   return (
-    <section id={id} className="section-padding bg-zasvet-black text-zasvet-white">
-      <div className="container mx-auto px-4">
+    <section id={id} className={`relative overflow-hidden ${bgColor}`}>
+      {/* Diagonal cut at the top */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-wave-top"></div>
+      
+      <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-          <div className="w-full lg:w-1/2">
-            <h2 className="section-title">{title}</h2>
-            <p className="text-lg mb-8 text-zasvet-white/80">{description}</p>
+          {/* Image column */}
+          <div className="w-full lg:w-2/5">
+            <div className="relative">
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="w-full h-auto object-cover rounded-lg relative shadow-xl"
+              />
+            </div>
+          </div>
+          
+          {/* Content column */}
+          <div className="w-full lg:w-3/5">
+            <div className="text-xs uppercase tracking-wider text-zasvet-gold font-semibold mb-2">
+              ИНСТРУМЕНТЫ В ПОМОЩЬ:
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-zasvet-white">
+              {title}
+            </h2>
+            <div className="w-16 h-1 bg-zasvet-gold mb-8"></div>
             
-            <div className="space-y-4 mb-8">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="text-zasvet-gold mt-1 min-w-5">
-                    <div className="h-5 w-5 rounded-full gold-gradient flex items-center justify-center text-zasvet-black font-bold text-xs">
-                      {index + 1}
-                    </div>
+            <p className="text-lg mb-10 text-zasvet-white/80">{subtitle}</p>
+            
+            <div className="space-y-6 mb-10">
+              {services.map((service, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="text-zasvet-gold mt-1 flex-shrink-0">
+                    {service.icon}
                   </div>
-                  <p className="text-zasvet-white/90">{benefit}</p>
+                  <div>
+                    <h3 className="text-lg font-semibold text-zasvet-white mb-1">{service.title}</h3>
+                    <p className="text-zasvet-white/70">{service.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
             
-            <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black">
+            <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black px-8 py-3 text-lg font-medium">
               {buttonText}
             </Button>
           </div>
-          
-          <div className="w-full lg:w-1/2">
-            <div className="relative">
-              <div className="absolute inset-0 gold-gradient opacity-50 blur-lg rounded-lg transform -translate-x-4 -translate-y-4"></div>
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className="w-full h-auto object-cover rounded-lg relative z-10 shadow-xl"
-              />
-            </div>
-          </div>
         </div>
       </div>
+      
+      {/* Diagonal cut at the bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-wave-bottom"></div>
     </section>
   );
 };
