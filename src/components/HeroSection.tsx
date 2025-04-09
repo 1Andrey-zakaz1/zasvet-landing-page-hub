@@ -1,21 +1,37 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  if (!isScrolled) {
+    // Don't render when not scrolled, as content is in header
+    return null;
+  }
+
   return (
-    <section className="hero-section flex items-center justify-center relative overflow-hidden">
+    <section className="hero-section flex items-center justify-center relative overflow-hidden py-24 mt-24">
       <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/90 to-zasvet-black"></div>
       
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="space-y-6 max-w-3xl mx-auto">
-          <img 
-            src="/lovable-uploads/4c2a654c-e07e-459b-841c-f2f10a50db05.png" 
-            alt="Zасвет" 
-            className="h-32 md:h-40 mx-auto mb-6"
-          />
-          
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             Современные решения <span className="gold-text">освещения</span>
           </h1>
