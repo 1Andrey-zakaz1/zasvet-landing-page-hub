@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
         <img 
-          src="/lovable-uploads/d5b9ef01-ed6e-49e2-8a74-a303e393b4f3.png" 
+          src="/lovable-uploads/066daff8-4f43-483a-98dd-fa0142f62bb0.png" 
           alt="Здание с современным освещением" 
           className="w-full h-full object-cover object-center"
         />
