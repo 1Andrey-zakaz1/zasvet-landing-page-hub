@@ -4,14 +4,36 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      
+      // Start showing this section as we approach viewport height
+      if (scrollY > viewportHeight * 0.5) {
+        setIsVisible(true);
+        
+        // Calculate opacity based on scroll progress
+        // Full opacity at viewport height
+        const fadeInStart = viewportHeight * 0.5;
+        const fadeInEnd = viewportHeight * 0.9;
+        const fadeRange = fadeInEnd - fadeInStart;
+        
+        if (scrollY > fadeInStart && scrollY < fadeInEnd) {
+          // Calculate opacity value between 0 and 1
+          const newOpacity = (scrollY - fadeInStart) / fadeRange;
+          setOpacity(newOpacity);
+        } else if (scrollY >= fadeInEnd) {
+          setOpacity(1);
+        } else {
+          setOpacity(0);
+        }
       } else {
-        setIsScrolled(false);
+        setIsVisible(false);
+        setOpacity(0);
       }
     };
 
@@ -21,13 +43,16 @@ const HeroSection = () => {
     };
   }, []);
 
-  if (!isScrolled) {
-    // Don't render when not scrolled, as content is in header
+  // Don't render if completely invisible
+  if (!isVisible) {
     return null;
   }
 
   return (
-    <section className="hero-section flex items-center justify-center relative overflow-hidden py-24 mt-24">
+    <section 
+      className="hero-section flex items-center justify-center relative overflow-hidden py-24 mt-24 transition-opacity duration-500"
+      style={{ opacity }}
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/90 to-zasvet-black"></div>
       
       <div className="container mx-auto px-4 z-10 text-center">
