@@ -45,8 +45,11 @@ const TargetSection = ({
               <img
                 src={imageSrc}
                 alt={imageAlt}
-                className="w-full h-auto object-cover rounded-lg relative shadow-xl"
+                className="w-full h-auto rounded-lg shadow-xl object-cover"
+                style={{ aspectRatio: '1/1', objectFit: 'cover', objectPosition: 'center top' }}
               />
+              {/* Gold accent border */}
+              <div className="absolute -bottom-3 -right-3 w-2/3 h-2/3 border-4 border-zasvet-gold rounded-lg -z-10"></div>
             </div>
           </div>
           
