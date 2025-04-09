@@ -11,7 +11,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <AspectRatio ratio={16 / 9} className="h-full">
           <img 
-            src="/lovable-uploads/76c20b7b-830e-49ef-93cd-8419a1e8892d.png"
+            src="/lovable-uploads/2554900d-ee8f-412b-9d64-b349a149bead.png"
             alt="Фоновое изображение"
             className="w-full h-full object-cover"
           />
