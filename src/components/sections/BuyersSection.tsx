@@ -31,7 +31,7 @@ const BuyersSection = () => {
           description: "Прогрессивная система скидок в зависимости от объема заказа и истории сотрудничества."
         }
       ]}
-      imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
+      imageSrc="/lovable-uploads/986a3006-77c9-4bc8-bb49-262b91958066.png"
       imageAlt="Закупщику"
       buttonText="ОСТАВИТЬ ЗАЯВКУ"
     />

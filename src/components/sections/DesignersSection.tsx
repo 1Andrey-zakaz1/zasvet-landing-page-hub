@@ -31,7 +31,7 @@ const DesignersSection = () => {
           description: "Получите доступ к технической документации, сертификатам и инструкциям по установке."
         }
       ]}
-      imageSrc="/lovable-uploads/986a3006-77c9-4bc8-bb49-262b91958066.png"
+      imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
       imageAlt="Проектировщику"
       buttonText="ЗАГРУЗИТЬ МОДЕЛИ"
       reverse={true}
