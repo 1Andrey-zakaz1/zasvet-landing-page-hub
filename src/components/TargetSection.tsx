@@ -35,11 +35,13 @@ const TargetSection = ({
   bgColor = "bg-zasvet-black",
   showDiagonalCut = false,
 }: TargetSectionProps) => {
+  const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
+  
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
       {/* Diagonal cut at the top - only shown when showDiagonalCut is true */}
       {showDiagonalCut && (
-        <div className="absolute top-0 left-0 right-0 h-24 bg-wave-top"></div>
+        <div className={`absolute top-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-top`}></div>
       )}
       
       <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
@@ -96,7 +98,7 @@ const TargetSection = ({
       
       {/* Diagonal cut at the bottom - only shown when showDiagonalCut is true */}
       {showDiagonalCut && (
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-wave-bottom"></div>
+        <div className={`absolute bottom-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-bottom`}></div>
       )}
     </section>
   );
