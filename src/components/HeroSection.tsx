@@ -8,16 +8,16 @@ const HeroSection = () => {
     <section className="relative min-h-screen">
       {/* Background image */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/60 to-zasvet-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/50 to-zasvet-black/20 z-10"></div>
         <img 
-          src="/lovable-uploads/066daff8-4f43-483a-98dd-fa0142f62bb0.png" 
+          src="/lovable-uploads/86a842ad-9bc0-40e5-a6fc-693be2b6e0f1.png" 
           alt="Здание с современным освещением" 
           className="w-full h-full object-cover object-center"
         />
       </div>
 
       {/* Hero Content */}
-      <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-20">
         <div className="space-y-6 max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             Современные решения <span className="gold-text">освещения</span>
