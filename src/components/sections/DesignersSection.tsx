@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { FileText, Rulers, Clock, Download } from "lucide-react";
+import { FileText, Ruler, Clock, Download } from "lucide-react";
 
 const DesignersSection = () => {
   return (
@@ -16,7 +16,7 @@ const DesignersSection = () => {
           description: "Предоставляем базы данных светильников для Dialux, упрощающие процесс дизайна освещения."
         },
         {
-          icon: <Rulers className="h-6 w-6" />,
+          icon: <Ruler className="h-6 w-6" />,
           title: "Каталоги и BIM модели:",
           description: "Доступ к BIM моделям для удобной интеграции наших решений в ваши проекты."
         },
