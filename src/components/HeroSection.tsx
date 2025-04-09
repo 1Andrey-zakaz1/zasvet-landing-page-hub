@@ -18,9 +18,6 @@ const HeroSection = () => {
         </AspectRatio>
       </div>
       
-      {/* Overlay с меньшей непрозрачностью для лучшей видимости изображения */}
-      <div className="absolute inset-0 bg-black/15"></div>
-      
       {/* Hero Content */}
       <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-10">
         <div className="space-y-6 max-w-3xl mx-auto text-center">
