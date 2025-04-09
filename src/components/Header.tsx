@@ -32,6 +32,18 @@ const Header = () => {
         isScrolled ? 'bg-zasvet-black/95 shadow-md' : 'bg-transparent'
       }`}
     >
+      {/* Фоновое изображение в шапке (видно только когда не прокручено) */}
+      {!isScrolled && (
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/80 to-zasvet-black/40"></div>
+          <img 
+            src="/lovable-uploads/bd6e1f11-5009-4d95-a578-082eb853a850.png" 
+            alt="Здание с освещением" 
+            className="w-full h-[100vh] object-cover object-center"
+          />
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <img 
