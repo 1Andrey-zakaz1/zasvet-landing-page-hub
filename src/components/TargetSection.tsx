@@ -20,6 +20,7 @@ type TargetSectionProps = {
   buttonText: string;
   reverse?: boolean;
   bgColor?: string;
+  showDiagonalCut?: boolean;
 };
 
 const TargetSection = ({
@@ -32,11 +33,14 @@ const TargetSection = ({
   buttonText,
   reverse = false,
   bgColor = "bg-zasvet-black",
+  showDiagonalCut = false,
 }: TargetSectionProps) => {
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
-      {/* Diagonal cut at the top */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-wave-top"></div>
+      {/* Diagonal cut at the top - only shown when showDiagonalCut is true */}
+      {showDiagonalCut && (
+        <div className="absolute top-0 left-0 right-0 h-24 bg-wave-top"></div>
+      )}
       
       <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
@@ -90,8 +94,10 @@ const TargetSection = ({
         </div>
       </div>
       
-      {/* Diagonal cut at the bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-wave-bottom"></div>
+      {/* Diagonal cut at the bottom - only shown when showDiagonalCut is true */}
+      {showDiagonalCut && (
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-wave-bottom"></div>
+      )}
     </section>
   );
 };

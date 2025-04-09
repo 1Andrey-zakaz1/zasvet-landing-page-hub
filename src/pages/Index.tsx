@@ -56,6 +56,7 @@ const Index = () => {
         imageAlt="Собственнику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
+        showDiagonalCut={true}
       />
       
       <TargetSection 
@@ -88,6 +89,7 @@ const Index = () => {
         imageAlt="Энергетику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         reverse={true}
+        showDiagonalCut={false}
       />
       
       <TargetSection 
@@ -120,6 +122,7 @@ const Index = () => {
         imageAlt="Закупщику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
+        showDiagonalCut={true}
       />
       
       <TargetSection 
@@ -152,6 +155,7 @@ const Index = () => {
         imageAlt="Проектировщику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         reverse={true}
+        showDiagonalCut={false}
       />
       
       <TargetSection 
@@ -180,10 +184,11 @@ const Index = () => {
             description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
           }
         ]}
-        imageSrc="/lovable-uploads/8e5e7ca2-f3d3-4ad9-ba44-81f8526f3be2.png"
+        imageSrc="/lovable-uploads/ae97a4a7-8461-4970-bb14-53435a6a17f4.png"
         imageAlt="Монтажнику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
+        showDiagonalCut={true}
       />
       
       <ProductSlider />
