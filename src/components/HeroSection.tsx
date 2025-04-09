@@ -10,15 +10,11 @@ const HeroSection = () => {
       {/* Background with AspectRatio */}
       <div className="absolute inset-0">
         <AspectRatio ratio={16 / 9} className="h-full">
-          <div 
-            className="w-full h-full" 
-            style={{
-              backgroundImage: `url('/lovable-uploads/7e9e809e-b491-42a7-987f-aadb6e32c8bf.png')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          ></div>
+          <img 
+            src="/lovable-uploads/7e9e809e-b491-42a7-987f-aadb6e32c8bf.png"
+            alt="Background image"
+            className="w-full h-full object-cover"
+          />
         </AspectRatio>
       </div>
       
