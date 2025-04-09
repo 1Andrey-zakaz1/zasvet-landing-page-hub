@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
 import OwnersSection from '@/components/sections/OwnersSection';
 import EnergeticsSection from '@/components/sections/EnergeticsSection';
 import BuyersSection from '@/components/sections/BuyersSection';
@@ -13,15 +14,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-zasvet-black text-zasvet-white">
       <Header />
-      <div className="pt-[70vh]"> {/* Keep this padding to push content below the header initially */}
+      <main>
+        <HeroSection />
         <OwnersSection />
         <EnergeticsSection />
         <BuyersSection />
         <DesignersSection />
         <InstallersSection />
         <ProductSlider />
-        <Footer />
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };
