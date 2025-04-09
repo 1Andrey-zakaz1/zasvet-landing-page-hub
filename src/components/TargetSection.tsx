@@ -40,8 +40,8 @@ const TargetSection = ({
       
       <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-          {/* Image column */}
-          <div className="w-full lg:w-2/5">
+          {/* Image column - now smaller */}
+          <div className="w-full lg:w-1/3">
             <div className="relative">
               <div className="rounded-lg shadow-xl overflow-hidden">
                 <AspectRatio ratio={1/1} className="bg-zasvet-gray/10">
@@ -57,8 +57,8 @@ const TargetSection = ({
             </div>
           </div>
           
-          {/* Content column */}
-          <div className="w-full lg:w-3/5">
+          {/* Content column - now larger */}
+          <div className="w-full lg:w-2/3">
             <div className="text-xs uppercase tracking-wider text-zasvet-gold font-semibold mb-2">
               ИНСТРУМЕНТЫ В ПОМОЩЬ:
             </div>
@@ -69,7 +69,7 @@ const TargetSection = ({
             
             <p className="text-lg mb-10 text-zasvet-white/80">{subtitle}</p>
             
-            <div className="space-y-6 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
               {services.map((service, index) => (
                 <div key={index} className="flex gap-4">
                   <div className="text-zasvet-gold mt-1 flex-shrink-0">
@@ -97,4 +97,3 @@ const TargetSection = ({
 };
 
 export default TargetSection;
-

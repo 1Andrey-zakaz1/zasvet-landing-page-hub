@@ -148,7 +148,7 @@ const Index = () => {
             description: "Мы регулярно добавляем новые инструменты, предложите тот, которого не хватает Вам."
           }
         ]}
-        imageSrc="/lovable-uploads/8e2cd786-f655-4ca1-bfdb-65ec9ed06b1d.png"
+        imageSrc="/lovable-uploads/e0b07c7d-ee21-487e-9ae4-4e79dcac1972.png"
         imageAlt="Проектировщику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         reverse={true}
@@ -193,4 +193,3 @@ const Index = () => {
 };
 
 export default Index;
-
