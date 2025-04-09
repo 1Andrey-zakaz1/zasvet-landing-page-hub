@@ -1,41 +1,39 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Lightbulb, Package, Truck, Coins } from "lucide-react";
+import { Package, Truck, FileText, ShoppingCart } from "lucide-react";
 
 const BuyersSection = () => {
   return (
     <TargetSection 
-      id="designers"
+      id="buyers"
       title="Закупщику"
-      subtitle="Наша продукция соответствует высоким стандартам качества и имеет все необходимые сертификаты, что делает процесс закупок прозрачным и надежным."
+      subtitle="Мы предлагаем прозрачные условия сотрудничества, гибкую ценовую политику и полный комплект документации для закупщиков и снабженцев."
       services={[
         {
-          icon: <Lightbulb className="h-6 w-6" />,
-          title: "Подбор аналогов:",
-          description: "Наш калькулятор подберет в онлайн режиме аналог нужного Вам светильника."
+          icon: <FileText className="h-6 w-6" />,
+          title: "Коммерческие предложения:",
+          description: "Оперативное формирование индивидуальных КП с учетом объема заказа и особенностей проекта."
         },
         {
           icon: <Package className="h-6 w-6" />,
-          title: "Комплексная поставка:",
-          description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
+          title: "Подбор аналогов:",
+          description: "Подберем аналоги светильников других производителей с сохранением или улучшением характеристик."
         },
         {
           icon: <Truck className="h-6 w-6" />,
-          title: "Расчет доставки:",
-          description: "Оставьте заявку и мы рассчитаем поставку до Вашего объекта."
+          title: "Условия доставки:",
+          description: "Прозрачные условия и сроки доставки с возможностью отслеживания груза."
         },
         {
-          icon: <Coins className="h-6 w-6" />,
-          title: "Конкурентоспособный анализ цен:",
-          description: "Оставьте заявку и мы подберем светильники из разных ценовых категорий."
+          icon: <ShoppingCart className="h-6 w-6" />,
+          title: "Скидочная система:",
+          description: "Прогрессивная система скидок в зависимости от объема заказа и истории сотрудничества."
         }
       ]}
-      imageSrc="/lovable-uploads/73a54517-b93b-448f-bad2-1848a88f57d1.png"
+      imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
       imageAlt="Закупщику"
-      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
-      bgColor="bg-zasvet-gold"
-      showDiagonalCut={true}
+      buttonText="ОСТАВИТЬ ЗАЯВКУ"
     />
   );
 };

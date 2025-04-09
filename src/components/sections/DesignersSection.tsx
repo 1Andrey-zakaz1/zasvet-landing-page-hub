@@ -1,41 +1,40 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Lightbulb, FileCheck, Calculator, FileText } from "lucide-react";
+import { FileText, Rulers, Clock, Download } from "lucide-react";
 
 const DesignersSection = () => {
   return (
     <TargetSection 
       id="designers"
       title="Проектировщику"
-      subtitle="Мы предоставляем проектировщикам все необходимые инструменты и документацию для реализации самых сложных светотехнических проектов."
+      subtitle="Мы предоставляем комплексные инструменты для проектирования эффективных систем освещения, отвечающих техническим требованиям и эстетическим ожиданиям."
       services={[
         {
-          icon: <Lightbulb className="h-6 w-6" />,
-          title: "Подбор оптимального светильника:",
-          description: "Наш калькулятор автоматически перебирает все варианты из серии светильников и предлагает оптимальный по цене для нужной освещенности."
-        },
-        {
-          icon: <FileCheck className="h-6 w-6" />,
-          title: "Разработка светильника по Т.З.:",
-          description: "Оставьте заявку и мы разработаем светильник под Ваш объект и предоставим проект IES файла для него."
-        },
-        {
-          icon: <Calculator className="h-6 w-6" />,
-          title: "Другие калькуляторы:",
-          description: "Подбор сечения кабеля, подбор УЗО, энергопотребление объекта, подбор аналога светильника."
-        },
-        {
           icon: <FileText className="h-6 w-6" />,
-          title: "Новые инструменты:",
-          description: "Мы регулярно добавляем новые инструменты, предложите тот, которого не хватает Вам."
+          title: "Проекты в Dialux:",
+          description: "Предоставляем базы данных светильников для Dialux, упрощающие процесс дизайна освещения."
+        },
+        {
+          icon: <Rulers className="h-6 w-6" />,
+          title: "Каталоги и BIM модели:",
+          description: "Доступ к BIM моделям для удобной интеграции наших решений в ваши проекты."
+        },
+        {
+          icon: <Clock className="h-6 w-6" />,
+          title: "Техническое задание:",
+          description: "Оставьте техническое задание и мы проконсультируем по типам и количеству светильников."
+        },
+        {
+          icon: <Download className="h-6 w-6" />,
+          title: "Документация:",
+          description: "Получите доступ к технической документации, сертификатам и инструкциям по установке."
         }
       ]}
-      imageSrc="/lovable-uploads/e0b07c7d-ee21-487e-9ae4-4e79dcac1972.png"
+      imageSrc="/lovable-uploads/986a3006-77c9-4bc8-bb49-262b91958066.png"
       imageAlt="Проектировщику"
-      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      buttonText="ЗАГРУЗИТЬ МОДЕЛИ"
       reverse={true}
-      showDiagonalCut={false}
     />
   );
 };

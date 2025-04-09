@@ -1,39 +1,40 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Cable, Zap, Lightbulb, Package } from "lucide-react";
+import { Wrench, Video, FileText, Clock } from "lucide-react";
 
 const InstallersSection = () => {
   return (
     <TargetSection 
       id="installers"
       title="Монтажнику"
-      subtitle="Наша продукция разработана с учетом простоты монтажа и подключения, что позволяет сократить время и затраты на установку."
+      subtitle="Мы обеспечиваем монтажников всем необходимым для быстрой и безопасной установки наших систем освещения, от инструкций до технической поддержки."
       services={[
         {
-          icon: <Cable className="h-6 w-6" />,
-          title: "Расчет сечения кабеля:",
-          description: "Учитывает длину кабеля, мощность оборудования, тип проводки."
+          icon: <Wrench className="h-6 w-6" />,
+          title: "Инструкции по монтажу:",
+          description: "Подробные руководства по установке наших систем освещения с учетом всех нюансов."
         },
         {
-          icon: <Zap className="h-6 w-6" />,
-          title: "Расчет УЗО:",
-          description: "По мощности оборудования."
+          icon: <Video className="h-6 w-6" />,
+          title: "Видео мастер-классы:",
+          description: "Обучающие видео по монтажу сложных систем освещения и решению типовых задач."
         },
         {
-          icon: <Lightbulb className="h-6 w-6" />,
-          title: "Подбор аналога светильника:",
-          description: "Который заложен в проект для замены на более качественный или дешевый."
+          icon: <FileText className="h-6 w-6" />,
+          title: "Бланки отчетов:",
+          description: "Стандартизированные формы для документирования выполненных работ и сдачи объектов."
         },
         {
-          icon: <Package className="h-6 w-6" />,
-          title: "Комплексная поставка:",
-          description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
+          icon: <Clock className="h-6 w-6" />,
+          title: "Техническая поддержка:",
+          description: "Оперативные консультации наших специалистов в случае возникновения вопросов при монтаже."
         }
       ]}
-      imageSrc="/lovable-uploads/ae97a4a7-8461-4970-bb14-53435a6a17f4.png"
+      imageSrc="/lovable-uploads/6167e761-934b-41db-9211-4fff41b61777.png"
       imageAlt="Монтажнику"
-      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      buttonText="СКАЧАТЬ ИНСТРУКЦИИ"
+      reverse={true}
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}
     />
