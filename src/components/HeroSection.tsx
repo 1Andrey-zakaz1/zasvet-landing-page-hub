@@ -10,16 +10,16 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0" 
         style={{
-          backgroundImage: `url('/lovable-uploads/5a6fad7c-b33c-4449-8fa4-925a3a8e58a0.png')`,
+          backgroundImage: `url('/lovable-uploads/32026de5-1a96-499c-b938-d7978ae9c87b.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.6,
+          opacity: 0.9,
         }}
       ></div>
       
       {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
       
       {/* Hero Content */}
       <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-10">
