@@ -31,7 +31,7 @@ const OwnersSection = () => {
           description: "Оставьте заявку и получите КП со скидкой от объема закупки."
         }
       ]}
-      imageSrc="/lovable-uploads/9aa29444-c53f-406a-ab71-94572c977bc9.png"
+      imageSrc="/lovable-uploads/5a6fad7c-b33c-4449-8fa4-925a3a8e58a0.png"
       imageAlt="Собственнику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
       bgColor="bg-zasvet-gold"

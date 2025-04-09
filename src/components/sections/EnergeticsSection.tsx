@@ -31,7 +31,7 @@ const EnergeticsSection = () => {
           description: "Полный комплект технической документации для интеграции наших систем в энергетическую инфраструктуру."
         }
       ]}
-      imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
+      imageSrc="/lovable-uploads/9aa29444-c53f-406a-ab71-94572c977bc9.png"
       imageAlt="Энергетику"
       buttonText="ЗАПРОСИТЬ РАСЧЕТ"
       reverse={true}
