@@ -96,7 +96,7 @@ const TargetSection = ({
         </div>
       </div>
       
-      {/* Diagonal cut at the bottom - only shown when showDiagonalCut is true */}
+      {/* Diagonal cut at the bottom - mirrored with different clip-path */}
       {showDiagonalCut && (
         <div className={`absolute bottom-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-bottom`}></div>
       )}
