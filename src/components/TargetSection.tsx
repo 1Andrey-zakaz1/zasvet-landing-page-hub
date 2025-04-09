@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type ServiceItem = {
   icon: React.ReactNode;
@@ -42,12 +43,15 @@ const TargetSection = ({
           {/* Image column */}
           <div className="w-full lg:w-2/5">
             <div className="relative">
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className="w-full h-auto rounded-lg shadow-xl object-cover"
-                style={{ aspectRatio: '1/1', objectFit: 'cover', objectPosition: 'center top' }}
-              />
+              <div className="rounded-lg shadow-xl overflow-hidden">
+                <AspectRatio ratio={1/1} className="bg-zasvet-gray/10">
+                  <img
+                    src={imageSrc}
+                    alt={imageAlt}
+                    className="w-full h-full object-cover object-center"
+                  />
+                </AspectRatio>
+              </div>
               {/* Gold accent border */}
               <div className="absolute -bottom-3 -right-3 w-2/3 h-2/3 border-4 border-zasvet-gold rounded-lg -z-10"></div>
             </div>
@@ -93,3 +97,4 @@ const TargetSection = ({
 };
 
 export default TargetSection;
+

@@ -52,7 +52,7 @@ const Index = () => {
             description: "Оставьте заявку и получите КП со скидкой от объема закупки."
           }
         ]}
-        imageSrc="/lovable-uploads/b15b3d77-54ca-451f-97dc-df54a6f84844.png"
+        imageSrc="/lovable-uploads/8e5e7ca2-f3d3-4ad9-ba44-81f8526f3be2.png"
         imageAlt="Собственнику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
@@ -84,7 +84,7 @@ const Index = () => {
             description: "Оставьте заявку и мы подберем и поставим сопутствующие материалы."
           }
         ]}
-        imageSrc="/lovable-uploads/ed0c34b3-7f77-4149-9ef7-8767cbe93db5.png"
+        imageSrc="/lovable-uploads/c659065f-6d51-40c9-b4e7-369b1600d01e.png"
         imageAlt="Энергетику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         reverse={true}
@@ -116,7 +116,7 @@ const Index = () => {
             description: "Оставьте заявку и мы подберем светильники из разных ценовых категорий."
           }
         ]}
-        imageSrc="/lovable-uploads/6f1de9df-ec7b-4ab7-bcce-47e3f5496c0f.png"
+        imageSrc="/lovable-uploads/73a54517-b93b-448f-bad2-1848a88f57d1.png"
         imageAlt="Закупщику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
@@ -148,7 +148,7 @@ const Index = () => {
             description: "Мы регулярно добавляем новые инструменты, предложите тот, которого не хватает Вам."
           }
         ]}
-        imageSrc="/lovable-uploads/d2a32322-469d-4962-813b-58f800535c30.png"
+        imageSrc="/lovable-uploads/8e2cd786-f655-4ca1-bfdb-65ec9ed06b1d.png"
         imageAlt="Проектировщику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         reverse={true}
@@ -180,7 +180,7 @@ const Index = () => {
             description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
           }
         ]}
-        imageSrc="/lovable-uploads/459fdaa8-5910-4fe1-886b-2645a6d13ca7.png"
+        imageSrc="/lovable-uploads/8e5e7ca2-f3d3-4ad9-ba44-81f8526f3be2.png"
         imageAlt="Монтажнику"
         buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
         bgColor="bg-zasvet-gold"
@@ -193,3 +193,4 @@ const Index = () => {
 };
 
 export default Index;
+
