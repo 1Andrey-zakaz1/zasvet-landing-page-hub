@@ -6,17 +6,20 @@ import { ArrowRight } from "lucide-react";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen">
-      {/* Background image - ensuring it's visible */}
-      <div className="absolute inset-0">
-        <img 
-          src="/lovable-uploads/86a842ad-9bc0-40e5-a6fc-693be2b6e0f1.png" 
-          alt="Здание с современным освещением" 
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 top-0 bg-gradient-to-b from-zasvet-black/30 to-zasvet-black/10"></div>
+      {/* Background image - fixed positioning */}
+      <div 
+        className="absolute inset-0 z-0" 
+        style={{
+          backgroundImage: `url('/lovable-uploads/86a842ad-9bc0-40e5-a6fc-693be2b6e0f1.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-zasvet-black/40 to-zasvet-black/20"></div>
       </div>
 
-      {/* Hero Content */}
+      {/* Hero Content - positioned above the background */}
       <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-10">
         <div className="space-y-6 max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
