@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Background image with improved visibility */}
+      {/* Background image with full visibility */}
       <div 
         className="absolute inset-0 z-0" 
         style={{
@@ -14,12 +14,12 @@ const HeroSection = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.8
+          opacity: 1
         }}
       ></div>
       
-      {/* Darker gradient overlay to improve text contrast */}
-      <div className="absolute inset-0 z-1 bg-gradient-to-b from-zasvet-black/70 to-zasvet-black/60"></div>
+      {/* Very light gradient overlay to see the image better */}
+      <div className="absolute inset-0 z-1 bg-gradient-to-b from-zasvet-black/10 to-zasvet-black/10"></div>
 
       {/* Hero Content */}
       <div className="container mx-auto px-4 pt-32 pb-20 h-screen flex items-center justify-center relative z-10">
