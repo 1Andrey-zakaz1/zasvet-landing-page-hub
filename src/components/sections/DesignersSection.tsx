@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { FileText, Ruler, Clock, Download } from "lucide-react";
+import { Calculator, FileEdit, FileSpreadsheet, PlusCircle } from "lucide-react";
 
 const DesignersSection = () => {
   return (
@@ -11,30 +11,31 @@ const DesignersSection = () => {
       subtitle="Мы предоставляем комплексные инструменты для проектирования эффективных систем освещения, отвечающих техническим требованиям и эстетическим ожиданиям."
       services={[
         {
-          icon: <FileText className="h-6 w-6" />,
-          title: "Проекты в Dialux:",
-          description: "Предоставляем базы данных светильников для Dialux, упрощающие процесс дизайна освещения."
+          icon: <Calculator className="h-6 w-6 text-zasvet-black" />,
+          title: "Подбор оптимального светильника:",
+          description: "Наш калькулятор автоматически перебирает все варианты из серии светильников и предлагает оптимальный по цене для нужной освещенности."
         },
         {
-          icon: <Ruler className="h-6 w-6" />,
-          title: "Каталоги и BIM модели:",
-          description: "Доступ к BIM моделям для удобной интеграции наших решений в ваши проекты."
+          icon: <FileEdit className="h-6 w-6 text-zasvet-black" />,
+          title: "Разработка светильника по Т.З.:",
+          description: "Оставьте заявку и мы разработаем светильник под Ваш объект и предоставим проект IES файла для него."
         },
         {
-          icon: <Clock className="h-6 w-6" />,
-          title: "Техническое задание:",
-          description: "Оставьте техническое задание и мы проконсультируем по типам и количеству светильников."
+          icon: <FileSpreadsheet className="h-6 w-6 text-zasvet-black" />,
+          title: "Другие калькуляторы:",
+          description: "Подбор сечения кабеля, подбор УЗО, энергопотребление объекта, подбор аналога светильника."
         },
         {
-          icon: <Download className="h-6 w-6" />,
-          title: "Документация:",
-          description: "Получите доступ к технической документации, сертификатам и инструкциям по установке."
+          icon: <PlusCircle className="h-6 w-6 text-zasvet-black" />,
+          title: "Новые инструменты:",
+          description: "Мы регулярно добавляем новые инструменты, предложите тот, которого не хватает Вам."
         }
       ]}
       imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
       imageAlt="Проектировщику"
-      buttonText="ЗАГРУЗИТЬ МОДЕЛИ"
+      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
       reverse={true}
+      bgColor="bg-zasvet-gold"
     />
   );
 };
