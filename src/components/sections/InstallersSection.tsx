@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { CircleZap, Cable, LightbulbIcon, Box } from "lucide-react";
+import { Zap, Cable, LightbulbIcon, Package } from "lucide-react";
 
 const InstallersSection = () => {
   return (
@@ -16,7 +16,7 @@ const InstallersSection = () => {
           description: "Учитывает длину кабеля, мощность оборудования, тип проводки."
         },
         {
-          icon: <CircleZap className="h-6 w-6 text-zasvet-black" />,
+          icon: <Zap className="h-6 w-6 text-zasvet-black" />,
           title: "Расчет УЗО:",
           description: "По мощности оборудования"
         },
@@ -26,7 +26,7 @@ const InstallersSection = () => {
           description: "Который заложен в проект для замены на более качественный или дешевый."
         },
         {
-          icon: <Box className="h-6 w-6 text-zasvet-black" />,
+          icon: <Package className="h-6 w-6 text-zasvet-black" />,
           title: "Комплексная поставка:",
           description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
         }
