@@ -157,3 +157,17 @@
 .bg-zasvet-gold .bg-wave-bottom {
   background-color: #000000;
 }
+
+/* Gold background text color */
+.bg-zasvet-gold {
+  color: #161616;
+}
+
+.bg-zasvet-gold h1, 
+.bg-zasvet-gold h2, 
+.bg-zasvet-gold h3, 
+.bg-zasvet-gold h4, 
+.bg-zasvet-gold p, 
+.bg-zasvet-gold span {
+  color: #161616;
+}

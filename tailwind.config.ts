@@ -69,7 +69,8 @@ export default {
 					darkgold: '#d9a200',
 					white: '#FFFFFF',
 					gray: '#333333',
-					lightgray: '#F5F5F5'
+					lightgray: '#F5F5F5',
+					text: '#161616'  // Adding text color for gold background
 				}
 			},
 			borderRadius: {
