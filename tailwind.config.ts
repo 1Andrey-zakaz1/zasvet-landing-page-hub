@@ -65,8 +65,8 @@ export default {
 				},
 				zasvet: {
 					black: '#000000',
-					gold: '#fcd155',
-					darkgold: '#e3bc3f',
+					gold: '#ffbd00',
+					darkgold: '#d9a200',
 					white: '#FFFFFF',
 					gray: '#333333',
 					lightgray: '#F5F5F5'
