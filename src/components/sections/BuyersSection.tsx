@@ -11,22 +11,22 @@ const BuyersSection = () => {
       subtitle="Мы предлагаем прозрачные условия сотрудничества, гибкую ценовую политику и полный комплект документации для закупщиков и снабженцев."
       services={[
         {
-          icon: <Calculator className="h-6 w-6" />,
+          icon: <Calculator className="h-6 w-6 text-zasvet-black" />,
           title: "Подбор аналогов:",
           description: "Наш калькулятор подберет в онлайн режиме аналог нужного Вам светильника."
         },
         {
-          icon: <ShoppingCart className="h-6 w-6" />,
+          icon: <ShoppingCart className="h-6 w-6 text-zasvet-black" />,
           title: "Комплексная поставка:",
           description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
         },
         {
-          icon: <Truck className="h-6 w-6" />,
+          icon: <Truck className="h-6 w-6 text-zasvet-black" />,
           title: "Расчет доставки:",
           description: "Оставьте заявку и мы рассчитаем поставку до Вашего объекта."
         },
         {
-          icon: <BarChart3 className="h-6 w-6" />,
+          icon: <BarChart3 className="h-6 w-6 text-zasvet-black" />,
           title: "Конъюнктурный анализ цен:",
           description: "Оставьте заявку и мы подберем светильники из разных ценовых категорий."
         }

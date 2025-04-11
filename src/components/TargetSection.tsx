@@ -36,6 +36,7 @@ const TargetSection = ({
   showDiagonalCut = false,
 }: TargetSectionProps) => {
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
+  const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
   
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
@@ -78,7 +79,7 @@ const TargetSection = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
               {services.map((service, index) => (
                 <div key={index} className="flex gap-4">
-                  <div className="text-zasvet-gold mt-1 flex-shrink-0">
+                  <div className={`${iconColor} mt-1 flex-shrink-0`}>
                     {service.icon}
                   </div>
                   <div>
