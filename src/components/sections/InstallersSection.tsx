@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Wrench, Video, FileText, Clock } from "lucide-react";
+import { CircleZap, Cable, LightbulbIcon, Box } from "lucide-react";
 
 const InstallersSection = () => {
   return (
@@ -11,30 +11,30 @@ const InstallersSection = () => {
       subtitle="Мы обеспечиваем монтажников всем необходимым для быстрой и безопасной установки наших систем освещения, от инструкций до технической поддержки."
       services={[
         {
-          icon: <Wrench className="h-6 w-6" />,
-          title: "Инструкции по монтажу:",
-          description: "Подробные руководства по установке наших систем освещения с учетом всех нюансов."
+          icon: <Cable className="h-6 w-6 text-zasvet-black" />,
+          title: "Расчет сечения кабеля:",
+          description: "Учитывает длину кабеля, мощность оборудования, тип проводки."
         },
         {
-          icon: <Video className="h-6 w-6" />,
-          title: "Видео мастер-классы:",
-          description: "Обучающие видео по монтажу сложных систем освещения и решению типовых задач."
+          icon: <CircleZap className="h-6 w-6 text-zasvet-black" />,
+          title: "Расчет УЗО:",
+          description: "По мощности оборудования"
         },
         {
-          icon: <FileText className="h-6 w-6" />,
-          title: "Бланки отчетов:",
-          description: "Стандартизированные формы для документирования выполненных работ и сдачи объектов."
+          icon: <LightbulbIcon className="h-6 w-6 text-zasvet-black" />,
+          title: "Подбор аналога светильника:",
+          description: "Который заложен в проект для замены на более качественный или дешевый."
         },
         {
-          icon: <Clock className="h-6 w-6" />,
-          title: "Техническая поддержка:",
-          description: "Оперативные консультации наших специалистов в случае возникновения вопросов при монтаже."
+          icon: <Box className="h-6 w-6 text-zasvet-black" />,
+          title: "Комплексная поставка:",
+          description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
         }
       ]}
       imageSrc="/lovable-uploads/6167e761-934b-41db-9211-4fff41b61777.png"
       imageAlt="Монтажнику"
-      buttonText="СКАЧАТЬ ИНСТРУКЦИИ"
-      reverse={true}
+      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      reverse={false}
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}
     />
