@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Zap, Award, BarChart, FileCode } from "lucide-react";
+import { Calculator, ZapOff, Cable, Package } from "lucide-react";
 
 const EnergeticsSection = () => {
   return (
@@ -11,29 +11,29 @@ const EnergeticsSection = () => {
       subtitle="Мы разрабатываем энергоэффективные решения, которые помогают значительно снизить энергопотребление без ущерба для качества освещения."
       services={[
         {
-          icon: <Zap className="h-6 w-6" />,
-          title: "Энергоэффективные решения:",
-          description: "Светильники с высоким КПД и низким энергопотреблением для оптимизации затрат на электроэнергию."
+          icon: <Calculator className="h-6 w-6" />,
+          title: "Расчет освещения для помещения:",
+          description: "Зная размер и назначение помещения"
         },
         {
-          icon: <Award className="h-6 w-6" />,
-          title: "Соответствие стандартам:",
-          description: "Все наши продукты соответствуют российским и международным стандартам энергоэффективности."
+          icon: <Cable className="h-6 w-6" />,
+          title: "Расчет сечения кабеля:",
+          description: "Учитывает длину кабеля, мощность оборудования, тип прокладки."
         },
         {
-          icon: <BarChart className="h-6 w-6" />,
-          title: "Расчеты экономии:",
-          description: "Предоставляем детальные расчеты потенциальной экономии электроэнергии при внедрении наших решений."
+          icon: <ZapOff className="h-6 w-6" />,
+          title: "Расчет снижения электропотребления:",
+          description: "При замене старых светильников на светодиодные"
         },
         {
-          icon: <FileCode className="h-6 w-6" />,
-          title: "Техническая документация:",
-          description: "Полный комплект технической документации для интеграции наших систем в энергетическую инфраструктуру."
+          icon: <Package className="h-6 w-6" />,
+          title: "Подбор сопутствующих материалов:",
+          description: "Оставьте заявку и мы подберем и поставим сопутствующие материалы"
         }
       ]}
       imageSrc="/lovable-uploads/9aa29444-c53f-406a-ab71-94572c977bc9.png"
       imageAlt="Энергетику"
-      buttonText="ЗАПРОСИТЬ РАСЧЕТ"
+      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
       reverse={true}
     />
   );
