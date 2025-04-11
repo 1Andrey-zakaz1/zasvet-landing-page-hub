@@ -41,20 +41,6 @@ const videos: VideoItem[] = [
     thumbnailSrc: "/placeholder.svg",
     videoSrc: "https://www.example.com/video3.mp4",
   },
-  {
-    id: 4,
-    title: "Процесс производства",
-    description: "Экскурсия по нашему производству и контролю качества.",
-    thumbnailSrc: "/placeholder.svg",
-    videoSrc: "https://www.example.com/video4.mp4",
-  },
-  {
-    id: 5,
-    title: "Отзывы клиентов",
-    description: "Истории успеха и впечатления наших клиентов.",
-    thumbnailSrc: "/placeholder.svg",
-    videoSrc: "https://www.example.com/video5.mp4",
-  },
 ];
 
 const VideoSlider = () => {
