@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, ExternalLink, MessageSquare } from 'lucide-react';
+import { MessageCircle, X, ExternalLink, MessageSquare, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -26,6 +26,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Textarea } from '@/components/ui/textarea';
 
 // Используем имя бота из предыдущей реализации
 const TELEGRAM_BOT_USERNAME = 'SpektraNskCalculyatorBot';
@@ -35,6 +36,8 @@ const TelegramBotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [embedOpen, setEmbedOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("redirect");
+  const [noTelegramOpen, setNoTelegramOpen] = useState(false);
+  const [userMessage, setUserMessage] = useState('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -93,6 +96,14 @@ const TelegramBotWidget = () => {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
+  
+  const handleNoTelegramSubmit = () => {
+    // В будущем здесь можно реализовать отправку сообщения через ваш собственный API
+    console.log('Сообщение от пользователя без Telegram:', userMessage);
+    alert('Ваше сообщение получено! Мы свяжемся с вами в ближайшее время.');
+    setUserMessage('');
+    setNoTelegramOpen(false);
+  };
 
   return (
     <>
@@ -126,7 +137,7 @@ const TelegramBotWidget = () => {
           
           <div className="w-full min-h-[70vh] flex flex-col">
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <TabsList className="w-full grid grid-cols-2">
+              <TabsList className="w-full grid grid-cols-3">
                 <TabsTrigger value="redirect" className="text-zasvet-black">
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Открыть в Telegram
@@ -134,6 +145,10 @@ const TelegramBotWidget = () => {
                 <TabsTrigger value="embed" className="text-zasvet-black">
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Общаться на сайте
+                </TabsTrigger>
+                <TabsTrigger value="noTelegram" className="text-zasvet-black">
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  Нет Telegram
                 </TabsTrigger>
               </TabsList>
               
@@ -182,8 +197,11 @@ const TelegramBotWidget = () => {
                 <div className="flex flex-col items-center justify-center p-8">
                   <div className="mb-6 text-center">
                     <h3 className="text-xl font-semibold mb-2 text-zasvet-black">Общайтесь с ботом прямо на сайте</h3>
-                    <p className="text-zasvet-black/70 mb-6">
-                      Вы можете использовать нашего бота, не покидая сайт. Все ваши расчеты и данные будут сохранены.
+                    <p className="text-zasvet-black/70 mb-2">
+                      Вы можете использовать нашего бота, не покидая сайт. 
+                    </p>
+                    <p className="text-zasvet-black/70 mb-6 font-medium">
+                      Требуется учетная запись Telegram для работы с ботом.
                     </p>
                     
                     <Button 
@@ -198,11 +216,73 @@ const TelegramBotWidget = () => {
                   <div className="w-full max-w-md bg-gray-100 rounded-lg p-4">
                     <h4 className="font-medium text-zasvet-black mb-2">Преимущества общения на сайте:</h4>
                     <ul className="list-disc pl-5 space-y-1 text-zasvet-black/80">
-                      <li>Не нужно устанавливать Telegram</li>
                       <li>Быстрый доступ ко всем функциям калькулятора</li>
                       <li>Сохранение истории расчетов</li>
                       <li>Удобное переключение между разделами сайта</li>
                     </ul>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="noTelegram" className="p-6">
+                <div className="max-w-2xl mx-auto">
+                  <h3 className="text-xl font-semibold mb-4 text-zasvet-black">У вас нет Telegram?</h3>
+                  
+                  <div className="mb-6 bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-medium text-zasvet-black mb-2">Что такое Telegram?</h4>
+                    <p className="text-zasvet-black/80 mb-3">
+                      Telegram — это бесплатный мессенджер, который работает на всех устройствах и позволяет легко 
+                      общаться с нашим ботом для расчетов. Вы можете установить его на телефон, планшет или компьютер.
+                    </p>
+                    
+                    <div className="mb-4">
+                      <h5 className="font-medium text-zasvet-black mb-2">Как установить Telegram:</h5>
+                      <ol className="list-decimal pl-5 space-y-1 text-zasvet-black/80">
+                        <li>Скачайте приложение из App Store, Google Play или с <a href="https://telegram.org/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">официального сайта</a></li>
+                        <li>Зарегистрируйтесь, указав свой номер телефона</li>
+                        <li>Подтвердите регистрацию, введя код из SMS</li>
+                      </ol>
+                    </div>
+                    
+                    <a 
+                      href="https://telegram.org/dl" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-4 py-2 rounded-md bg-[#0088cc] text-white hover:bg-[#0077b5] transition-colors"
+                    >
+                      Установить Telegram
+                    </a>
+                  </div>
+                  
+                  <div className="border-t pt-6">
+                    <h4 className="font-medium text-zasvet-black mb-3">Отправить запрос без Telegram</h4>
+                    <p className="text-zasvet-black/70 mb-4">
+                      Если вы не хотите устанавливать Telegram, вы можете оставить свое сообщение ниже, 
+                      и мы свяжемся с вами для предоставления необходимых расчетов.
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="message" className="block text-sm font-medium text-zasvet-black mb-1">
+                          Ваше сообщение
+                        </label>
+                        <Textarea 
+                          id="message"
+                          placeholder="Опишите, какие расчеты вам нужны..."
+                          value={userMessage}
+                          onChange={(e) => setUserMessage(e.target.value)}
+                          className="min-h-[120px]"
+                        />
+                      </div>
+                      
+                      <Button 
+                        onClick={handleNoTelegramSubmit}
+                        className="w-full bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black"
+                        disabled={!userMessage.trim()}
+                      >
+                        Отправить запрос
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </TabsContent>
