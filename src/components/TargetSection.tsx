@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins } from "lucide-react";
+import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins, Send } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type ServiceItem = {
@@ -37,6 +37,15 @@ const TargetSection = ({
 }: TargetSectionProps) => {
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
   const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
+  
+  // Determine button styles based on background
+  const primaryButtonClass = bgColor === "bg-zasvet-black" 
+    ? "bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black border-2 border-zasvet-gold" 
+    : "bg-zasvet-black hover:bg-zasvet-gray text-zasvet-gold border-2 border-zasvet-black";
+  
+  const secondaryButtonClass = bgColor === "bg-zasvet-black"
+    ? "bg-transparent hover:bg-zasvet-gold/10 text-zasvet-gold border-2 border-zasvet-gold"
+    : "bg-transparent hover:bg-zasvet-black/10 text-zasvet-black border-2 border-zasvet-black";
   
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
@@ -90,9 +99,16 @@ const TargetSection = ({
               ))}
             </div>
             
-            <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black px-8 py-3 text-lg font-medium">
-              {buttonText}
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button className={`${primaryButtonClass} px-8 py-3 text-lg font-medium`}>
+                {buttonText}
+              </Button>
+              
+              <Button className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}>
+                <Send className="mr-2 h-5 w-5" />
+                ОСТАВИТЬ ЗАЯВКУ
+              </Button>
+            </div>
           </div>
         </div>
       </div>
