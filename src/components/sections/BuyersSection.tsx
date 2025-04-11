@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Package, Truck, FileText, ShoppingCart } from "lucide-react";
+import { Calculator, ShoppingCart, Truck, BarChart3 } from "lucide-react";
 
 const BuyersSection = () => {
   return (
@@ -11,29 +11,29 @@ const BuyersSection = () => {
       subtitle="Мы предлагаем прозрачные условия сотрудничества, гибкую ценовую политику и полный комплект документации для закупщиков и снабженцев."
       services={[
         {
-          icon: <FileText className="h-6 w-6" />,
-          title: "Коммерческие предложения:",
-          description: "Оперативное формирование индивидуальных КП с учетом объема заказа и особенностей проекта."
-        },
-        {
-          icon: <Package className="h-6 w-6" />,
+          icon: <Calculator className="h-6 w-6" />,
           title: "Подбор аналогов:",
-          description: "Подберем аналоги светильников других производителей с сохранением или улучшением характеристик."
-        },
-        {
-          icon: <Truck className="h-6 w-6" />,
-          title: "Условия доставки:",
-          description: "Прозрачные условия и сроки доставки с возможностью отслеживания груза."
+          description: "Наш калькулятор подберет в онлайн режиме аналог нужного Вам светильника."
         },
         {
           icon: <ShoppingCart className="h-6 w-6" />,
-          title: "Скидочная система:",
-          description: "Прогрессивная система скидок в зависимости от объема заказа и истории сотрудничества."
+          title: "Комплексная поставка:",
+          description: "Нужны не только светильники? Оставьте заявку и мы найдем Вам всё необходимое."
+        },
+        {
+          icon: <Truck className="h-6 w-6" />,
+          title: "Расчет доставки:",
+          description: "Оставьте заявку и мы рассчитаем поставку до Вашего объекта."
+        },
+        {
+          icon: <BarChart3 className="h-6 w-6" />,
+          title: "Конъюнктурный анализ цен:",
+          description: "Оставьте заявку и мы подберем светильники из разных ценовых категорий."
         }
       ]}
       imageSrc="/lovable-uploads/986a3006-77c9-4bc8-bb49-262b91958066.png"
       imageAlt="Закупщику"
-      buttonText="ОСТАВИТЬ ЗАЯВКУ"
+      buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}
     />
