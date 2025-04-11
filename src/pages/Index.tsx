@@ -10,6 +10,7 @@ import InstallersSection from '@/components/sections/InstallersSection';
 import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
 import Footer from '@/components/Footer';
+import TelegramBotWidget from '@/components/TelegramBotWidget';
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
         <ProductSlider />
       </main>
       <Footer />
+      <TelegramBotWidget />
     </div>
   );
 };
