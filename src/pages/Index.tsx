@@ -7,6 +7,7 @@ import EnergeticsSection from '@/components/sections/EnergeticsSection';
 import BuyersSection from '@/components/sections/BuyersSection';
 import DesignersSection from '@/components/sections/DesignersSection';
 import InstallersSection from '@/components/sections/InstallersSection';
+import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
 import Footer from '@/components/Footer';
 
@@ -21,6 +22,7 @@ const Index = () => {
         <BuyersSection />
         <DesignersSection />
         <InstallersSection />
+        <VideoSlider />
         <ProductSlider />
       </main>
       <Footer />
