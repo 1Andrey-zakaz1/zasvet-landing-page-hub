@@ -95,11 +95,11 @@
 }
 
 .gold-gradient {
-  background: linear-gradient(145deg, #FFD700, #D4AF37);
+  background: linear-gradient(145deg, #d19022, #a77219);
 }
 
 .gold-text {
-  background: linear-gradient(145deg, #FFD700, #D4AF37);
+  background: linear-gradient(145deg, #d19022, #a77219);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -142,11 +142,11 @@
 
 /* Black section waves */
 .bg-zasvet-black .bg-wave-top {
-  background-color: #FFD700;
+  background-color: #d19022;
 }
 
 .bg-zasvet-black .bg-wave-bottom {
-  background-color: #FFD700;
+  background-color: #d19022;
 }
 
 /* Gold section waves */
