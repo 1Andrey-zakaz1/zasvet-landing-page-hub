@@ -34,6 +34,7 @@ const DesignersSection = () => {
       imageSrc="/lovable-uploads/378d7b1c-0ee8-4206-a084-ba0d42292fb4.png"
       imageAlt="Проектировщику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      calculationType="проект"
       reverse={true}
       bgColor="bg-zasvet-black"
     />

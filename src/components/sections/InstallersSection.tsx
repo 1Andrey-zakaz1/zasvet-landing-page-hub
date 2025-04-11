@@ -34,6 +34,7 @@ const InstallersSection = () => {
       imageSrc="/lovable-uploads/6167e761-934b-41db-9211-4fff41b61777.png"
       imageAlt="Монтажнику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      calculationType="кабель"
       reverse={false}
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}

@@ -34,6 +34,7 @@ const EnergeticsSection = () => {
       imageSrc="/lovable-uploads/9aa29444-c53f-406a-ab71-94572c977bc9.png"
       imageAlt="Энергетику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      calculationType="электропотребление"
       reverse={true}
     />
   );

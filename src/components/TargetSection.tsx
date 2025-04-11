@@ -18,6 +18,7 @@ type TargetSectionProps = {
   imageSrc: string;
   imageAlt: string;
   buttonText: string;
+  calculationType?: string; // Тип расчета для чата
   reverse?: boolean;
   bgColor?: string;
   showDiagonalCut?: boolean;
@@ -31,6 +32,7 @@ const TargetSection = ({
   imageSrc,
   imageAlt,
   buttonText,
+  calculationType = 'общий',
   reverse = false,
   bgColor = "bg-zasvet-black",
   showDiagonalCut = false,
@@ -38,7 +40,7 @@ const TargetSection = ({
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
   const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
   
-  // Determine button styles based on background
+  // Определяем стили кнопок в зависимости от фона
   const primaryButtonClass = bgColor === "bg-zasvet-black" 
     ? "bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black border-2 border-zasvet-gold" 
     : "bg-zasvet-black hover:bg-zasvet-gray text-zasvet-gold border-2 border-zasvet-black";
@@ -46,6 +48,12 @@ const TargetSection = ({
   const secondaryButtonClass = bgColor === "bg-zasvet-black"
     ? "bg-transparent hover:bg-zasvet-gold/10 text-zasvet-gold border-2 border-zasvet-gold"
     : "bg-transparent hover:bg-zasvet-black/10 text-zasvet-black border-2 border-zasvet-black";
+  
+  const handleOpenCalculator = () => {
+    // Отправляем событие для открытия чата с указанным типом расчета
+    const event = new CustomEvent('openCalculatorChat', { detail: { type: calculationType } });
+    window.dispatchEvent(event);
+  };
   
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
@@ -100,11 +108,20 @@ const TargetSection = ({
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className={`${primaryButtonClass} px-8 py-3 text-lg font-medium`}>
+              <Button 
+                className={`${primaryButtonClass} px-8 py-3 text-lg font-medium`}
+                onClick={handleOpenCalculator}
+              >
                 {buttonText}
               </Button>
               
-              <Button className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}>
+              <Button 
+                className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}
+                onClick={() => {
+                  const event = new CustomEvent('openCalculatorChat', { detail: { type: 'заявка' } });
+                  window.dispatchEvent(event);
+                }}
+              >
                 <Send className="mr-2 h-5 w-5" />
                 ОСТАВИТЬ ЗАЯВКУ
               </Button>

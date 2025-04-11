@@ -34,6 +34,7 @@ const OwnersSection = () => {
       imageSrc="/lovable-uploads/5a6fad7c-b33c-4449-8fa4-925a3a8e58a0.png"
       imageAlt="Собственнику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      calculationType="освещение"
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}
     />
@@ -41,4 +42,3 @@ const OwnersSection = () => {
 };
 
 export default OwnersSection;
-

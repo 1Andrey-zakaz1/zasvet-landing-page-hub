@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import OwnersSection from '@/components/sections/OwnersSection';
@@ -13,6 +13,29 @@ import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
 
 const Index = () => {
+  // Глобальный обработчик для открытия чата с калькуляциями
+  useEffect(() => {
+    const handleOpenCalculatorChat = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const calculationType = customEvent.detail?.type;
+      
+      // Находим экземпляр компонента TelegramBotWidget и вызываем его функцию
+      const element = document.querySelector('[data-telegram-bot-widget]');
+      if (element) {
+        const widgetInstance = (element as any).__reactInstance;
+        if (widgetInstance) {
+          widgetInstance.openChatWithCalculation(calculationType);
+        }
+      }
+    };
+    
+    window.addEventListener('openCalculatorChat', handleOpenCalculatorChat);
+    
+    return () => {
+      window.removeEventListener('openCalculatorChat', handleOpenCalculatorChat);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-zasvet-black text-zasvet-white">
       <Header />

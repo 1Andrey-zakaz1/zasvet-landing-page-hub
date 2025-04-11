@@ -34,6 +34,7 @@ const BuyersSection = () => {
       imageSrc="/lovable-uploads/986a3006-77c9-4bc8-bb49-262b91958066.png"
       imageAlt="Закупщику"
       buttonText="ПЕРЕЙТИ К РАСЧЕТАМ"
+      calculationType="аналоги"
       bgColor="bg-zasvet-gold"
       showDiagonalCut={true}
     />
