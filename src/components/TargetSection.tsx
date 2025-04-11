@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins, Send } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { openCalculatorChat } from "@/components/TelegramBotWidget";
 
 type ServiceItem = {
   icon: React.ReactNode;
@@ -40,7 +40,6 @@ const TargetSection = ({
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
   const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
   
-  // Определяем стили кнопок в зависимости от фона
   const primaryButtonClass = bgColor === "bg-zasvet-black" 
     ? "bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black border-2 border-zasvet-gold" 
     : "bg-zasvet-black hover:bg-zasvet-gray text-zasvet-gold border-2 border-zasvet-black";
@@ -50,21 +49,17 @@ const TargetSection = ({
     : "bg-transparent hover:bg-zasvet-black/10 text-zasvet-black border-2 border-zasvet-black";
   
   const handleOpenCalculator = () => {
-    // Отправляем событие для открытия чата с указанным типом расчета
-    const event = new CustomEvent('openCalculatorChat', { detail: { type: calculationType } });
-    window.dispatchEvent(event);
+    openCalculatorChat(calculationType);
   };
   
   return (
     <section id={id} className={`relative overflow-hidden ${bgColor}`}>
-      {/* Diagonal cut at the top - only shown when showDiagonalCut is true */}
       {showDiagonalCut && (
         <div className={`absolute top-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-top`}></div>
       )}
       
       <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-          {/* Image column - now smaller */}
           <div className="w-full lg:w-1/3">
             <div className="relative">
               <div className="rounded-lg shadow-xl overflow-hidden">
@@ -76,12 +71,10 @@ const TargetSection = ({
                   />
                 </AspectRatio>
               </div>
-              {/* Gold accent border */}
               <div className="absolute -bottom-3 -right-3 w-2/3 h-2/3 border-4 border-zasvet-gold rounded-lg -z-10"></div>
             </div>
           </div>
           
-          {/* Content column - now larger */}
           <div className="w-full lg:w-2/3">
             <div className="text-xs uppercase tracking-wider text-zasvet-gold font-semibold mb-2">
               ИНСТРУМЕНТЫ В ПОМОЩЬ:
@@ -117,10 +110,7 @@ const TargetSection = ({
               
               <Button 
                 className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}
-                onClick={() => {
-                  const event = new CustomEvent('openCalculatorChat', { detail: { type: 'заявка' } });
-                  window.dispatchEvent(event);
-                }}
+                onClick={() => openCalculatorChat('заявка')}
               >
                 <Send className="mr-2 h-5 w-5" />
                 ОСТАВИТЬ ЗАЯВКУ
@@ -130,7 +120,6 @@ const TargetSection = ({
         </div>
       </div>
       
-      {/* Diagonal cut at the bottom - mirrored with different clip-path */}
       {showDiagonalCut && (
         <div className={`absolute bottom-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-bottom`}></div>
       )}
