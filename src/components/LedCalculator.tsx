@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -48,7 +47,6 @@ const LedCalculator = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
-    // Clear error when user types
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -61,7 +59,6 @@ const LedCalculator = () => {
   const handleSelectChange = (value: string) => {
     setFormData(prev => ({ ...prev, operation_mode: value }));
     
-    // Clear error when user selects
     if (errors.operation_mode) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -75,55 +72,46 @@ const LedCalculator = () => {
     const newErrors: Record<string, string> = {};
     let isValid = true;
 
-    // Проверка количества старых светильников
     if (!validatePositiveInteger(formData.old_quantity)) {
       newErrors.old_quantity = 'Количество старых светильников должно быть положительным целым числом.';
       isValid = false;
     }
     
-    // Проверка мощности старых светильников
     if (!validatePositiveNumber(formData.old_power)) {
       newErrors.old_power = 'Мощность старых светильников должна быть положительным числом.';
       isValid = false;
     }
     
-    // Проверка затрат на обслуживание
     if (!validateNonNegativeNumber(formData.maintenance_cost)) {
       newErrors.maintenance_cost = 'Затраты на обслуживание не могут быть отрицательными.';
       isValid = false;
     }
     
-    // Проверка количества LED светильников
     if (!validatePositiveInteger(formData.led_quantity)) {
       newErrors.led_quantity = 'Количество LED светильников должно быть положительным целым числом.';
       isValid = false;
     }
     
-    // Проверка мощности LED светильников
     if (!validatePositiveNumber(formData.led_power)) {
       newErrors.led_power = 'Мощность LED светильников должна быть положительным числом.';
       isValid = false;
     }
     
-    // Проверка стоимости LED светильника
     if (!validatePositiveNumber(formData.led_cost)) {
       newErrors.led_cost = 'Стоимость LED светильника должна быть положительным числом.';
       isValid = false;
     }
     
-    // Проверка часов работы
     if (!validateRange(formData.hours, 0.1, 24)) {
       newErrors.hours = 'Часы работы должны быть в диапазоне от 0.1 до 24.';
       isValid = false;
     }
     
-    // Проверка стоимости электроэнергии
     if (!validatePositiveNumber(formData.energy_cost)) {
       newErrors.energy_cost = 'Стоимость электроэнергии должна быть положительным числом.';
       isValid = false;
     }
     
-    // Проверка режима работы
     if (!formData.operation_mode || ['continuous', 'daily', 'workdays', 'seasonal'].indexOf(formData.operation_mode) === -1) {
       newErrors.operation_mode = 'Выберите режим работы светильников.';
       isValid = false;
@@ -148,7 +136,6 @@ const LedCalculator = () => {
   };
 
   const calculateResults = () => {
-    // Преобразование строковых значений в числа
     const oldQuantity = parseInt(formData.old_quantity);
     const oldPower = parseFloat(formData.old_power);
     const maintenanceCost = parseFloat(formData.maintenance_cost);
@@ -158,7 +145,6 @@ const LedCalculator = () => {
     const hoursPerDay = parseFloat(formData.hours);
     const energyCost = parseFloat(formData.energy_cost);
     
-    // Расчет дней в году работы в зависимости от режима
     let daysPerYear;
     switch (formData.operation_mode) {
       case 'continuous':
@@ -168,45 +154,35 @@ const LedCalculator = () => {
         daysPerYear = 365;
         break;
       case 'workdays':
-        daysPerYear = 250; // примерно 5 дней в неделю * 50 недель
+        daysPerYear = 250;
         break;
       case 'seasonal':
-        daysPerYear = 183; // половина года
+        daysPerYear = 183;
         break;
       default:
         daysPerYear = 365;
     }
     
-    // Расчет потребления энергии в кВт⋅ч в год
     const oldEnergyConsumption = oldQuantity * oldPower * hoursPerDay * daysPerYear / 1000;
     const ledEnergyConsumption = ledQuantity * ledPower * hoursPerDay * daysPerYear / 1000;
     
-    // Расчет затрат на электроэнергию в год
     const oldEnergyCost = oldEnergyConsumption * energyCost;
     const ledEnergyCost = ledEnergyConsumption * energyCost;
     
-    // Экономия на электроэнергии в год
     const energySavings = oldEnergyCost - ledEnergyCost;
     
-    // Затраты на обслуживание в год
     const oldMaintenanceCostPerYear = oldQuantity * maintenanceCost;
     
-    // Общая экономия в год (электроэнергия + обслуживание)
     const totalSavingsPerYear = energySavings + oldMaintenanceCostPerYear;
     
-    // Инвестиции в LED светильники
     const ledInvestment = ledQuantity * ledCost;
     
-    // Срок окупаемости в годах
     const paybackPeriod = ledInvestment / totalSavingsPerYear;
     
-    // Срок окупаемости в месяцах
     const paybackPeriodMonths = paybackPeriod * 12;
     
-    // Экономия за 5 лет
     const savingsFiveYears = totalSavingsPerYear * 5 - ledInvestment;
     
-    // Снижение мощности
     const powerReduction = (oldQuantity * oldPower) - (ledQuantity * ledPower);
     
     setResults({
@@ -224,8 +200,7 @@ const LedCalculator = () => {
       powerReduction: powerReduction.toFixed(2)
     });
   };
-  
-  // Вспомогательные функции валидации
+
   const validatePositiveInteger = (value: string) => {
     const num = parseInt(value);
     return !isNaN(num) && num > 0 && num === parseFloat(value);
@@ -246,7 +221,6 @@ const LedCalculator = () => {
     return !isNaN(num) && num >= min && num <= max;
   };
 
-  // Функция для получения текстового представления режима работы
   const getOperationModeText = (mode: string): string => {
     switch(mode) {
       case 'continuous':
@@ -268,7 +242,6 @@ const LedCalculator = () => {
         <h2 className="section-title text-zasvet-white mb-12">Калькулятор окупаемости</h2>
         
         <div className="max-w-4xl mx-auto">
-          {/* Заголовок калькулятора */}
           <div 
             className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
             onClick={toggleForm}
@@ -293,7 +266,6 @@ const LedCalculator = () => {
             </Button>
           </div>
           
-          {/* Форма калькулятора */}
           {isExpanded && !results && (
             <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
               <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
@@ -305,7 +277,6 @@ const LedCalculator = () => {
               
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Секция старых светильников */}
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
                     <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <LightbulbOff className="mr-2 h-5 w-5" /> Старые светильники
@@ -381,7 +352,6 @@ const LedCalculator = () => {
                     </div>
                   </div>
                   
-                  {/* Секция светодиодных светильников */}
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
                     <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <Lightbulb className="mr-2 h-5 w-5" /> Светодиодные светильники
@@ -457,7 +427,6 @@ const LedCalculator = () => {
                     </div>
                   </div>
                   
-                  {/* Секция общих параметров */}
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
                     <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <Info className="mr-2 h-5 w-5" /> Общие параметры
@@ -541,7 +510,6 @@ const LedCalculator = () => {
             </Card>
           )}
           
-          {/* Контейнер для результатов */}
           {results && (
             <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
               <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
