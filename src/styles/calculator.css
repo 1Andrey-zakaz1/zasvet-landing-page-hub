@@ -27,3 +27,21 @@
 #calculator h4.text-lg {
   @apply text-zasvet-gold font-semibold;
 }
+
+/* Results page styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #calculator, #calculator * {
+    visibility: visible;
+  }
+  
+  #calculator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
