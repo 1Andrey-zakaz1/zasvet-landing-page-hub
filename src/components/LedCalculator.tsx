@@ -31,6 +31,7 @@ const LedCalculator = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [results, setResults] = useState<CalculationResult | null>(null);
+  const [showResults, setShowResults] = useState(false);
 
   const toggleForm = () => {
     setIsExpanded(!isExpanded);
@@ -132,6 +133,7 @@ const LedCalculator = () => {
       
       const result = calculateResults(calculationInputs);
       setResults(result);
+      setShowResults(true);
     } else {
       toast({
         title: "Ошибка валидации",
@@ -143,7 +145,13 @@ const LedCalculator = () => {
 
   const resetCalculator = () => {
     setResults(null);
+    setShowResults(false);
     setIsExpanded(true);
+  };
+
+  const collapseResults = () => {
+    setShowResults(false);
+    setIsExpanded(false);
   };
 
   return (
@@ -155,7 +163,7 @@ const LedCalculator = () => {
           <div 
             className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
             onClick={toggleForm}
-            style={{ display: results ? 'none' : 'flex' }}
+            style={{ display: (results && showResults) ? 'none' : 'flex' }}
           >
             <h3 className="text-xl font-bold text-zasvet-white flex items-center">
               <Calculator className="mr-2 h-5 w-5" /> 
@@ -176,7 +184,7 @@ const LedCalculator = () => {
             </Button>
           </div>
           
-          {isExpanded && !results && (
+          {isExpanded && !showResults && (
             <CalculatorForm 
               formData={formData}
               errors={errors}
@@ -186,11 +194,12 @@ const LedCalculator = () => {
             />
           )}
           
-          {results && (
+          {results && showResults && (
             <ResultsPanel 
               results={results}
               formData={formData}
               resetCalculator={resetCalculator}
+              collapseResults={collapseResults}
             />
           )}
         </div>

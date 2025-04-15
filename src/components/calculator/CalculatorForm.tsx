@@ -2,10 +2,7 @@
 import React from 'react';
 import { Calculator, LightbulbOff, Lightbulb, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import OldLightingSection from './OldLightingSection';
 import LedLightingSection from './LedLightingSection';
 import GeneralParamsSection from './GeneralParamsSection';

@@ -1,23 +1,8 @@
-
 import React from 'react';
-import { BarChart, Info, Lightbulb, LightbulbOff } from 'lucide-react';
+import { BarChart, Info, Lightbulb, LightbulbOff, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-
-interface CalculationResult {
-  oldEnergyConsumption: string;
-  ledEnergyConsumption: string;
-  oldEnergyCost: string;
-  ledEnergyCost: string;
-  energySavings: string;
-  oldMaintenanceCostPerYear: string;
-  totalSavingsPerYear: string;
-  ledInvestment: string;
-  paybackPeriod: string;
-  paybackPeriodMonths: number;
-  savingsFiveYears: string;
-  powerReduction: string;
-}
+import { CalculationResult } from './types';
 
 interface ResultsPanelProps {
   results: CalculationResult;
@@ -31,9 +16,15 @@ interface ResultsPanelProps {
     operation_mode: string;
   };
   resetCalculator: () => void;
+  collapseResults: () => void;
 }
 
-const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, formData, resetCalculator }) => {
+const ResultsPanel: React.FC<ResultsPanelProps> = ({ 
+  results, 
+  formData, 
+  resetCalculator,
+  collapseResults
+}) => {
   const { toast } = useToast();
 
   const getOperationModeText = (mode: string): string => {
@@ -61,7 +52,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, formData, resetCal
         
         <div className="bg-purple-100/10 rounded-lg p-4 mb-4">
           <h4 className="text-xl text-purple-100 flex items-center font-medium">
-            <Info className="mr-2 h-5 w-5" /> Результат
+            <Info className="mr-2 h-5 w-5" /> Резу��ьтат
           </h4>
           <p className="text-xl mt-2">
             Срок окупаемости: <strong className="text-zasvet-gold">
@@ -261,6 +252,13 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({ results, formData, resetCal
             }}
           >
             Сохранить расчет
+          </Button>
+          <Button
+            variant="outline"
+            className="border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black"
+            onClick={collapseResults}
+          >
+            <ChevronUp className="mr-1" /> Свернуть
           </Button>
         </div>
       </div>
