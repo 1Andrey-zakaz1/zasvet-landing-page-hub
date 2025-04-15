@@ -132,10 +132,20 @@
 
 /* Wave shapes for diagonal section transitions */
 .bg-wave-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
 }
 
 .bg-wave-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
   clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
 }
 
@@ -159,7 +169,7 @@
 
 /* Gold background text color */
 .bg-zasvet-gold {
-  color: #161616;
+  background-color: #ffbd00;
 }
 
 .bg-zasvet-gold h1, 

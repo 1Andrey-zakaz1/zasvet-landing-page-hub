@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
@@ -58,14 +59,21 @@ const TargetSection: React.FC<TargetSectionProps> = ({
 
   const textColorClass = bgColor === 'bg-zasvet-gold' ? 'text-zasvet-black' : 'text-zasvet-white';
   const imageOrderClass = reverse ? 'order-first md:order-last' : 'order-last md:order-first';
-  const textAlignClass = reverse ? 'text-right md:text-left' : 'text-left md:text-right';
+  const contentOrderClass = reverse ? 'order-last md:order-first' : 'order-first md:order-last';
 
   return (
     <section
       id={id}
-      className={`py-16 md:py-24 ${bgColor} relative ${showDiagonalCut ? 'diagonal-cut' : ''}`}
+      className={`relative py-16 md:py-24 ${bgColor}`}
     >
-      <div className="container mx-auto px-4">
+      {showDiagonalCut && (
+        <>
+          <div className="absolute top-0 left-0 right-0 h-16 bg-wave-top"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-wave-bottom"></div>
+        </>
+      )}
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className={`${imageOrderClass} relative`}>
             <AspectRatio ratio={16 / 9}>
@@ -77,7 +85,7 @@ const TargetSection: React.FC<TargetSectionProps> = ({
             </AspectRatio>
           </div>
           
-          <div className={`${textAlignClass}`}>
+          <div className={`${contentOrderClass}`}>
             <h2 className={`section-title ${textColorClass} mb-4`}>{title}</h2>
             <p className={`text-lg ${textColorClass}/80 mb-6`}>
               {subtitle}
@@ -86,10 +94,10 @@ const TargetSection: React.FC<TargetSectionProps> = ({
             <ul className="space-y-4">
               {services.map((service, index) => (
                 <li key={index} className="flex items-start">
-                  <div className="mr-4">{service.icon}</div>
+                  <div className="mr-4 flex-shrink-0">{service.icon}</div>
                   <div>
                     <h3 className={`font-semibold ${textColorClass}`}>{service.title}</h3>
-                    <p className={`${textColorClass}/60`}>{service.description}</p>
+                    <p className={`${textColorClass}/80`}>{service.description}</p>
                   </div>
                 </li>
               ))}
@@ -97,8 +105,8 @@ const TargetSection: React.FC<TargetSectionProps> = ({
             
             <div className="mt-8">
               <Button 
-                variant={textColorClass === 'text-zasvet-black' ? 'gold' : 'outline'} 
-                className={`px-6 py-6 text-lg ${textColorClass === 'text-zasvet-black' ? '' : 'border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black'}`}
+                variant={textColorClass === 'text-zasvet-black' ? 'default' : 'outline'} 
+                className={`px-6 py-6 text-lg ${textColorClass === 'text-zasvet-black' ? 'bg-zasvet-black text-zasvet-gold hover:bg-zasvet-gray' : 'border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black'}`}
                 onClick={handleButtonClick}
               >
                 {buttonText} <ChevronRight className="h-5 w-5 ml-1" />
