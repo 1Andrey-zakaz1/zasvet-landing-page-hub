@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp, Send } from 'lucide-react';
+import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -237,7 +237,7 @@ const LedCalculator = () => {
   };
 
   return (
-    <section id="calculator" className="bg-zasvet-black py-16 md:py-24">
+    <section id="calculator-электропотребление" className="bg-zasvet-black py-16 md:py-24">
       <div className="container mx-auto px-4">
         <h2 className="section-title text-zasvet-white mb-12">Калькулятор окупаемости</h2>
         

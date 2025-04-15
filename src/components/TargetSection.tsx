@@ -1,30 +1,29 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins, Send } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { openCalculatorChat } from "@/components/TelegramBotWidget";
 
-type ServiceItem = {
+interface Service {
   icon: React.ReactNode;
   title: string;
   description: string;
-};
+}
 
-type TargetSectionProps = {
+interface TargetSectionProps {
   id: string;
   title: string;
   subtitle: string;
-  services: ServiceItem[];
+  services: Service[];
   imageSrc: string;
   imageAlt: string;
   buttonText: string;
-  calculationType?: string; // Тип расчета для чата
+  calculationType: string;
   reverse?: boolean;
   bgColor?: string;
   showDiagonalCut?: boolean;
-};
+}
 
-const TargetSection = ({
+const TargetSection: React.FC<TargetSectionProps> = ({
   id,
   title,
   subtitle,
@@ -32,97 +31,82 @@ const TargetSection = ({
   imageSrc,
   imageAlt,
   buttonText,
-  calculationType = 'общий',
+  calculationType,
   reverse = false,
   bgColor = "bg-zasvet-black",
-  showDiagonalCut = false,
-}: TargetSectionProps) => {
-  const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
-  const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
-  
-  const primaryButtonClass = bgColor === "bg-zasvet-black" 
-    ? "bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black border-2 border-zasvet-gold" 
-    : "bg-zasvet-black hover:bg-zasvet-gray text-zasvet-gold border-2 border-zasvet-black";
-  
-  const secondaryButtonClass = bgColor === "bg-zasvet-black"
-    ? "bg-transparent hover:bg-zasvet-gold/10 text-zasvet-gold border-2 border-zasvet-gold"
-    : "bg-transparent hover:bg-zasvet-black/10 text-zasvet-black border-2 border-zasvet-black";
-  
-  const handleOpenCalculator = () => {
-    openCalculatorChat(calculationType);
-  };
-  
-  return (
-    <section id={id} className={`relative overflow-hidden ${bgColor}`}>
-      {showDiagonalCut && (
-        <div className={`absolute top-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-top`}></div>
-      )}
+  showDiagonalCut = false
+}) => {
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const calculatorsSection = document.getElementById('calculators');
+    if (calculatorsSection) {
+      calculatorsSection.scrollIntoView({ behavior: 'smooth' });
       
-      <div className="container mx-auto px-4 py-16 md:py-24 z-10 relative">
-        <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-          <div className="w-full lg:w-1/3">
-            <div className="relative">
-              <div className="rounded-lg shadow-xl overflow-hidden">
-                <AspectRatio ratio={1/1} className="bg-zasvet-gray/10">
-                  <img
-                    src={imageSrc}
-                    alt={imageAlt}
-                    className="w-full h-full object-cover object-center"
-                  />
-                </AspectRatio>
-              </div>
-              <div className="absolute -bottom-3 -right-3 w-2/3 h-2/3 border-4 border-zasvet-gold rounded-lg -z-10"></div>
-            </div>
+      // Optional: Add a URL hash for direct linking
+      window.history.pushState({}, '', `#calculators-${calculationType}`);
+      
+      // Optional: Flash highlight on the specific calculator if it exists
+      const specificCalculator = document.getElementById(`calculator-${calculationType}`);
+      if (specificCalculator) {
+        specificCalculator.classList.add('highlight-calculator');
+        setTimeout(() => {
+          specificCalculator.classList.remove('highlight-calculator');
+        }, 2000);
+      }
+    }
+  };
+
+  const textColorClass = bgColor === 'bg-zasvet-gold' ? 'text-zasvet-black' : 'text-zasvet-white';
+  const imageOrderClass = reverse ? 'order-first md:order-last' : 'order-last md:order-first';
+  const textAlignClass = reverse ? 'text-right md:text-left' : 'text-left md:text-right';
+
+  return (
+    <section
+      id={id}
+      className={`py-16 md:py-24 ${bgColor} relative ${showDiagonalCut ? 'diagonal-cut' : ''}`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className={`${imageOrderClass} relative`}>
+            <AspectRatio ratio={16 / 9}>
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="w-full h-full object-cover rounded-lg shadow-md"
+              />
+            </AspectRatio>
           </div>
           
-          <div className="w-full lg:w-2/3">
-            <div className="text-xs uppercase tracking-wider text-zasvet-gold font-semibold mb-2">
-              ИНСТРУМЕНТЫ В ПОМОЩЬ:
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-zasvet-white">
-              {title}
-            </h2>
-            <div className="w-16 h-1 bg-zasvet-gold mb-8"></div>
+          <div className={`${textAlignClass}`}>
+            <h2 className={`section-title ${textColorClass} mb-4`}>{title}</h2>
+            <p className={`text-lg ${textColorClass}/80 mb-6`}>
+              {subtitle}
+            </p>
             
-            <p className="text-lg mb-10 text-zasvet-white/80">{subtitle}</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
+            <ul className="space-y-4">
               {services.map((service, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className={`${iconColor} mt-1 flex-shrink-0`}>
-                    {service.icon}
-                  </div>
+                <li key={index} className="flex items-start">
+                  <div className="mr-4">{service.icon}</div>
                   <div>
-                    <h3 className="text-lg font-semibold text-zasvet-white mb-1">{service.title}</h3>
-                    <p className="text-zasvet-white/70">{service.description}</p>
+                    <h3 className={`font-semibold ${textColorClass}`}>{service.title}</h3>
+                    <p className={`${textColorClass}/60`}>{service.description}</p>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="mt-8">
               <Button 
-                className={`${primaryButtonClass} px-8 py-3 text-lg font-medium`}
-                onClick={handleOpenCalculator}
+                variant={textColorClass === 'text-zasvet-black' ? 'gold' : 'outline'} 
+                className={`px-6 py-6 text-lg ${textColorClass === 'text-zasvet-black' ? '' : 'border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black'}`}
+                onClick={handleButtonClick}
               >
-                {buttonText}
-              </Button>
-              
-              <Button 
-                className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}
-                onClick={() => openCalculatorChat('заявка')}
-              >
-                <Send className="mr-2 h-5 w-5" />
-                ОСТАВИТЬ ЗАЯВКУ
+                {buttonText} <ChevronRight className="h-5 w-5 ml-1" />
               </Button>
             </div>
           </div>
         </div>
       </div>
-      
-      {showDiagonalCut && (
-        <div className={`absolute bottom-0 left-0 right-0 h-24 ${oppositeColor} bg-wave-bottom`}></div>
-      )}
     </section>
   );
 };
