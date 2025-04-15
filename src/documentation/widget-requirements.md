@@ -84,50 +84,6 @@ const openCalculatorChat = (type: string) => {
 // openCalculatorChat('lighting_calculator'); // Открыть полный калькулятор
 ```
 
-## Пример корректной разметки
-
-```jsx
-<section className="bg-zasvet-black py-16 md:py-24">
-  <div className="container mx-auto px-4">
-    <h2 className="section-title text-zasvet-white mb-12">Подбор освещения</h2>
-    
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      {/* Секция с фото консультанта */}
-      <div className="flex flex-col items-center">
-        <div className="relative mb-6">
-          <div className="absolute -top-4 -right-4 bg-zasvet-gold text-zasvet-black rounded-full p-3">
-            <Icon className="h-6 w-6" />
-          </div>
-          <img 
-            src="/path-to-image.png" 
-            alt="Электронный консультант" 
-            className="rounded-lg w-full max-w-sm border-2 border-zasvet-gold/30"
-          />
-        </div>
-        <div className="text-center max-w-sm">
-          <h3 className="text-xl font-bold text-zasvet-gold mb-2">Электронный консультант</h3>
-          <p className="text-zasvet-white/80">
-            Описание консультанта и его возможностей
-          </p>
-        </div>
-      </div>
-      
-      {/* Диалоговая форма */}
-      <div>
-        <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl">
-          <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
-            <CardTitle className="text-xl">Название формы</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            {/* Содержимое формы */}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  </div>
-</section>
-```
-
 ## Требования к изображениям
 
 - Фото консультанта: профессиональное, деловой стиль, нейтральный фон
