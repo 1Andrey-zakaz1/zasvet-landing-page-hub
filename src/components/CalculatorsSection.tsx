@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calculator, Calculator as CalculatorIcon, Tool, Settings } from 'lucide-react';
+import { Calculator, Settings, Filter } from 'lucide-react';
 
 const CalculatorsSection = () => {
   return (
@@ -13,7 +13,7 @@ const CalculatorsSection = () => {
           </p>
           <div className="flex justify-center mt-8">
             <div className="inline-flex gap-4 p-2 bg-zasvet-black/50 rounded-lg border border-zasvet-gold/20">
-              <Tool className="h-6 w-6 text-zasvet-gold" />
+              <Filter className="h-6 w-6 text-zasvet-gold" />
               <Calculator className="h-6 w-6 text-zasvet-gold" />
               <Settings className="h-6 w-6 text-zasvet-gold" />
             </div>

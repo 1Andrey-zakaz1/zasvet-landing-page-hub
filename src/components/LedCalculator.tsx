@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -239,9 +240,10 @@ const LedCalculator = () => {
   return (
     <section id="calculator-электропотребление" className="bg-zasvet-black py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <h2 className="section-title text-zasvet-white mb-12">Калькулятор окупаемости</h2>
+        <h2 className="section-title text-zasvet-white mb-12 text-center">Калькулятор окупаемости</h2>
         
         <div className="max-w-4xl mx-auto">
+          {/* Labels are added with clearer color contrast */}
           <div 
             className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
             onClick={toggleForm}
@@ -249,7 +251,7 @@ const LedCalculator = () => {
           >
             <h3 className="text-xl font-bold text-zasvet-white flex items-center">
               <Calculator className="mr-2 h-5 w-5" /> 
-              Расчет окупаемости светодиодных светильников
+              <span className="text-zasvet-gold/90">Расчет окупаемости светодиодных светильников</span>
             </h3>
             <Button 
               variant="gold" 
