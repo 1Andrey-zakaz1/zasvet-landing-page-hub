@@ -183,3 +183,25 @@
   position: relative;
   z-index: 2;
 }
+
+/* Add this new class for better form label contrast */
+.calc-form-label {
+  @apply text-zasvet-white text-base font-medium !important;
+}
+
+/* Improve text visibility in calculator sections */
+.calculator-section-header {
+  @apply text-zasvet-gold font-semibold;
+}
+
+/* Input unit visibility */
+.input-unit {
+  @apply text-zasvet-white font-medium;
+}
+
+/* Make form field labels more visible */
+form label, 
+.form-label, 
+label[for] {
+  @apply text-zasvet-white text-base;
+}
