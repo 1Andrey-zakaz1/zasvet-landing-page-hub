@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -132,20 +133,10 @@
 
 /* Wave shapes for diagonal section transitions */
 .bg-wave-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
 }
 
 .bg-wave-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
   clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
 }
 
@@ -169,7 +160,7 @@
 
 /* Gold background text color */
 .bg-zasvet-gold {
-  background-color: #ffbd00;
+  color: #161616;
 }
 
 .bg-zasvet-gold h1, 
@@ -179,39 +170,4 @@
 .bg-zasvet-gold p, 
 .bg-zasvet-gold span {
   color: #161616;
-}
-
-/* Highlighting animation for calculator navigation */
-@keyframes highlight-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(234, 179, 8, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
-}
-
-.highlight-calculator {
-  animation: highlight-pulse 2s ease-out;
-  position: relative;
-  z-index: 2;
-}
-
-/* Add this new class for better form label contrast */
-.calc-form-label {
-  @apply text-zasvet-white text-base font-medium !important;
-}
-
-/* Improve text visibility in calculator sections */
-.calculator-section-header {
-  @apply text-zasvet-gold font-semibold;
-}
-
-/* Input unit visibility */
-.input-unit {
-  @apply text-zasvet-white font-medium;
-}
-
-/* Make form field labels more visible */
-form label, 
-.form-label, 
-label[for] {
-  @apply text-zasvet-white text-base;
 }

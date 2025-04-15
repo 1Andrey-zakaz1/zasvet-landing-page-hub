@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp } from 'lucide-react';
+import { Lightbulb, LightbulbOff, Info, Calculator, ChevronDown, ChevronUp, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -237,9 +237,9 @@ const LedCalculator = () => {
   };
 
   return (
-    <section id="calculator-электропотребление" className="bg-zasvet-black py-16 md:py-24">
+    <section id="calculator" className="bg-zasvet-black py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <h2 className="section-title text-zasvet-white mb-12 text-center">Калькулятор окупаемости</h2>
+        <h2 className="section-title text-zasvet-white mb-12">Калькулятор окупаемости</h2>
         
         <div className="max-w-4xl mx-auto">
           <div 
@@ -249,7 +249,7 @@ const LedCalculator = () => {
           >
             <h3 className="text-xl font-bold text-zasvet-white flex items-center">
               <Calculator className="mr-2 h-5 w-5" /> 
-              <span className="text-zasvet-gold/90">Расчет окупаемости светодиодных светильников</span>
+              Расчет окупаемости светодиодных светильников
             </h3>
             <Button 
               variant="gold" 
@@ -278,13 +278,13 @@ const LedCalculator = () => {
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
-                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20 text-zasvet-gold">
+                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <LightbulbOff className="mr-2 h-5 w-5" /> Старые светильники
                     </h4>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="space-y-2">
-                        <Label htmlFor="old_quantity" className="text-zasvet-white text-base">Количество старых светильников</Label>
+                        <Label htmlFor="old_quantity">Количество старых светильников</Label>
                         <div className="relative">
                           <Input
                             id="old_quantity"
@@ -295,7 +295,7 @@ const LedCalculator = () => {
                             value={formData.old_quantity}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             шт.
                           </div>
                         </div>
@@ -305,7 +305,7 @@ const LedCalculator = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="old_power" className="text-zasvet-white text-base">Мощность одного старого светильника</Label>
+                        <Label htmlFor="old_power">Мощность одного старого светильника</Label>
                         <div className="relative">
                           <Input
                             id="old_power"
@@ -317,7 +317,7 @@ const LedCalculator = () => {
                             value={formData.old_power}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             Вт
                           </div>
                         </div>
@@ -329,7 +329,7 @@ const LedCalculator = () => {
                     
                     <div>
                       <div className="space-y-2">
-                        <Label htmlFor="maintenance_cost" className="text-zasvet-white text-base">Затраты на обслуживание одного старого светильника</Label>
+                        <Label htmlFor="maintenance_cost">Затраты на обслуживание одного старого светильника</Label>
                         <div className="relative">
                           <Input
                             id="maintenance_cost"
@@ -341,7 +341,7 @@ const LedCalculator = () => {
                             value={formData.maintenance_cost}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             руб.
                           </div>
                         </div>
@@ -353,13 +353,13 @@ const LedCalculator = () => {
                   </div>
                   
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
-                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20 text-zasvet-gold">
+                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <Lightbulb className="mr-2 h-5 w-5" /> Светодиодные светильники
                     </h4>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="space-y-2">
-                        <Label htmlFor="led_quantity" className="text-zasvet-white text-base">Количество светодиодных светильников</Label>
+                        <Label htmlFor="led_quantity">Количество светодиодных светильников</Label>
                         <div className="relative">
                           <Input
                             id="led_quantity"
@@ -370,7 +370,7 @@ const LedCalculator = () => {
                             value={formData.led_quantity}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             шт.
                           </div>
                         </div>
@@ -380,7 +380,7 @@ const LedCalculator = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="led_power" className="text-zasvet-white text-base">Мощность одного светодиодного светильника</Label>
+                        <Label htmlFor="led_power">Мощность одного светодиодного светильника</Label>
                         <div className="relative">
                           <Input
                             id="led_power"
@@ -392,7 +392,7 @@ const LedCalculator = () => {
                             value={formData.led_power}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             Вт
                           </div>
                         </div>
@@ -404,7 +404,7 @@ const LedCalculator = () => {
                     
                     <div>
                       <div className="space-y-2">
-                        <Label htmlFor="led_cost" className="text-zasvet-white text-base">Стоимость одного светодиодного светильника</Label>
+                        <Label htmlFor="led_cost">Стоимость одного светодиодного светильника</Label>
                         <div className="relative">
                           <Input
                             id="led_cost"
@@ -416,7 +416,7 @@ const LedCalculator = () => {
                             value={formData.led_cost}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             руб.
                           </div>
                         </div>
@@ -428,13 +428,13 @@ const LedCalculator = () => {
                   </div>
                   
                   <div className="p-4 border border-zasvet-gold/20 rounded-lg">
-                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20 text-zasvet-gold">
+                    <h4 className="text-lg font-medium flex items-center mb-4 pb-2 border-b border-zasvet-gold/20">
                       <Info className="mr-2 h-5 w-5" /> Общие параметры
                     </h4>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="space-y-2">
-                        <Label htmlFor="hours" className="text-zasvet-white text-base">Часы работы в день</Label>
+                        <Label htmlFor="hours">Часы работы в день</Label>
                         <div className="relative">
                           <Input
                             id="hours"
@@ -448,7 +448,7 @@ const LedCalculator = () => {
                             value={formData.hours}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             часов
                           </div>
                         </div>
@@ -458,7 +458,7 @@ const LedCalculator = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="energy_cost" className="text-zasvet-white text-base">Стоимость электроэнергии</Label>
+                        <Label htmlFor="energy_cost">Стоимость электроэнергии</Label>
                         <div className="relative">
                           <Input
                             id="energy_cost"
@@ -470,7 +470,7 @@ const LedCalculator = () => {
                             value={formData.energy_cost}
                             onChange={handleChange}
                           />
-                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white">
+                          <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-zasvet-white/60">
                             руб./кВт·ч
                           </div>
                         </div>
@@ -481,7 +481,7 @@ const LedCalculator = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="operation_mode" className="text-zasvet-white text-base">Режим работы светильников</Label>
+                      <Label htmlFor="operation_mode">Режим работы светильников</Label>
                       <Select
                         value={formData.operation_mode}
                         onValueChange={handleSelectChange}
