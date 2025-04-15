@@ -5,8 +5,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+interface CalculationResult {
+  oldEnergyConsumption: string;
+  ledEnergyConsumption: string;
+  oldEnergyCost: string;
+  ledEnergyCost: string;
+  energySavings: string;
+  oldMaintenanceCostPerYear: string;
+  totalSavingsPerYear: string;
+  ledInvestment: string;
+  paybackPeriod: string;
+  paybackPeriodMonths: number;
+  savingsFiveYears: string;
+  powerReduction: string;
+}
 
 const LedCalculator = () => {
   const { toast } = useToast();
@@ -23,7 +38,7 @@ const LedCalculator = () => {
     operation_mode: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<CalculationResult | null>(null);
 
   const toggleForm = () => {
     setIsExpanded(!isExpanded);
@@ -191,6 +206,9 @@ const LedCalculator = () => {
     // Экономия за 5 лет
     const savingsFiveYears = totalSavingsPerYear * 5 - ledInvestment;
     
+    // Снижение мощности
+    const powerReduction = (oldQuantity * oldPower) - (ledQuantity * ledPower);
+    
     setResults({
       oldEnergyConsumption: oldEnergyConsumption.toFixed(2),
       ledEnergyConsumption: ledEnergyConsumption.toFixed(2),
@@ -202,7 +220,8 @@ const LedCalculator = () => {
       ledInvestment: ledInvestment.toFixed(2),
       paybackPeriod: paybackPeriod.toFixed(2),
       paybackPeriodMonths: Math.ceil(paybackPeriodMonths),
-      savingsFiveYears: savingsFiveYears.toFixed(2)
+      savingsFiveYears: savingsFiveYears.toFixed(2),
+      powerReduction: powerReduction.toFixed(2)
     });
   };
   
@@ -227,6 +246,22 @@ const LedCalculator = () => {
     return !isNaN(num) && num >= min && num <= max;
   };
 
+  // Функция для получения текстового представления режима работы
+  const getOperationModeText = (mode: string): string => {
+    switch(mode) {
+      case 'continuous':
+        return 'Непрерывный (24/7)';
+      case 'daily':
+        return 'Ежедневный (рабочие часы)';
+      case 'workdays':
+        return 'Только рабочие дни';
+      case 'seasonal':
+        return 'Сезонный (183 дня в год)';
+      default:
+        return mode;
+    }
+  };
+
   return (
     <section id="calculator" className="bg-zasvet-black py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -237,6 +272,7 @@ const LedCalculator = () => {
           <div 
             className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
             onClick={toggleForm}
+            style={{ display: results ? 'none' : 'flex' }}
           >
             <h3 className="text-xl font-bold text-zasvet-white flex items-center">
               <Calculator className="mr-2 h-5 w-5" /> 
@@ -258,7 +294,7 @@ const LedCalculator = () => {
           </div>
           
           {/* Форма калькулятора */}
-          {isExpanded && (
+          {isExpanded && !results && (
             <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
               <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
                 <CardTitle className="text-xl flex items-center">
@@ -507,88 +543,152 @@ const LedCalculator = () => {
           
           {/* Контейнер для результатов */}
           {results && (
-            <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl">
+            <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
               <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
                 <CardTitle className="text-xl flex items-center">
                   <Calculator className="mr-2 h-5 w-5" />
-                  Результаты расчета
+                  Результаты расчета окупаемости
                 </CardTitle>
               </CardHeader>
               
               <CardContent className="pt-6">
+                <div className="p-4 bg-zasvet-gold/10 rounded-lg border border-zasvet-gold mb-4">
+                  <h5 className="text-xl font-bold text-zasvet-gold mb-3">
+                    <Info className="inline-block mr-2 h-5 w-5" /> Результат
+                  </h5>
+                  <p className="text-lg">
+                    Срок окупаемости: <strong>
+                      {Number(results.paybackPeriod) === Infinity 
+                        ? "Не окупится" 
+                        : `${Math.floor(Number(results.paybackPeriod))} ${
+                            Math.floor(Number(results.paybackPeriod)) === 1 ? "год" : 
+                            Math.floor(Number(results.paybackPeriod)) < 5 ? "года" :
+                            "лет"
+                          } ${results.paybackPeriodMonths} ${
+                            results.paybackPeriodMonths === 1 ? "месяц" :
+                            results.paybackPeriodMonths < 5 ? "месяца" :
+                            "месяцев"
+                          }`
+                      }
+                    </strong>
+                  </p>
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div className="p-4 bg-zasvet-black/30 rounded-lg">
-                    <h5 className="text-lg font-medium text-zasvet-gold mb-3">Потребление энергии</h5>
+                    <h5 className="text-lg font-medium text-zasvet-gold mb-3 flex items-center">
+                      <LightbulbOff className="mr-2 h-5 w-5" /> Старые светильники
+                    </h5>
                     <ul className="space-y-2">
                       <li className="flex justify-between">
-                        <span>Старые светильники:</span>
-                        <span className="font-medium">{results.oldEnergyConsumption} кВт·ч/год</span>
+                        <span>Количество:</span>
+                        <span className="font-medium">{formData.old_quantity} шт.</span>
                       </li>
                       <li className="flex justify-between">
-                        <span>LED светильники:</span>
-                        <span className="font-medium">{results.ledEnergyConsumption} кВт·ч/год</span>
+                        <span>Мощность одного светильника:</span>
+                        <span className="font-medium">{formData.old_power} Вт</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Суммарная мощность:</span>
+                        <span className="font-medium">{parseInt(formData.old_quantity) * parseFloat(formData.old_power)} Вт</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Годовое энергопотребление:</span>
+                        <span className="font-medium">{results.oldEnergyConsumption} кВт·ч</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Затраты на электроэнергию в год:</span>
+                        <span className="font-medium">{parseFloat(results.oldEnergyCost).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.</span>
                       </li>
                       <li className="flex justify-between pt-2 border-t border-zasvet-gold/20">
-                        <span>Экономия энергии:</span>
+                        <span>Общие годовые затраты:</span>
                         <span className="font-bold text-zasvet-gold">
-                          {(parseFloat(results.oldEnergyConsumption) - parseFloat(results.ledEnergyConsumption)).toFixed(2)} кВт·ч/год
+                          {(parseFloat(results.oldEnergyCost) + parseFloat(results.oldMaintenanceCostPerYear)).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.
                         </span>
                       </li>
                     </ul>
                   </div>
                   
                   <div className="p-4 bg-zasvet-black/30 rounded-lg">
-                    <h5 className="text-lg font-medium text-zasvet-gold mb-3">Затраты на электроэнергию</h5>
+                    <h5 className="text-lg font-medium text-zasvet-gold mb-3 flex items-center">
+                      <Lightbulb className="mr-2 h-5 w-5" /> Светодиодные светильники
+                    </h5>
                     <ul className="space-y-2">
                       <li className="flex justify-between">
-                        <span>Старые светильники:</span>
-                        <span className="font-medium">{results.oldEnergyCost} руб./год</span>
+                        <span>Количество:</span>
+                        <span className="font-medium">{formData.led_quantity} шт.</span>
                       </li>
                       <li className="flex justify-between">
-                        <span>LED светильники:</span>
-                        <span className="font-medium">{results.ledEnergyCost} руб./год</span>
+                        <span>Мощность одного светильника:</span>
+                        <span className="font-medium">{formData.led_power} Вт</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Суммарная мощность:</span>
+                        <span className="font-medium">{parseInt(formData.led_quantity) * parseFloat(formData.led_power)} Вт</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Годовое энергопотребление:</span>
+                        <span className="font-medium">{results.ledEnergyConsumption} кВт·ч</span>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Затраты на электроэнергию в год:</span>
+                        <span className="font-medium">{parseFloat(results.ledEnergyCost).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.</span>
                       </li>
                       <li className="flex justify-between pt-2 border-t border-zasvet-gold/20">
-                        <span>Экономия:</span>
-                        <span className="font-bold text-zasvet-gold">{results.energySavings} руб./год</span>
+                        <span>Общие затраты на покупку:</span>
+                        <span className="font-bold text-zasvet-gold">
+                          {parseFloat(results.ledInvestment).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.
+                        </span>
                       </li>
                     </ul>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div className="p-4 bg-zasvet-black/30 rounded-lg">
-                    <h5 className="text-lg font-medium text-zasvet-gold mb-3">Затраты на обслуживание</h5>
-                    <p className="text-lg font-medium">
-                      {results.oldMaintenanceCostPerYear} руб./год
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-zasvet-black/30 rounded-lg">
-                    <h5 className="text-lg font-medium text-zasvet-gold mb-3">Инвестиции в LED</h5>
-                    <p className="text-lg font-medium">
-                      {results.ledInvestment} руб.
-                    </p>
+                <div className="p-4 bg-zasvet-black/30 rounded-lg mb-6">
+                  <h5 className="text-lg font-medium text-zasvet-gold mb-3 flex items-center">
+                    <Info className="mr-2 h-5 w-5" /> Экономия
+                  </h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="text-center p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Годовая экономия</p>
+                      <p className="text-xl font-bold text-zasvet-gold">{parseFloat(results.totalSavingsPerYear).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Снижение мощности</p>
+                      <p className="text-xl font-bold text-zasvet-gold">{results.powerReduction} Вт</p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Снижение энергопотребления</p>
+                      <p className="text-xl font-bold text-zasvet-gold">
+                        {(parseFloat(results.oldEnergyConsumption) - parseFloat(results.ledEnergyConsumption)).toFixed(1)} кВт·ч
+                      </p>
+                    </div>
+                    
+                    <div className="text-center p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Экономия за 5 лет</p>
+                      <p className="text-xl font-bold text-zasvet-gold">{parseFloat(results.savingsFiveYears).toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} руб.</p>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="p-4 bg-zasvet-gold/10 rounded-lg border border-zasvet-gold mb-4">
-                  <h5 className="text-xl font-bold text-zasvet-gold mb-3">Общие результаты</h5>
+                <div className="p-4 bg-zasvet-black/30 rounded-lg mb-6">
+                  <h5 className="text-lg font-medium text-zasvet-gold mb-3 flex items-center">
+                    <Info className="mr-2 h-5 w-5" /> Общие параметры расчета
+                  </h5>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="text-center p-3 bg-zasvet-black/30 rounded-lg">
-                      <p className="text-sm mb-1">Общая экономия в год</p>
-                      <p className="text-2xl font-bold text-zasvet-gold">{results.totalSavingsPerYear} руб.</p>
+                    <div className="p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Часы работы в день</p>
+                      <p className="text-lg font-medium">{formData.hours} часов</p>
                     </div>
-                    
-                    <div className="text-center p-3 bg-zasvet-black/30 rounded-lg">
-                      <p className="text-sm mb-1">Срок окупаемости</p>
-                      <p className="text-2xl font-bold text-zasvet-gold">{results.paybackPeriod} лет</p>
-                      <p className="text-sm">({results.paybackPeriodMonths} месяцев)</p>
+                    <div className="p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Стоимость электроэнергии</p>
+                      <p className="text-lg font-medium">{formData.energy_cost} руб./кВт·ч</p>
                     </div>
-                    
-                    <div className="text-center p-3 bg-zasvet-black/30 rounded-lg">
-                      <p className="text-sm mb-1">Экономия за 5 лет</p>
-                      <p className="text-2xl font-bold text-zasvet-gold">{results.savingsFiveYears} руб.</p>
+                    <div className="p-3 bg-zasvet-gray/20 rounded-lg">
+                      <p className="text-sm mb-1">Режим работы светильников</p>
+                      <p className="text-lg font-medium">{getOperationModeText(formData.operation_mode)}</p>
                     </div>
                   </div>
                 </div>
@@ -600,6 +700,15 @@ const LedCalculator = () => {
                     onClick={() => window.print()}
                   >
                     Распечатать результаты
+                  </Button>
+                  <Button 
+                    variant="gold"
+                    onClick={() => {
+                      setResults(null);
+                      setIsExpanded(true);
+                    }}
+                  >
+                    Новый расчет
                   </Button>
                   <Button 
                     variant="gold"
@@ -623,4 +732,3 @@ const LedCalculator = () => {
 };
 
 export default LedCalculator;
-
