@@ -9,7 +9,6 @@ import DesignersSection from '@/components/sections/DesignersSection';
 import InstallersSection from '@/components/sections/InstallersSection';
 import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
-import LightingSelectionWidget from '@/components/LightingSelectionWidget';
 import LedCalculator from '@/components/LedCalculator';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
@@ -25,7 +24,6 @@ const Index = () => {
         <BuyersSection />
         <DesignersSection />
         <InstallersSection />
-        <LightingSelectionWidget />
         <LedCalculator />
         <VideoSlider />
         <ProductSlider />
