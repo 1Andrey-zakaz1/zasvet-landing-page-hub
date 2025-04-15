@@ -10,6 +10,7 @@ import InstallersSection from '@/components/sections/InstallersSection';
 import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
 import LightingSelectionWidget from '@/components/LightingSelectionWidget';
+import LedCalculator from '@/components/LedCalculator';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
 
@@ -25,6 +26,7 @@ const Index = () => {
         <DesignersSection />
         <InstallersSection />
         <LightingSelectionWidget />
+        <LedCalculator />
         <VideoSlider />
         <ProductSlider />
       </main>
@@ -35,3 +37,4 @@ const Index = () => {
 };
 
 export default Index;
+
