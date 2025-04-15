@@ -1,0 +1,37 @@
+
+.gold-gradient {
+  background: linear-gradient(145deg, #ffbd00, #d9a200);
+}
+
+.gold-text {
+  background: linear-gradient(145deg, #ffbd00, #d9a200);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.hero-section {
+  min-height: 100vh;
+  background-color: #000000;
+  background-image: radial-gradient(rgba(50, 50, 50, 0.3) 1px, transparent 0);
+  background-size: 30px 30px;
+  background-position: -19px -19px;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-bold mb-12 relative inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  @apply bg-zasvet-gold;
+}

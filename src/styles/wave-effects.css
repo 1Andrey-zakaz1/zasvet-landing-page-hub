@@ -1,0 +1,41 @@
+
+/* Wave shapes for diagonal section transitions */
+.bg-wave-top {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
+}
+
+.bg-wave-bottom {
+  clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Black section waves */
+.bg-zasvet-black .bg-wave-top {
+  background-color: #ffbd00;
+}
+
+.bg-zasvet-black .bg-wave-bottom {
+  background-color: #ffbd00;
+}
+
+/* Gold section waves */
+.bg-zasvet-gold .bg-wave-top {
+  background-color: #000000;
+}
+
+.bg-zasvet-gold .bg-wave-bottom {
+  background-color: #000000;
+}
+
+/* Gold background text color */
+.bg-zasvet-gold {
+  color: #161616;
+}
+
+.bg-zasvet-gold h1, 
+.bg-zasvet-gold h2, 
+.bg-zasvet-gold h3, 
+.bg-zasvet-gold h4, 
+.bg-zasvet-gold p, 
+.bg-zasvet-gold span {
+  color: #161616;
+}
