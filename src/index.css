@@ -192,7 +192,7 @@
 }
 
 /* Card header texts */
-.bg-zasvet-gold/90 .text-xl {
+.bg-zasvet-gold\.90 .text-xl {
   @apply text-zasvet-black font-bold;
 }
 
