@@ -12,6 +12,7 @@ import ProductSlider from '@/components/ProductSlider';
 import LightingSelectionWidget from '@/components/LightingSelectionWidget';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
+import ElectronicConsultant from '@/components/ElectronicConsultant';
 
 const Index = () => {
   return (
@@ -30,6 +31,7 @@ const Index = () => {
       </main>
       <Footer />
       <TelegramBotWidget />
+      <ElectronicConsultant />
     </div>
   );
 };
