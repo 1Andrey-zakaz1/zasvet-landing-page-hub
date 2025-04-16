@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -29,8 +28,8 @@ const Index = () => {
         <InstallersSection />
         
         <section className="container mx-auto px-4 py-8">
-          <Alert variant="destructive" className="mb-8">
-            <AlertTriangle className="h-5 w-5" />
+          <Alert variant="default" className="mb-8 bg-soft-yellow border-soft-yellow/50 text-zasvet-text">
+            <AlertTriangle className="h-5 w-5 text-zasvet-gold" />
             <AlertTitle>Внимание: Предварительные расчеты</AlertTitle>
             <AlertDescription>
               Калькуляторы на этой странице позволяют быстро выполнить приблизительные расчеты. 
