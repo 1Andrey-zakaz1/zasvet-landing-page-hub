@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -69,9 +70,8 @@ export default {
 					white: '#FFFFFF',
 					gray: '#333333',
 					lightgray: '#F5F5F5',
-					text: '#161616'
-				},
-				soft-yellow: "#FEF7CD"
+					text: '#161616'  // Adding text color for gold background
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
