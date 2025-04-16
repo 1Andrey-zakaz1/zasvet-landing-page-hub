@@ -28,6 +28,7 @@ const CableCalculator = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [results, setResults] = useState<CableCalculationResult | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
 
   const toggleForm = () => {
     setIsExpanded(!isExpanded);
@@ -51,7 +52,19 @@ const CableCalculator = () => {
   };
 
   const handlePhaseTypeChange = (value: PhaseType) => {
-    setFormData(prev => ({ ...prev, phaseType: value }));
+    // Автоматически обновляем напряжение для трехфазной сети
+    let newVoltage = formData.voltage;
+    if (value === 'three' && formData.voltage === '220') {
+      newVoltage = '380';
+    } else if (value === 'single' && formData.voltage === '380') {
+      newVoltage = '220';
+    }
+    
+    setFormData(prev => ({ 
+      ...prev, 
+      phaseType: value,
+      voltage: newVoltage
+    }));
   };
 
   const handleInstallationChange = (value: InstallationType) => {
@@ -64,37 +77,58 @@ const CableCalculator = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsCalculating(true);
     
-    if (validateForm()) {
-      const calculationInputs = {
-        power: parseFloat(formData.power),
-        voltage: parseFloat(formData.voltage),
-        length: parseFloat(formData.length),
-        material: formData.material,
-        phaseType: formData.phaseType,
-        installation: formData.installation
-      };
-      
-      const result = calculateCableSection(calculationInputs);
-      
-      if (result.error) {
+    try {
+      if (validateForm()) {
+        const calculationInputs = {
+          power: parseFloat(formData.power),
+          voltage: parseFloat(formData.voltage),
+          length: parseFloat(formData.length),
+          material: formData.material,
+          phaseType: formData.phaseType,
+          installation: formData.installation
+        };
+        
+        // Имитация задержки расчета для большей интерактивности
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const result = calculateCableSection(calculationInputs);
+        
+        if (result.error) {
+          toast({
+            title: "Ошибка расчета",
+            description: result.error,
+            variant: "destructive"
+          });
+        } else {
+          setResults(result);
+          setShowResults(true);
+          
+          toast({
+            title: "Расчет завершен",
+            description: `Рекомендуемое сечение кабеля: ${result.finalSection} мм²`,
+            variant: "default"
+          });
+        }
+      } else {
         toast({
-          title: "Ошибка расчета",
-          description: result.error,
+          title: "Ошибка валидации",
+          description: "Пожалуйста, исправьте отмеченные поля.",
           variant: "destructive"
         });
-      } else {
-        setResults(result);
-        setShowResults(true);
       }
-    } else {
+    } catch (error) {
       toast({
-        title: "Ошибка валидации",
-        description: "Пожалуйста, исправьте отмеченные поля.",
+        title: "Непредвиденная ошибка",
+        description: "Произошла ошибка при расчете, пожалуйста, попробуйте еще раз.",
         variant: "destructive"
       });
+      console.error(error);
+    } finally {
+      setIsCalculating(false);
     }
   };
 
@@ -102,6 +136,15 @@ const CableCalculator = () => {
     setResults(null);
     setShowResults(false);
     setIsExpanded(true);
+    setFormData({
+      power: '',
+      voltage: '220',
+      length: '',
+      material: 'copper',
+      phaseType: 'single',
+      installation: 'air'
+    });
+    setErrors({});
   };
 
   const collapseResults = () => {

@@ -1,4 +1,3 @@
-
 /**
  * Модуль для расчета сечения кабеля
  * ПК "Zасвет"
@@ -116,7 +115,7 @@ export function selectFinalSection(
     .map(Number)
     .sort((a, b) => a - b);
   
-  // Выбираем сечения, которые больше или равны требуемому
+  // Выбираем сечения, ��оторые больше или равны требуемому
   const sectionsAboveRequired = sections.filter(s => s >= requiredSection);
   
   if (sectionsAboveRequired.length > 0) {
@@ -180,18 +179,30 @@ export function validateCableFormData(data: {
   const errors: Record<string, string> = {};
   
   // Validate power
-  if (!data.power || parseFloat(data.power) <= 0) {
+  if (!data.power) {
+    errors.power = 'Мощность нагрузки обязательна для заполнения';
+  } else if (parseFloat(data.power) <= 0) {
     errors.power = 'Мощность нагрузки должна быть положительным числом';
+  } else if (parseFloat(data.power) > 1000) {
+    errors.power = 'Мощность слишком велика для этого калькулятора (макс. 1000 кВт)';
   }
   
   // Validate voltage
-  if (!data.voltage || parseFloat(data.voltage) < 110) {
+  if (!data.voltage) {
+    errors.voltage = 'Напряжение сети обязательно для заполнения';
+  } else if (parseFloat(data.voltage) < 110) {
     errors.voltage = 'Напряжение сети должно быть не менее 110 В';
+  } else if (parseFloat(data.voltage) > 1000) {
+    errors.voltage = 'Напряжение слишком велико для этого калькулятора (макс. 1000 В)';
   }
   
   // Validate length
-  if (!data.length || parseFloat(data.length) <= 0) {
+  if (!data.length) {
+    errors.length = 'Длина кабеля обязательна для заполнения';
+  } else if (parseFloat(data.length) <= 0) {
     errors.length = 'Длина кабеля должна быть положительным числом';
+  } else if (parseFloat(data.length) > 10000) {
+    errors.length = 'Длина слишком велика для этого калькулятора (макс. 10000 м)';
   }
   
   return errors;
