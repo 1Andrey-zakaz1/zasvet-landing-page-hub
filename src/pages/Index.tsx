@@ -29,10 +29,13 @@ const Index = () => {
         <InstallersSection />
         
         <section className="container mx-auto px-4 py-8">
-          <Alert variant="destructive" className="mb-8">
-            <AlertTriangle className="h-5 w-5" />
-            <AlertTitle>Внимание: Предварительные расчеты</AlertTitle>
-            <AlertDescription>
+          <Alert 
+            variant="default" 
+            className="mb-8 bg-[#FEF7CD] border-yellow-200 text-zasvet-text"
+          >
+            <AlertTriangle className="h-5 w-5 text-zasvet-gold" />
+            <AlertTitle className="text-zasvet-text">Внимание: Предварительные расчеты</AlertTitle>
+            <AlertDescription className="text-zasvet-text">
               Калькуляторы на этой странице позволяют быстро выполнить приблизительные расчеты. 
               Окончательные технические решения должны приниматься с учетом всех конкретных условий 
               и требований нормативных документов. Для точных расчетов рекомендуется 
