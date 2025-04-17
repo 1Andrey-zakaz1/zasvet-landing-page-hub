@@ -76,9 +76,9 @@ const IlluminationCalculator: React.FC = () => {
       return;
     }
     
-    // Calculate optimal luminaires
+    // Calculate optimal luminaires, passing room height
     const { tableData: newTableData, bestResult: newBestResult } = 
-      calculateOptimalLuminaires(L, W, E_req, category);
+      calculateOptimalLuminaires(L, W, E_req, category, H);
     
     if (!newBestResult) {
       alert("Не удалось подобрать оптимальный светильник.");

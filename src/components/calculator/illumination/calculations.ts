@@ -42,61 +42,63 @@ function calculatePointAverage(
   L: number, 
   W: number, 
   H: number, 
-  flux: number,
-  rows: number, 
-  cols: number
+  flux: number
 ): number {
-  const xSp = L / cols;
-  const ySp = W / rows;
-  const gridPts = 5;
-  let totalE = 0;
+  const grid = findBestGrid(n, L, W);
+  const xSp = L / grid.cols;
+  const ySp = W / grid.rows;
+  const gp = 5;  // 5×5 точек
+  let sumE = 0;
   
-  for (let i = 0; i < gridPts; i++) {
-    for (let j = 0; j < gridPts; j++) {
-      const px = (i + 0.5) * (L / gridPts);
-      const py = (j + 0.5) * (W / gridPts);
+  for (let i = 0; i < gp; i++) {
+    for (let j = 0; j < gp; j++) {
+      const px = (i + 0.5) * (L / gp);
+      const py = (j + 0.5) * (W / gp);
       let Ept = 0;
       
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const idx = r * cols + c;
+      for (let r = 0; r < grid.rows; r++) {
+        for (let c = 0; c < grid.cols; c++) {
+          const idx = r * grid.cols + c;
           if (idx >= n) break;
           
+          // координаты светильника
           const lx = (c + 0.5) * xSp;
           const ly = (r + 0.5) * ySp;
-          const lz = H;
+          const lz = H; 
           
+          // расстояние до точки
           const dx = px - lx;
           const dy = py - ly;
           const dz = -lz;
-          
           const d = Math.hypot(dx, dy, dz);
-          if (!d) continue;
+          if (d <= 0) continue;
           
+          // угол падения
           const cosT = H / d;
+          
+          // сила света (приблизительно равномерно по полусфере)
           const I = (flux * eta / Kz) / (2 * Math.PI);
+          
+          // вклад одного светильника
           Ept += (I * cosT) / (d * d);
         }
       }
-      
-      totalE += Ept;
+      sumE += Ept;
     }
   }
   
-  return totalE / (gridPts * gridPts); // средняя точечная
+  return sumE / (gp * gp);
 }
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
   roomWidth: number,
   requiredLux: number,
-  luminaireType: string
+  luminaireType: string,
+  roomHeight: number = 3 // Default height if not provided
 ): { tableData: TableData[], bestResult: TableData | null } => {
   // Calculate area and required luminous flux
   const area = roomLength * roomWidth;
-  
-  // ====== Учитываем запас и использование ======
-  const phiReq = requiredLux * area * Kz / eta; // скорректированный поток с учетом Kz и eta
   
   // Get models for selected category
   const models = luminaireModels[luminaireType as keyof typeof luminaireModels] || [];
@@ -105,33 +107,34 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // 1) Определяем первоначальное N0 по люмен-методу
-    let N = Math.ceil(phiReq / m.flux);
+    // 1) стартовое N по люмен-методу (для ускорения)
+    const phiReq0 = requiredLux * area * Kz / eta;
+    let N = Math.ceil(phiReq0 / m.flux);
     
-    // 2) Получаем оптимальную сетку для текущего N
+    // 2) итеративно добираем N, пока точечная средняя < E_req
+    let avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
+    
+    // Предел итераций для предотвращения бесконечного цикла
+    const MAX_ITERATIONS = 200;
+    let iterations = 0;
+    
+    while (avgPt < requiredLux && iterations < MAX_ITERATIONS) {
+      N++;
+      avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
+      iterations++;
+    }
+    
+    // 3) сохраняем результаты для модели
     const grid = findBestGrid(N, roomLength, roomWidth);
-    
-    // Для минимизации расчетов используем предельное значение 50 светильников
-    const MAX_LUMINAIRES = 50;
-    
-    // 3) Доставляем предварительный расчет освещенности по точечному методу
-    let avgPointIllumination = calculatePointAverage(
-      N, roomLength, roomWidth, 3, m.flux, grid.rows, grid.cols
-    );
-    
-    // 4) Корректируем среднюю освещённость по использованию и запасу:
-    const deliveredFlux = N * m.flux * eta / Kz;
-    const achievedLux = deliveredFlux / area;
-    
     const cost = N * m.price;
     
     tableData.push({
       ...m,
       count: N,
       totalCost: cost,
-      achieved: achievedLux.toFixed(1),
+      achieved: avgPt.toFixed(1),
       grid,
-      perfectGrid: true // будем считать, что все сетки "идеальные", так как мы их подбираем оптимально
+      perfectGrid: true // все сетки "идеальные", так как мы их подбираем оптимально
     });
   });
   
