@@ -3,35 +3,31 @@ import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
 // ======= Запас и коэффициент использования =======
-const Kz = 1.1;   // коэффициент запаса (changed from 1.2 to 1.1)
-const eta = 0.85;  // коэффициент использования (changed from 0.8 to 0.85)
+const Kz = 1.1;   // коэффициент запаса
+const eta = 0.85;  // коэффициент использования
 
 /**
- * Для заданного N и пропорций комнаты подбирает оптимальные rows×cols = N
- * Возвращает { rows, cols, ratioDiff }
+ * Для заданного N и пропорций L×W находит rows×cols >= N с минимальным числом пустых ячеек,
+ * а среди равных — с лучшим соответствием cols/rows ≈ L/W.
  */
-function findBestGrid(N: number, L: number, W: number): IlluminationGrid {
-  let best: IlluminationGrid | null = null;
-  const targetRatio = L / W;
-  for (let rows = 1; rows * rows <= N; rows++) {
-    if (N % rows === 0) {
-      const cols = N / rows;
-      const ratio = cols / rows;
-      const diff = Math.abs(ratio - targetRatio);
-      if (!best || diff < best.ratioDiff) {
-        best = { rows, cols, ratioDiff: diff };
-      }
-      // и пробуем зеркальную пару (чтобы не пропустить вариант rows>cols)
-      if (rows !== cols) {
-        const diff2 = Math.abs((rows / cols) - targetRatio);
-        if (diff2 < best.ratioDiff) {
-          best = { rows: cols, cols: rows, ratioDiff: diff2 };
-        }
-      }
+function findCoveringGrid(N: number, L: number, W: number): IlluminationGrid {
+  const target = L / W;
+  let best = { rows: 1, cols: N, wasted: N - 1, ratioDiff: Math.abs(N - target) };
+  
+  for (let rows = 1; rows <= N; rows++) {
+    const cols = Math.ceil(N / rows);
+    const cells = rows * cols;
+    const wasted = cells - N;
+    const ratio = cols / rows;
+    const diff = Math.abs(ratio - target);
+    
+    // Сначала предпочитаем меньше пустых, потом лучше ratio
+    if (wasted < best.wasted || (wasted === best.wasted && diff < best.ratioDiff)) {
+      best = { rows, cols, wasted, ratioDiff: diff };
     }
   }
-  // Если N простое число, rows будет равно 1, а cols = N
-  return best || { rows: 1, cols: N, ratioDiff: Math.abs(N - targetRatio) };
+  
+  return best;
 }
 
 /**
@@ -44,7 +40,7 @@ function calculatePointAverage(
   H: number, 
   flux: number
 ): number {
-  const grid = findBestGrid(n, L, W);
+  const grid = findCoveringGrid(n, L, W);
   const xSp = L / grid.cols;
   const ySp = W / grid.rows;
   const gp = 5;  // 5×5 точек
@@ -124,8 +120,14 @@ export const calculateOptimalLuminaires = (
       iterations++;
     }
     
-    // 3) сохраняем результаты для модели
-    const grid = findBestGrid(N, roomLength, roomWidth);
+    // 3) теперь "дозабиваем" до полного сеточного заполнения
+    const grid = findCoveringGrid(N, roomLength, roomWidth);
+    if (grid.rows * grid.cols > N) {
+      N = grid.rows * grid.cols;
+      avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);  // обновляем среднюю на новом N
+    }
+    
+    // 4) сохраняем результаты для модели
     const cost = N * m.price;
     
     tableData.push({
@@ -134,7 +136,7 @@ export const calculateOptimalLuminaires = (
       totalCost: cost,
       achieved: avgPt.toFixed(1),
       grid,
-      perfectGrid: true // все сетки "идеальные", так как мы их подбираем оптимально
+      perfectGrid: true // все сетки "идеальные", так как мы их добиваем до полного заполнения
     });
   });
   
