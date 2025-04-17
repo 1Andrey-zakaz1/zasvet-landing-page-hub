@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BarChart, Info, Lightbulb, LightbulbOff, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,7 +55,11 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
         years === 1 ? "год" : 
         years < 5 ? "года" : 
         "лет"
-      } `;
+      }`;
+      
+      if (remainingMonths > 0) {
+        result += " ";
+      }
     }
 
     if (remainingMonths > 0) {
@@ -78,7 +83,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
         
         <div className="bg-purple-100/10 rounded-lg p-4 mb-4">
           <h4 className="text-xl text-purple-100 flex items-center font-medium">
-            <Info className="mr-2 h-5 w-5" /> Резу��ьтат
+            <Info className="mr-2 h-5 w-5" /> Результат
           </h4>
           <p className="text-xl mt-2">
             Срок окупаемости: <strong className="text-zasvet-gold">
