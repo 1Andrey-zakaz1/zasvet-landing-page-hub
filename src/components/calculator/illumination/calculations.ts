@@ -1,10 +1,9 @@
-
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
 // ======= Запас и коэффициент использования =======
-const Kz = 1.2;   // коэффициент запаса (1.2)
-const eta = 0.8;  // коэффициент использования (0.8)
+const Kz = 1.1;   // коэффициент запаса (changed from 1.2 to 1.1)
+const eta = 0.85;  // коэффициент использования (changed from 0.8 to 0.85)
 
 /**
  * Для заданного N и пропорций комнаты подбирает оптимальные rows×cols = N
