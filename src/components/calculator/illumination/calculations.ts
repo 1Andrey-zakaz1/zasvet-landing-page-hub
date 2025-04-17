@@ -1,4 +1,3 @@
-
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
@@ -9,9 +8,18 @@ const eta = 0.85;  // коэффициент использования
 /**
  * Для заданного N и пропорций L×W находит rows×cols >= N с минимальным числом пустых ячеек,
  * а среди равных — с лучшим соответствием cols/rows ≈ L/W.
+ * Гарантирует, что ряды будут вдоль длинной стороны помещения.
  */
 function findCoveringGrid(N: number, L: number, W: number): IlluminationGrid {
-  const target = L / W;
+  // Определяем, какая сторона длиннее
+  const isLonger = L >= W;
+  
+  // Если L длиннее или равно W, то работаем как обычно
+  // Иначе - переворачиваем L и W для расчетов, а в конце тоже переворачиваем rows и cols
+  const actualL = isLonger ? L : W;
+  const actualW = isLonger ? W : L;
+  
+  const target = actualL / actualW;
   let best = { rows: 1, cols: N, wasted: N - 1, ratioDiff: Math.abs(N - target) };
   
   for (let rows = 1; rows <= N; rows++) {
@@ -27,6 +35,16 @@ function findCoveringGrid(N: number, L: number, W: number): IlluminationGrid {
     }
   }
   
+  // Если L было не длиннее W, переворачиваем rows и cols
+  if (!isLonger) {
+    return {
+      rows: best.cols, 
+      cols: best.rows, 
+      wasted: best.wasted, 
+      ratioDiff: best.ratioDiff
+    };
+  }
+  
   return best;
 }
 
@@ -40,9 +58,17 @@ function calculatePointAverage(
   H: number, 
   flux: number
 ): number {
+  // Определяем, какая сторона длиннее для согласованности с findCoveringGrid
+  const isLonger = L >= W;
+  const actualL = isLonger ? L : W;
+  const actualW = isLonger ? W : L;
+  
   const grid = findCoveringGrid(n, L, W);
-  const xSp = L / grid.cols;
-  const ySp = W / grid.rows;
+  
+  // Правильно используем размеры сетки с учетом того, что rows идут вдоль короткой стороны
+  const xSp = isLonger ? L / grid.cols : L / grid.rows;
+  const ySp = isLonger ? W / grid.rows : W / grid.cols;
+  
   const gp = 5;  // 5×5 точек
   let sumE = 0;
   
@@ -52,9 +78,9 @@ function calculatePointAverage(
       const py = (j + 0.5) * (W / gp);
       let Ept = 0;
       
-      for (let r = 0; r < grid.rows; r++) {
-        for (let c = 0; c < grid.cols; c++) {
-          const idx = r * grid.cols + c;
+      for (let r = 0; r < (isLonger ? grid.rows : grid.cols); r++) {
+        for (let c = 0; c < (isLonger ? grid.cols : grid.rows); c++) {
+          const idx = r * (isLonger ? grid.cols : grid.rows) + c;
           if (idx >= n) break;
           
           // координаты светильника
@@ -257,12 +283,17 @@ export const drawRoomLayout = (
     ctx.fillStyle = "#ffbd00";
     ctx.strokeStyle = "#d9a200";
     
-    for (let r = 0; r < layout.rows; r++) {
-      for (let k = 0; k < layout.cols; k++) {
-        if (r * layout.cols + k >= layout.N) break;
+    // Определяем, какая сторона длиннее
+    const isLonger = roomLength >= roomWidth;
+    const actualRows = isLonger ? layout.rows : layout.cols;
+    const actualCols = isLonger ? layout.cols : layout.rows;
+    
+    for (let r = 0; r < actualRows; r++) {
+      for (let c = 0; c < actualCols; c++) {
+        if (r * actualCols + c >= layout.N) break;
         
-        const x = (k + 0.5) * layout.xSp * scale;
-        const y = (r + 0.5) * layout.ySp * scale;
+        const x = (c + 0.5) * (roomLength / actualCols) * scale;
+        const y = (r + 0.5) * (roomWidth / actualRows) * scale;
         
         ctx.beginPath();
         ctx.arc(x, y, 8, 0, 2 * Math.PI);
