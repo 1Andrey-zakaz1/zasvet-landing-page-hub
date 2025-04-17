@@ -11,7 +11,7 @@ export interface IlluminationGrid {
   rows: number;
   cols: number;
   ratioDiff: number;
-  wasted?: number;
+  wasted: number;
 }
 
 export interface TableData extends LuminaireModel {

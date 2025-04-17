@@ -7,21 +7,15 @@ const Kz = 1.1;   // коэффициент запаса
 const eta = 0.85;  // коэффициент использования
 
 /**
- * Для заданного N и пропорций L×W находит rows×cols >= N с минимальным числом пустых ячеек,
- * а среди равных — с лучшим соответствием cols/rows ≈ L/W.
- * Гарантирует, что ряды будут вдоль длинной стороны помещения.
+ * Для заданного N и пропорций L×W выбирает rows×cols ≥ N
+ * с минимальной разницей cols/rows ≃ L/W, а при равной — с минимумом пустых ячеек.
+ * Затем гарантирует, что
+ *   — если L>=W, то cols>=rows (ряды вдоль длинной стороны),
+ *   — иначе наоборот.
  */
-function findCoveringGrid(N: number, L: number, W: number): IlluminationGrid {
-  // Определяем, какая сторона длиннее
-  const isLonger = L >= W;
-  
-  // Если L длиннее или равно W, то работаем как обычно
-  // Иначе - переворачиваем L и W для расчетов, а в конце тоже переворачиваем rows и cols
-  const actualL = isLonger ? L : W;
-  const actualW = isLonger ? W : L;
-  
-  const target = actualL / actualW;
-  let best = { rows: 1, cols: N, wasted: N - 1, ratioDiff: Math.abs(N - target) };
+function findBestGrid(N: number, L: number, W: number): IlluminationGrid {
+  const target = L / W;
+  let best: { rows: number; cols: number; diff: number; wasted: number } | null = null;
   
   for (let rows = 1; rows <= N; rows++) {
     const cols = Math.ceil(N / rows);
@@ -30,23 +24,32 @@ function findCoveringGrid(N: number, L: number, W: number): IlluminationGrid {
     const ratio = cols / rows;
     const diff = Math.abs(ratio - target);
     
-    // Сначала предпочитаем меньше пустых, потом лучше ratio
-    if (wasted < best.wasted || (wasted === best.wasted && diff < best.ratioDiff)) {
-      best = { rows, cols, wasted, ratioDiff: diff };
+    if (
+      !best ||
+      diff < best.diff || 
+      (diff === best.diff && wasted < best.wasted)
+    ) {
+      best = { rows, cols, diff, wasted };
     }
   }
   
-  // Если L было не длиннее W, переворачиваем rows и cols
-  if (!isLonger) {
-    return {
-      rows: best.cols, 
-      cols: best.rows, 
-      wasted: best.wasted, 
-      ratioDiff: best.ratioDiff
-    };
+  // Guarantee we always have rows along the longer side
+  if (L >= W && best!.cols < best!.rows) {
+    const temp = best!.rows;
+    best!.rows = best!.cols;
+    best!.cols = temp;
+  } else if (W > L && best!.rows < best!.cols) {
+    const temp = best!.rows;
+    best!.rows = best!.cols;
+    best!.cols = temp;
   }
   
-  return best;
+  return {
+    rows: best!.rows,
+    cols: best!.cols,
+    ratioDiff: best!.diff,
+    wasted: best!.wasted
+  };
 }
 
 /**
@@ -59,16 +62,11 @@ function calculatePointAverage(
   H: number, 
   flux: number
 ): number {
-  // Определяем, какая сторона длиннее для согласованности с findCoveringGrid
-  const isLonger = L >= W;
-  const actualL = isLonger ? L : W;
-  const actualW = isLonger ? W : L;
+  const grid = findBestGrid(n, L, W);
   
-  const grid = findCoveringGrid(n, L, W);
-  
-  // Правильно используем размеры сетки с учетом того, что rows идут вдоль короткой стороны
-  const xSp = isLonger ? L / grid.cols : L / grid.rows;
-  const ySp = isLonger ? W / grid.rows : W / grid.cols;
+  // Spacing between luminaires
+  const xSp = L / grid.cols;
+  const ySp = W / grid.rows;
   
   const gp = 5;  // 5×5 точек
   let sumE = 0;
@@ -79,9 +77,9 @@ function calculatePointAverage(
       const py = (j + 0.5) * (W / gp);
       let Ept = 0;
       
-      for (let r = 0; r < (isLonger ? grid.rows : grid.cols); r++) {
-        for (let c = 0; c < (isLonger ? grid.cols : grid.rows); c++) {
-          const idx = r * (isLonger ? grid.cols : grid.rows) + c;
+      for (let r = 0; r < grid.rows; r++) {
+        for (let c = 0; c < grid.cols; c++) {
+          const idx = r * grid.cols + c;
           if (idx >= n) break;
           
           // координаты светильника
@@ -147,11 +145,14 @@ export const calculateOptimalLuminaires = (
       iterations++;
     }
     
-    // 3) теперь "дозабиваем" до полного сеточного заполнения
-    const grid = findCoveringGrid(N, roomLength, roomWidth);
+    // 3) теперь используем findBestGrid для определения оптимальной сетки
+    const grid = findBestGrid(N, roomLength, roomWidth);
+    
+    // Если сетка требует больше светильников, "дозабиваем" до полной сетки
     if (grid.rows * grid.cols > N) {
       N = grid.rows * grid.cols;
-      avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);  // обновляем среднюю на новом N
+      // Обновляем среднюю освещенность с новым количеством светильников
+      avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
     }
     
     // 4) сохраняем результаты для модели
@@ -163,11 +164,11 @@ export const calculateOptimalLuminaires = (
       totalCost: cost,
       achieved: avgPt.toFixed(1),
       grid,
-      perfectGrid: true // все сетки "идеальные", так как мы их добиваем до полного заполнения
+      perfectGrid: true // все сетки "идеальные", так как мы их подбираем оптимально по соотношению сторон
     });
   });
   
-  // сначала фильтруем «идеальные» варианты
+  // Выбираем наиболее экономичный вариант
   const perfectOptions = tableData.filter(r => r.perfectGrid);
   let best: TableData | null = null;
   
@@ -192,7 +193,7 @@ export const calculateIllumination = (
   const N = best.count;
   
   // Use the grid from the best result
-  const { rows, cols } = best.grid;
+  const { rows, cols } = best.grid!;
   
   const xSp = roomLength / cols;
   const ySp = roomWidth / rows;
@@ -284,32 +285,17 @@ export const drawRoomLayout = (
     ctx.fillStyle = "#ffbd00";
     ctx.strokeStyle = "#d9a200";
     
-    // Определяем, какая сторона длиннее
-    const isLonger = roomLength >= roomWidth;
+    // Spacing between luminaires
+    const xSpacing = roomLength / layout.cols;
+    const ySpacing = roomWidth / layout.rows;
     
-    // Используем правильное количество строк и столбцов в зависимости от ориентации
-    let rows, cols;
-    if (isLonger) {
-      // Если длина больше ширины, то строки идут вдоль длинной стороны (длины)
-      rows = layout.rows;
-      cols = layout.cols;
-    } else {
-      // Если ширина больше длины, то строки все равно должны идти вдоль длинной стороны (ширины)
-      rows = layout.cols;
-      cols = layout.rows;
-    }
-    
-    // Расстояние между светильниками
-    const xSpacing = roomLength / cols;
-    const ySpacing = roomWidth / rows;
-    
-    // Отрисовываем светильники
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        // Проверяем, не превышает ли индекс общее количество светильников
-        if (r * cols + c >= layout.N) break;
+    // Draw all luminaires in the grid
+    for (let r = 0; r < layout.rows; r++) {
+      for (let c = 0; c < layout.cols; c++) {
+        // Skip if we've drawn all needed luminaires
+        if (r * layout.cols + c >= layout.N) break;
         
-        // Вычисляем координаты с учетом масштаба
+        // Calculate coordinates with scale
         const x = (c + 0.5) * xSpacing * scale;
         const y = (r + 0.5) * ySpacing * scale;
         
