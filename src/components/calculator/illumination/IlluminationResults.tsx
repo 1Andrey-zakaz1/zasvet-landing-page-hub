@@ -12,6 +12,8 @@ interface IlluminationResultsProps {
     average: number;
     minimum: number;
     uniformity: number;
+    kz: number;
+    eta: number;
   };
   formData: IlluminationFormData;
   layout: { 
@@ -107,6 +109,12 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
             </p>
             <p>
               <strong className="text-zasvet-gold">Равномерность:</strong> {illuminationValues.uniformity}%
+            </p>
+            <p>
+              <strong className="text-zasvet-gold">Коэффициент запаса (Kz):</strong> {illuminationValues.kz}
+            </p>
+            <p>
+              <strong className="text-zasvet-gold">Коэффициент использования (η):</strong> {illuminationValues.eta}
             </p>
             {bestResult?.perfectGrid && (
               <p className="mt-2">

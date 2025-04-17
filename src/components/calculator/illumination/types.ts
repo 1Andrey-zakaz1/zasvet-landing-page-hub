@@ -25,6 +25,8 @@ export interface IlluminationValues {
   average: number;
   minimum: number;
   uniformity: number;
+  kz: number;
+  eta: number;
 }
 
 export interface IlluminationFormData {

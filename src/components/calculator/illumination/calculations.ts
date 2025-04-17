@@ -2,6 +2,10 @@
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
+// ======= Запас и коэффициент использования =======
+const Kz = 1.2;   // коэффициент запаса (1.2)
+const eta = 0.8;  // коэффициент использования (0.8)
+
 /**
  * Для заданного N и пропорций комнаты подбирает оптимальные rows×cols = N
  * Возвращает { rows, cols, ratioDiff }
@@ -38,7 +42,9 @@ export const calculateOptimalLuminaires = (
 ): { tableData: TableData[], bestResult: TableData | null } => {
   // Calculate area and required luminous flux
   const area = roomLength * roomWidth;
-  const phiReq = requiredLux * area; // lumens
+  
+  // ====== Учитываем запас и использование ======
+  const phiReq = requiredLux * area * Kz / eta; // скорректированный поток с учетом Kz и eta
   
   // Get models for selected category
   const models = luminaireModels[luminaireType as keyof typeof luminaireModels] || [];
@@ -144,7 +150,9 @@ export const calculateIllumination = (
       avgByFlux: parseFloat(avgByFlux.toFixed(1)),
       average: parseFloat(avgPoint.toFixed(1)),
       minimum: parseFloat(minLux.toFixed(1)),
-      uniformity: parseFloat((uni * 100).toFixed(1))
+      uniformity: parseFloat((uni * 100).toFixed(1)),
+      kz: Kz,
+      eta: eta
     }
   };
 };
