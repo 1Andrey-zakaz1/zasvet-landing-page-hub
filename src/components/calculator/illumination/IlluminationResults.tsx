@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Alert } from '@/components/ui/alert';
 import { TableData, IlluminationFormData } from './types';
@@ -102,13 +101,7 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
               <strong className="text-zasvet-gold">Средняя освещенность (люмен-метод):</strong> {illuminationValues.avgByFlux} лк
             </p>
             <p>
-              <strong className="text-zasvet-gold">Средняя освещенность (точечный метод):</strong> {illuminationValues.average} лк
-            </p>
-            <p>
               <strong className="text-zasvet-gold">Минимальная освещенность:</strong> {illuminationValues.minimum} лк
-            </p>
-            <p>
-              <strong className="text-zasvet-gold">Равномерность:</strong> {illuminationValues.uniformity}%
             </p>
             <p>
               <strong className="text-zasvet-gold">Коэффициент запаса (Kz):</strong> {illuminationValues.kz}
