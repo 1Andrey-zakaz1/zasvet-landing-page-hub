@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LightbulbIcon, ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { LightbulbIcon } from 'lucide-react';
 import { recommendedLux } from './illumination/data';
 import { IlluminationFormData, TableData } from './illumination/types';
 import { calculateOptimalLuminaires, calculateIllumination } from './illumination/calculations';
@@ -9,9 +8,6 @@ import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
 
 const IlluminationCalculator: React.FC = () => {
-  // Collapsible state
-  const [isExpanded, setIsExpanded] = useState(false);
-  
   // Form state
   const [formData, setFormData] = useState<IlluminationFormData>({
     roomLength: '',
@@ -41,14 +37,6 @@ const IlluminationCalculator: React.FC = () => {
     ySp: 0, 
     N: 0 
   });
-  
-  // Toggle expanded state
-  const toggleForm = () => {
-    setIsExpanded(!isExpanded);
-    if (showResults) {
-      setShowResults(false);
-    }
-  };
   
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,88 +96,38 @@ const IlluminationCalculator: React.FC = () => {
     setShowResults(true);
   };
   
-  // Reset calculator and show form
-  const resetCalculator = () => {
-    setShowResults(false);
-    setIsExpanded(true);
-  };
-  
   return (
-    <section id="illumination-calculator" className="bg-zasvet-black py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <h2 className="section-title text-zasvet-white mb-12">Калькулятор освещенности помещения</h2>
+    <section className="container mx-auto px-4 py-12">
+      <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
+        <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
+          <CardTitle className="text-xl flex items-center">
+            <LightbulbIcon className="mr-2 h-5 w-5" />
+            Калькулятор освещённости
+          </CardTitle>
+        </CardHeader>
         
-        <div className="max-w-4xl mx-auto">
-          {/* Collapsible Header */}
-          <div 
-            className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
-            onClick={toggleForm}
-            style={{ display: (showResults) ? 'none' : 'flex' }}
-          >
-            <h3 className="text-xl font-bold text-zasvet-white flex items-center">
-              <LightbulbIcon className="mr-2 h-5 w-5" /> 
-              Расчет-подбор светильников
-            </h3>
-            <Button 
-              variant="gold" 
-              className="transition-all duration-300"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleForm();
-              }}
-            >
-              {isExpanded ? 
-                <><ChevronUp className="mr-1" /> Свернуть</> : 
-                <><ChevronDown className="mr-1" /> Рассчитать</>
-              }
-            </Button>
+        <CardContent className="pt-6">
+          <div className="space-y-4">
+            <IlluminationForm 
+              formData={formData}
+              handleChange={handleChange}
+              handleSelectChange={handleSelectChange}
+              calculateResults={calculateResults}
+            />
+            
+            {/* Results section */}
+            {showResults && (
+              <IlluminationResults 
+                tableData={tableData}
+                bestResult={bestResult}
+                illuminationValues={illuminationValues}
+                formData={formData}
+                layout={layout}
+              />
+            )}
           </div>
-          
-          {/* Form */}
-          {isExpanded && !showResults && (
-            <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <IlluminationForm 
-                    formData={formData}
-                    handleChange={handleChange}
-                    handleSelectChange={handleSelectChange}
-                    calculateResults={calculateResults}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          )}
-          
-          {/* Results */}
-          {showResults && (
-            <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
-              <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
-                <CardTitle className="text-xl flex items-center">
-                  <LightbulbIcon className="mr-2 h-5 w-5" />
-                  Результаты расчета освещенности
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent className="pt-6">
-                <IlluminationResults 
-                  tableData={tableData}
-                  bestResult={bestResult}
-                  illuminationValues={illuminationValues}
-                  formData={formData}
-                  layout={layout}
-                />
-                
-                <div className="flex justify-between mt-8">
-                  <Button variant="outline" onClick={resetCalculator} className="text-zasvet-white border-zasvet-gold/50 hover:bg-zasvet-gold/20">
-                    Новый расчет
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </section>
   );
 };
