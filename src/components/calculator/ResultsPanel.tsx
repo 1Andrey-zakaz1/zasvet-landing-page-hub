@@ -42,6 +42,32 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
     }
   };
 
+  const formatPaybackPeriod = (paybackPeriod: number, paybackPeriodMonths: number) => {
+    if (paybackPeriod === Infinity) return "Не окупится";
+
+    const years = Math.floor(paybackPeriodMonths / 12);
+    const remainingMonths = paybackPeriodMonths % 12;
+
+    let result = "";
+    if (years > 0) {
+      result += `${years} ${
+        years === 1 ? "год" : 
+        years < 5 ? "года" : 
+        "лет"
+      } `;
+    }
+
+    if (remainingMonths > 0) {
+      result += `${remainingMonths} ${
+        remainingMonths === 1 ? "месяц" : 
+        remainingMonths < 5 ? "месяца" : 
+        "месяцев"
+      }`;
+    }
+
+    return result.trim();
+  };
+
   return (
     <div className="bg-zasvet-black/70 border border-zasvet-gold/20 shadow-xl rounded-lg mb-8">
       <div className="p-6 border-b border-zasvet-gold/20">
@@ -56,20 +82,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </h4>
           <p className="text-xl mt-2">
             Срок окупаемости: <strong className="text-zasvet-gold">
-              {Number(results.paybackPeriod) === Infinity 
-                ? "Не окупится" 
-                : `${results.paybackPeriodMonths > 12 ? Math.floor(Number(results.paybackPeriod)) : 0} ${
-                    results.paybackPeriodMonths > 12 ? (
-                      Math.floor(Number(results.paybackPeriod)) === 1 ? "год" : 
-                      Math.floor(Number(results.paybackPeriod)) < 5 ? "года" :
-                      "лет"
-                    ) : ""
-                  } ${results.paybackPeriodMonths} ${
-                    results.paybackPeriodMonths === 1 ? "месяц" :
-                    results.paybackPeriodMonths < 5 ? "месяца" :
-                    "месяцев"
-                  }`
-              }
+              {formatPaybackPeriod(Number(results.paybackPeriod), results.paybackPeriodMonths)}
             </strong>
           </p>
         </div>
