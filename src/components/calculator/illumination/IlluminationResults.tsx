@@ -56,6 +56,7 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
               <th className="border border-zasvet-gold/20 p-2 text-center text-white">Вт</th>
               <th className="border border-zasvet-gold/20 p-2 text-center text-white">Цена</th>
               <th className="border border-zasvet-gold/20 p-2 text-center text-white">Кол-во</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Сетка</th>
               <th className="border border-zasvet-gold/20 p-2 text-center text-white">Сумма</th>
               <th className="border border-zasvet-gold/20 p-2 text-center text-white">Освещ., лк</th>
             </tr>
@@ -75,6 +76,10 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.power}</td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.price}</td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.count}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">
+                  {row.grid ? `${row.grid.rows}×${row.grid.cols}` : '-'}
+                  {row.perfectGrid && <span className="ml-1 text-zasvet-gold">✓</span>}
+                </td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.totalCost.toFixed(2)}</td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.achieved}</td>
               </tr>
@@ -103,6 +108,11 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
             <p>
               <strong className="text-zasvet-gold">Равномерность:</strong> {illuminationValues.uniformity}%
             </p>
+            {bestResult?.perfectGrid && (
+              <p className="mt-2">
+                <strong className="text-zasvet-gold">✓ Идеальная сетка:</strong> {bestResult.grid?.rows} × {bestResult.grid?.cols}
+              </p>
+            )}
           </div>
         </Alert>
       </div>
@@ -111,4 +121,3 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
 };
 
 export default IlluminationResults;
-

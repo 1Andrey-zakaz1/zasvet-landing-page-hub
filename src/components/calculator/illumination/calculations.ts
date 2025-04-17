@@ -1,6 +1,34 @@
 
-import { TableData } from './types';
+import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
+
+/**
+ * Для заданного N и пропорций комнаты подбирает оптимальные rows×cols = N
+ * Возвращает { rows, cols, ratioDiff }
+ */
+function findBestGrid(N: number, L: number, W: number): IlluminationGrid {
+  let best: IlluminationGrid | null = null;
+  const targetRatio = L / W;
+  for (let rows = 1; rows * rows <= N; rows++) {
+    if (N % rows === 0) {
+      const cols = N / rows;
+      const ratio = cols / rows;
+      const diff = Math.abs(ratio - targetRatio);
+      if (!best || diff < best.ratioDiff) {
+        best = { rows, cols, ratioDiff: diff };
+      }
+      // и пробуем зеркальную пару (чтобы не пропустить вариант rows>cols)
+      if (rows !== cols) {
+        const diff2 = Math.abs((rows / cols) - targetRatio);
+        if (diff2 < best.ratioDiff) {
+          best = { rows: cols, cols: rows, ratioDiff: diff2 };
+        }
+      }
+    }
+  }
+  // Если N простое число, rows будет равно 1, а cols = N
+  return best || { rows: 1, cols: N, ratioDiff: Math.abs(N - targetRatio) };
+}
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
@@ -16,27 +44,36 @@ export const calculateOptimalLuminaires = (
   const models = luminaireModels[luminaireType as keyof typeof luminaireModels] || [];
   
   // Find optimal model and prepare table data
-  let best: TableData | null = null;
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
     const n = Math.ceil(phiReq / m.flux);
+    const grid = findBestGrid(n, roomLength, roomWidth);
+    const isPerfect = (grid.rows * grid.cols === n);
     const avgLux = (n * m.flux) / area;
     const cost = n * m.price;
     
-    const rowData = {
+    tableData.push({
       ...m,
       count: n,
       totalCost: cost,
-      achieved: avgLux.toFixed(1)
-    };
-    
-    tableData.push(rowData);
-    
-    if (!best || cost < best.totalCost) {
-      best = rowData;
-    }
+      achieved: avgLux.toFixed(1),
+      grid,
+      perfectGrid: isPerfect
+    });
   });
+  
+  // сначала фильтруем «идеальные» варианты
+  const perfectOptions = tableData.filter(r => r.perfectGrid);
+  let best: TableData | null = null;
+  
+  if (perfectOptions.length > 0) {
+    // из них — минимальный по стоимости
+    best = perfectOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
+  } else {
+    // fallback — самая дешевая модель вообще
+    best = tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
+  }
   
   return { tableData, bestResult: best };
 };
@@ -49,13 +86,9 @@ export const calculateIllumination = (
 ) => {
   const area = roomLength * roomWidth;
   const N = best.count;
-  let cols = Math.ceil(Math.sqrt(N * roomLength / roomWidth));
-  let rows = Math.ceil(N / cols);
   
-  if ((cols * rows - N) >= cols) {
-    rows = Math.ceil(Math.sqrt(N * roomWidth / roomLength));
-    cols = Math.ceil(N / rows);
-  }
+  // Use the grid from the best result
+  const { rows, cols } = best.grid;
   
   const xSp = roomLength / cols;
   const ySp = roomWidth / rows;

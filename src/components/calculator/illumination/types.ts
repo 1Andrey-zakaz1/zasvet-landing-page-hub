@@ -7,10 +7,18 @@ export interface LuminaireModel {
   price: number;
 }
 
+export interface IlluminationGrid {
+  rows: number;
+  cols: number;
+  ratioDiff: number;
+}
+
 export interface TableData extends LuminaireModel {
   count: number;
   totalCost: number;
   achieved: string;
+  grid?: IlluminationGrid;
+  perfectGrid?: boolean;
 }
 
 export interface IlluminationValues {
