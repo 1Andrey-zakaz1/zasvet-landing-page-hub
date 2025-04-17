@@ -51,28 +51,32 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-zasvet-gray/20">
-              <th className="border border-zasvet-gold/20 p-2 text-left">Модель</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Поток</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Вт</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Цена</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Кол-во</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Сумма</th>
-              <th className="border border-zasvet-gold/20 p-2 text-center">Освещ., лк</th>
+              <th className="border border-zasvet-gold/20 p-2 text-left text-white">Модель</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Поток</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Вт</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Цена</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Кол-во</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Сумма</th>
+              <th className="border border-zasvet-gold/20 p-2 text-center text-white">Освещ., лк</th>
             </tr>
           </thead>
           <tbody>
             {tableData.map((row, index) => (
               <tr 
                 key={index}
-                className={row.model === bestResult?.model ? "bg-zasvet-gold/10 font-medium" : ""}
+                className={`${
+                  row.model === bestResult?.model 
+                    ? "bg-zasvet-gold/10 font-medium" 
+                    : "bg-zasvet-gray/10"
+                }`}
               >
-                <td className="border border-zasvet-gold/20 p-2 text-left">{row.model}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.flux}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.power}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.price}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.count}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.totalCost.toFixed(2)}</td>
-                <td className="border border-zasvet-gold/20 p-2 text-center">{row.achieved}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-left text-white">{row.model}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.flux}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.power}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.price}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.count}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.totalCost.toFixed(2)}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.achieved}</td>
               </tr>
             ))}
           </tbody>
@@ -86,18 +90,18 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
         </div>
         
         <Alert className="bg-zasvet-gray/20 border-zasvet-gold/20">
-          <div className="text-zasvet-white text-sm">
+          <div className="text-white text-sm">
             <p>
-              <strong>Средняя освещенность (люмен-метод):</strong> {illuminationValues.avgByFlux} лк
+              <strong className="text-zasvet-gold">Средняя освещенность (люмен-метод):</strong> {illuminationValues.avgByFlux} лк
             </p>
             <p>
-              <strong>Средняя освещенность (точечный метод):</strong> {illuminationValues.average} лк
+              <strong className="text-zasvet-gold">Средняя освещенность (точечный метод):</strong> {illuminationValues.average} лк
             </p>
             <p>
-              <strong>Минимальная освещенность:</strong> {illuminationValues.minimum} лк
+              <strong className="text-zasvet-gold">Минимальная освещенность:</strong> {illuminationValues.minimum} лк
             </p>
             <p>
-              <strong>Равномерность:</strong> {illuminationValues.uniformity}%
+              <strong className="text-zasvet-gold">Равномерность:</strong> {illuminationValues.uniformity}%
             </p>
           </div>
         </Alert>
@@ -107,3 +111,4 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
 };
 
 export default IlluminationResults;
+
