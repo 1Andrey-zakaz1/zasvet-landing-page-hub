@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -177,8 +176,8 @@ const IlluminationCalculator: React.FC = () => {
     
     // Point calculation on 5×5 grid
     const gp = 5;
-    let tot = 0;
-    let min = Infinity;
+    let totalLux = 0;
+    let minLux = Infinity;
     
     for (let i = 0; i < gp; i++) {
       for (let j = 0; j < gp; j++) {
@@ -207,17 +206,22 @@ const IlluminationCalculator: React.FC = () => {
           }
         }
         
-        tot += Ept;
-        min = Math.min(min, Ept);
+        totalLux += Ept;
+        minLux = Math.min(minLux, Ept);
       }
     }
     
-    const avg = tot / (gp * gp);
-    const uni = min / avg;
+    // 1) средняя по люмен-методу (точно попадёт в требуемую норму)
+    const avgByFlux = (best.count * best.flux) / area;
+    
+    // 2) точечная средняя (как было)
+    const avgPoint = totalLux / (gp * gp);
+    
+    const uni = minLux / avgPoint;
     
     setIlluminationValues({
-      average: parseFloat(avg.toFixed(1)),
-      minimum: parseFloat(min.toFixed(1)),
+      average: parseFloat(avgPoint.toFixed(1)),
+      minimum: parseFloat(minLux.toFixed(1)),
       uniformity: parseFloat((uni * 100).toFixed(1))
     });
     
@@ -430,7 +434,10 @@ const IlluminationCalculator: React.FC = () => {
                   <Alert className="bg-zasvet-gray/20 border-zasvet-gold/20">
                     <div className="text-zasvet-white text-sm">
                       <p>
-                        <strong>Средняя освещенность:</strong> {illuminationValues.average} лк
+                        <strong>Средняя освещенность (люмен-метод):</strong> {bestResult ? ((bestResult.count * bestResult.flux) / (parseFloat(formData.roomLength) * parseFloat(formData.roomWidth))).toFixed(1) : 0} лк
+                      </p>
+                      <p>
+                        <strong>Средняя освещенность (точечный метод):</strong> {illuminationValues.average} лк
                       </p>
                       <p>
                         <strong>Минимальная освещенность:</strong> {illuminationValues.minimum} лк
