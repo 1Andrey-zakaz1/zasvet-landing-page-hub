@@ -56,14 +56,18 @@ export const calculateOptimalLuminaires = (
     const n = Math.ceil(phiReq / m.flux);
     const grid = findBestGrid(n, roomLength, roomWidth);
     const isPerfect = (grid.rows * grid.cols === n);
-    const avgLux = (n * m.flux) / area;
+    
+    // Корректируем среднюю освещённость по использованию и запасу:
+    const deliveredFlux = n * m.flux * eta / Kz;
+    const achievedLux = deliveredFlux / area;
+    
     const cost = n * m.price;
     
     tableData.push({
       ...m,
       count: n,
       totalCost: cost,
-      achieved: avgLux.toFixed(1),
+      achieved: achievedLux.toFixed(1),
       grid,
       perfectGrid: isPerfect
     });
@@ -136,20 +140,23 @@ export const calculateIllumination = (
     }
   }
   
-  // 1) средняя по люмен-методу (точно попадёт в требуемую норму)
-  const avgByFlux = (best.count * best.flux) / area;
+  // 1) Средняя освещенность по люмен-методу с учетом коэффициентов
+  const deliveredFlux = N * best.flux * eta / Kz;
+  const avgByFlux = deliveredFlux / area;
   
-  // 2) точечная средняя (как было)
-  const avgPoint = totalLux / (gp * gp);
+  // 2) точечная средняя (теперь тоже с учетом коэффициентов)
+  const avgPoint = (totalLux * eta / Kz) / (gp * gp);
   
-  const uni = minLux / avgPoint;
+  // Минимальная освещенность и коэффициент равномерности (с учетом коэффициентов)
+  const minPoint = minLux * eta / Kz;
+  const uni = minPoint / avgPoint;
   
   return {
     layout: { cols, rows, xSp, ySp, N },
     illuminationValues: {
       avgByFlux: parseFloat(avgByFlux.toFixed(1)),
       average: parseFloat(avgPoint.toFixed(1)),
-      minimum: parseFloat(minLux.toFixed(1)),
+      minimum: parseFloat(minPoint.toFixed(1)),
       uniformity: parseFloat((uni * 100).toFixed(1)),
       kz: Kz,
       eta: eta
