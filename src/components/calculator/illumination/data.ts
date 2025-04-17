@@ -1,10 +1,9 @@
-
 // Recommended illumination by room type (СП 52.13330.2016)
 export const recommendedLux = {
-  "office": 300,    // Office: 300 lx
+  "office": 301,    // Office: 301 lx
   "warehouse": 71,  // Warehouse: 71 lx (closest valid value to 75 with step=10)
   "corridor": 51,   // Corridor: 51 lx (instead of 50)
-  "retail": 300     // Retail: 300 lx
+  "retail": 301     // Retail: 301 lx
 };
 
 // Luminaire models database
