@@ -1,3 +1,4 @@
+
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
@@ -285,15 +286,32 @@ export const drawRoomLayout = (
     
     // Определяем, какая сторона длиннее
     const isLonger = roomLength >= roomWidth;
-    const actualRows = isLonger ? layout.rows : layout.cols;
-    const actualCols = isLonger ? layout.cols : layout.rows;
     
-    for (let r = 0; r < actualRows; r++) {
-      for (let c = 0; c < actualCols; c++) {
-        if (r * actualCols + c >= layout.N) break;
+    // Используем правильное количество строк и столбцов в зависимости от ориентации
+    let rows, cols;
+    if (isLonger) {
+      // Если длина больше ширины, то строки идут вдоль длинной стороны (длины)
+      rows = layout.rows;
+      cols = layout.cols;
+    } else {
+      // Если ширина больше длины, то строки все равно должны идти вдоль длинной стороны (ширины)
+      rows = layout.cols;
+      cols = layout.rows;
+    }
+    
+    // Расстояние между светильниками
+    const xSpacing = roomLength / cols;
+    const ySpacing = roomWidth / rows;
+    
+    // Отрисовываем светильники
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        // Проверяем, не превышает ли индекс общее количество светильников
+        if (r * cols + c >= layout.N) break;
         
-        const x = (c + 0.5) * (roomLength / actualCols) * scale;
-        const y = (r + 0.5) * (roomWidth / actualRows) * scale;
+        // Вычисляем координаты с учетом масштаба
+        const x = (c + 0.5) * xSpacing * scale;
+        const y = (r + 0.5) * ySpacing * scale;
         
         ctx.beginPath();
         ctx.arc(x, y, 8, 0, 2 * Math.PI);
