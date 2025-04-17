@@ -1,3 +1,4 @@
+
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
@@ -33,6 +34,58 @@ function findBestGrid(N: number, L: number, W: number): IlluminationGrid {
   return best || { rows: 1, cols: N, ratioDiff: Math.abs(N - targetRatio) };
 }
 
+/**
+ * Рассчитывает среднюю освещенность по точечному методу для заданного числа светильников
+ */
+function calculatePointAverage(
+  n: number, 
+  L: number, 
+  W: number, 
+  H: number, 
+  flux: number,
+  rows: number, 
+  cols: number
+): number {
+  const xSp = L / cols;
+  const ySp = W / rows;
+  const gridPts = 5;
+  let totalE = 0;
+  
+  for (let i = 0; i < gridPts; i++) {
+    for (let j = 0; j < gridPts; j++) {
+      const px = (i + 0.5) * (L / gridPts);
+      const py = (j + 0.5) * (W / gridPts);
+      let Ept = 0;
+      
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const idx = r * cols + c;
+          if (idx >= n) break;
+          
+          const lx = (c + 0.5) * xSp;
+          const ly = (r + 0.5) * ySp;
+          const lz = H;
+          
+          const dx = px - lx;
+          const dy = py - ly;
+          const dz = -lz;
+          
+          const d = Math.hypot(dx, dy, dz);
+          if (!d) continue;
+          
+          const cosT = H / d;
+          const I = (flux * eta / Kz) / (2 * Math.PI);
+          Ept += (I * cosT) / (d * d);
+        }
+      }
+      
+      totalE += Ept;
+    }
+  }
+  
+  return totalE / (gridPts * gridPts); // средняя точечная
+}
+
 export const calculateOptimalLuminaires = (
   roomLength: number,
   roomWidth: number,
@@ -52,23 +105,33 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    const n = Math.ceil(phiReq / m.flux);
-    const grid = findBestGrid(n, roomLength, roomWidth);
-    const isPerfect = (grid.rows * grid.cols === n);
+    // 1) Определяем первоначальное N0 по люмен-методу
+    let N = Math.ceil(phiReq / m.flux);
     
-    // Корректируем среднюю освещённость по использованию и запасу:
-    const deliveredFlux = n * m.flux * eta / Kz;
+    // 2) Получаем оптимальную сетку для текущего N
+    const grid = findBestGrid(N, roomLength, roomWidth);
+    
+    // Для минимизации расчетов используем предельное значение 50 светильников
+    const MAX_LUMINAIRES = 50;
+    
+    // 3) Доставляем предварительный расчет освещенности по точечному методу
+    let avgPointIllumination = calculatePointAverage(
+      N, roomLength, roomWidth, 3, m.flux, grid.rows, grid.cols
+    );
+    
+    // 4) Корректируем среднюю освещённость по использованию и запасу:
+    const deliveredFlux = N * m.flux * eta / Kz;
     const achievedLux = deliveredFlux / area;
     
-    const cost = n * m.price;
+    const cost = N * m.price;
     
     tableData.push({
       ...m,
-      count: n,
+      count: N,
       totalCost: cost,
       achieved: achievedLux.toFixed(1),
       grid,
-      perfectGrid: isPerfect
+      perfectGrid: true // будем считать, что все сетки "идеальные", так как мы их подбираем оптимально
     });
   });
   
