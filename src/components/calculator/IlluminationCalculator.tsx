@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LightbulbIcon } from 'lucide-react';
@@ -27,7 +26,9 @@ const IlluminationCalculator: React.FC = () => {
     avgByFlux: 0,
     average: 0,
     minimum: 0,
-    uniformity: 0
+    uniformity: 0,
+    kz: 1.1,
+    eta: 0.85
   });
   const [layout, setLayout] = useState({ 
     cols: 0, 

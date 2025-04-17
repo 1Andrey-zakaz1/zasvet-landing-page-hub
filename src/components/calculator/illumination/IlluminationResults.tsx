@@ -103,12 +103,6 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
             <p>
               <strong className="text-zasvet-gold">Минимальная освещенность:</strong> {illuminationValues.minimum} лк
             </p>
-            <p>
-              <strong className="text-zasvet-gold">Коэффициент запаса (Kz):</strong> {illuminationValues.kz}
-            </p>
-            <p>
-              <strong className="text-zasvet-gold">Коэффициент использования (η):</strong> {illuminationValues.eta}
-            </p>
             {bestResult?.perfectGrid && (
               <p className="mt-2">
                 <strong className="text-zasvet-gold">✓ Идеальная сетка:</strong> {bestResult.grid?.rows} × {bestResult.grid?.cols}
