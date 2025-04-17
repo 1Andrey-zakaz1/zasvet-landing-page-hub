@@ -13,6 +13,7 @@ import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
 import LedCalculator from '@/components/LedCalculator';
 import CableCalculator from '@/components/calculator/CableCalculator';
+import IlluminationCalculator from '@/components/calculator/IlluminationCalculator';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
 
@@ -46,6 +47,7 @@ const Index = () => {
         
         <LedCalculator />
         <CableCalculator />
+        <IlluminationCalculator />
         <VideoSlider />
         <ProductSlider />
       </main>
