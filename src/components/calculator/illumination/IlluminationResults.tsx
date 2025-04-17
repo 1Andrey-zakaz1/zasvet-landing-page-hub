@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 import { Alert } from '@/components/ui/alert';
 import { TableData, IlluminationFormData } from './types';
@@ -45,10 +46,10 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
   }, [bestResult, formData.roomLength, formData.roomWidth, layout]);
   
   return (
-    <div className="mt-8 space-y-4">
+    <div className="mt-8 space-y-4 print-container">
       <h4 className="calculator-section-title">Результаты подбора моделей</h4>
       
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto results-section">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-zasvet-gray/20">
@@ -89,7 +90,7 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
         </table>
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-4 results-section">
         <h4 className="calculator-section-title">План размещения светильников</h4>
         <div className="border border-zasvet-gold/20 p-2 flex justify-center">
           <canvas ref={canvasRef} className="max-w-full" />

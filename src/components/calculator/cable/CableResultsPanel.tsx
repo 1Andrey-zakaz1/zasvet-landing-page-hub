@@ -34,7 +34,7 @@ const CableResultsPanel: React.FC<CableResultsPanelProps> = ({
   };
 
   return (
-    <div className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl rounded-lg">
+    <div className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl rounded-lg print-container">
       <div className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg px-6 py-4">
         <h2 className="text-xl font-medium flex items-center">
           <Cable className="mr-2 h-5 w-5" /> Результаты расчета сечения кабеля
@@ -43,7 +43,7 @@ const CableResultsPanel: React.FC<CableResultsPanelProps> = ({
       
       <div className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div>
+          <div className="results-section">
             <div className="bg-zasvet-black/30 rounded-lg p-4 h-full">
               <h3 className="text-lg font-medium flex items-center text-zasvet-gold mb-4">
                 <Info className="mr-2 h-5 w-5" /> Параметры расчета
@@ -93,7 +93,7 @@ const CableResultsPanel: React.FC<CableResultsPanelProps> = ({
           </div>
           
           <div className="lg:col-span-2">
-            <div className="bg-zasvet-black/30 rounded-lg p-4 mb-4">
+            <div className="bg-zasvet-black/30 rounded-lg p-4 mb-4 results-section">
               <div className="bg-zasvet-gold/10 border border-zasvet-gold/20 rounded-lg p-4 mb-4">
                 <h4 className="text-zasvet-gold font-medium mb-2">Рекомендуемое сечение кабеля</h4>
                 <div className="text-4xl text-center text-zasvet-gold font-bold py-3">
@@ -148,7 +148,7 @@ const CableResultsPanel: React.FC<CableResultsPanelProps> = ({
               </div>
             </div>
             
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-3 print-hide">
               <Button 
                 variant="gold"
                 onClick={resetCalculator}

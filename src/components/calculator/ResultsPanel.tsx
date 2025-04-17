@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart, Info, Lightbulb, LightbulbOff, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -74,14 +73,14 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
   };
 
   return (
-    <div className="bg-zasvet-black/70 border border-zasvet-gold/20 shadow-xl rounded-lg mb-8">
+    <div className="bg-zasvet-black/70 border border-zasvet-gold/20 shadow-xl rounded-lg mb-8 print-container">
       <div className="p-6 border-b border-zasvet-gold/20">
         <h3 className="text-2xl font-bold text-zasvet-white flex items-center mb-4">
           <BarChart className="mr-2 h-6 w-6" /> 
           Результаты расчета окупаемости
         </h3>
         
-        <div className="bg-purple-100/10 rounded-lg p-4 mb-4">
+        <div className="bg-purple-100/10 rounded-lg p-4 mb-4 results-section">
           <h4 className="text-xl text-purple-100 flex items-center font-medium">
             <Info className="mr-2 h-5 w-5" /> Результат
           </h4>
@@ -92,7 +91,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </p>
         </div>
         
-        <div className="mb-8">
+        <div className="mb-8 results-section">
           <h4 className="text-xl font-medium flex items-center mb-4">
             <Lightbulb className="mr-2 h-5 w-5 text-green-400" /> 
             Светодиодные светильники
@@ -143,7 +142,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
         </div>
         
-        <div className="mb-8">
+        <div className="mb-8 results-section">
           <h4 className="text-xl font-medium flex items-center mb-4">
             <LightbulbOff className="mr-2 h-5 w-5 text-purple-400" /> 
             Старые светильники
@@ -194,7 +193,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
         </div>
         
-        <div className="mb-8">
+        <div className="mb-8 results-section">
           <h4 className="text-xl font-medium flex items-center mb-4">
             <Lightbulb className="mr-2 h-5 w-5 text-zasvet-gold" /> 
             Экономия
@@ -224,7 +223,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
         </div>
         
-        <div className="mb-6">
+        <div className="mb-6 results-section">
           <h4 className="text-xl font-medium flex items-center mb-4">
             <Info className="mr-2 h-5 w-5" /> 
             Общие параметры расчета
@@ -246,7 +245,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4 print-hide">
           <Button 
             variant="outline" 
             className="border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black"

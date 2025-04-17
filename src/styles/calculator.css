@@ -28,20 +28,77 @@
   @apply text-zasvet-gold font-semibold;
 }
 
-/* Results page styling */
+/* Results page print styling */
 @media print {
+  /* Hide everything by default */
   body * {
     visibility: hidden;
   }
   
+  /* Only show the calculator results */
   #calculator, #calculator * {
     visibility: visible;
   }
   
+  /* Position the calculator results at the top of the page */
   #calculator {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+    background-color: white !important;
+    color: black !important;
+  }
+
+  /* Prevent page breaks inside important sections */
+  .results-section {
+    page-break-inside: avoid;
+  }
+  
+  /* Reset background colors for better printing */
+  #calculator .bg-zasvet-black,
+  #calculator .bg-zasvet-gray\/10,
+  #calculator .bg-zasvet-gray\/20,
+  #calculator .bg-zasvet-black\/30,
+  #calculator .bg-zasvet-black\/40,
+  #calculator .bg-zasvet-black\/70 {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  /* Make text black for better printing */
+  #calculator .text-zasvet-white,
+  #calculator .text-zasvet-white\/70,
+  #calculator .text-zasvet-white\/80 {
+    color: black !important;
+  }
+  
+  /* Make highlighted text stand out */
+  #calculator .text-zasvet-gold {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+  
+  /* Hide unnecessary buttons when printing */
+  #calculator button {
+    display: none !important;
+  }
+  
+  /* Fix table borders for printing */
+  #calculator table,
+  #calculator th,
+  #calculator td {
+    border-color: #999 !important;
+  }
+  
+  /* Remove unnecessary margin and padding */
+  #calculator * {
+    margin-bottom: 0.5cm;
+  }
+  
+  /* Set print dimensions explicitly */
+  @page {
+    size: A4;
+    margin: 1cm;
   }
 }
