@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LightbulbIcon, ChevronDown, ChevronUp } from 'lucide-react';
@@ -129,7 +128,7 @@ const IlluminationCalculator: React.FC = () => {
           >
             <h3 className="text-xl font-bold text-zasvet-white flex items-center">
               <LightbulbIcon className="mr-2 h-5 w-5" /> 
-              Калькулятор освещенности помещения
+              Расчет-подбор светильников
             </h3>
             <Button 
               variant="gold" 
@@ -141,7 +140,7 @@ const IlluminationCalculator: React.FC = () => {
             >
               {isExpanded ? 
                 <><ChevronUp className="mr-1" /> Свернуть</> : 
-                <><ChevronDown className="mr-1" /> Расчет-подбор светильников</>
+                <><ChevronDown className="mr-1" /> Рассчитать</>
               }
             </Button>
           </div>

@@ -126,7 +126,7 @@ const IlluminationForm: React.FC<IlluminationFormProps> = ({
       </div>
       
       <Button type="submit" variant="gold" className="w-full mt-6">
-        Расчет-подбор светильников
+        Рассчитать
       </Button>
     </form>
   );
