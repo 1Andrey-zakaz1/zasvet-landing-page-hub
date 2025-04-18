@@ -97,7 +97,7 @@ const IlluminationCalculator: React.FC = () => {
         <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
           <CardTitle className="text-xl flex items-center">
             <LightbulbIcon className="mr-2 h-5 w-5" />
-            Расчет-подбор светильников
+            Расчет освещенности помещения
           </CardTitle>
         </CardHeader>
         
@@ -135,3 +135,4 @@ const IlluminationCalculator: React.FC = () => {
 };
 
 export default IlluminationCalculator;
+
