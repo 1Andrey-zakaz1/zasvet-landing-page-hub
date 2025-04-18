@@ -29,9 +29,6 @@ const Index = () => {
         <DesignersSection />
         <InstallersSection />
         
-        <VideoSlider />
-        <ProductSlider />
-        
         <section className="container mx-auto px-4 py-16 md:py-20">
           <Alert 
             variant="default" 
@@ -53,6 +50,9 @@ const Index = () => {
         <LedCalculator />
         <CableCalculator />
         <IlluminationCalculator />
+
+        <VideoSlider />
+        <ProductSlider />
       </main>
       <Footer />
       <TelegramBotWidget />
@@ -61,3 +61,4 @@ const Index = () => {
 };
 
 export default Index;
+
