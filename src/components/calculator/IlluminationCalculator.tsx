@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LightbulbIcon } from 'lucide-react';
@@ -99,8 +100,7 @@ const IlluminationCalculator = () => {
           <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
             <CardHeader className="bg-transparent text-zasvet-white rounded-t-lg">
               <CardTitle className="text-xl flex items-center">
-                <LightbulbIcon className="mr-2 h-5 w-5" /> 
-                Расчет освещенности помещения
+                <LightbulbIcon className="mr-2 h-5 w-5" />
               </CardTitle>
             </CardHeader>
             
