@@ -157,12 +157,7 @@ const LedCalculator = () => {
   return (
     <section id="calculator" className="bg-zasvet-black py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="section-title text-zasvet-white mb-2">Калькулятор окупаемости</h2>
-          <p className="text-zasvet-white/70 text-base max-w-2xl mx-auto">
-            Внимание: Предварительные расчеты. Калькуляторы на этой странице позволят быстро выполнить приблизительные расчеты. Окончательные технические решения должны приниматься с учетом всех конкретных условий и требований нормативных документов. Для точных расчетов рекомендуется проконсультироваться со специалистами.
-          </p>
-        </div>
+        <h2 className="section-title text-zasvet-white mb-12">Калькулятор окупаемости</h2>
         
         <div className="max-w-4xl mx-auto">
           <div 
