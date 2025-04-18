@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LightbulbIcon } from 'lucide-react';
 import { recommendedLux } from './illumination/data';
 import { IlluminationFormData, TableData } from './illumination/types';
-import { calculateOptimalLuminaires, calculateIllumination } from './illumination/calculations';
+import { calculateOptimalLuminaires } from './illumination/utils/optimizationLogic';
 import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
 
@@ -23,14 +23,6 @@ const IlluminationCalculator: React.FC = () => {
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [bestResult, setBestResult] = useState<TableData | null>(null);
-  const [illuminationValues, setIlluminationValues] = useState({
-    avgByFlux: 0,
-    average: 0,
-    minimum: 0,
-    uniformity: 0,
-    kz: 1.1,
-    eta: 0.85
-  });
   const [layout, setLayout] = useState({ 
     cols: 0, 
     rows: 0, 
@@ -88,12 +80,14 @@ const IlluminationCalculator: React.FC = () => {
     setTableData(newTableData);
     setBestResult(newBestResult);
     
-    // Calculate detailed illumination
-    const { layout: newLayout, illuminationValues: newIlluminationValues } = 
-      calculateIllumination(L, W, H, newBestResult);
+    setLayout({
+      cols: newBestResult.grid!.cols, 
+      rows: newBestResult.grid!.rows, 
+      xSp: 0, 
+      ySp: 0, 
+      N: newBestResult.count
+    });
     
-    setLayout(newLayout);
-    setIlluminationValues(newIlluminationValues);
     setShowResults(true);
   };
   
@@ -121,7 +115,14 @@ const IlluminationCalculator: React.FC = () => {
               <IlluminationResults 
                 tableData={tableData}
                 bestResult={bestResult}
-                illuminationValues={illuminationValues}
+                illuminationValues={{
+                  avgByFlux: 0,
+                  average: 0,
+                  minimum: 0,
+                  uniformity: 0,
+                  kz: 1.1,
+                  eta: 0.85
+                }}
                 formData={formData}
                 layout={layout}
               />

@@ -28,7 +28,6 @@ interface IlluminationResultsProps {
 const IlluminationResults: React.FC<IlluminationResultsProps> = ({
   tableData,
   bestResult,
-  illuminationValues,
   formData,
   layout
 }) => {
@@ -96,21 +95,15 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
           <canvas ref={canvasRef} className="max-w-full" />
         </div>
         
-        <Alert className="bg-zasvet-gray/20 border-zasvet-gold/20">
-          <div className="text-white text-sm">
-            <p>
-              <strong className="text-zasvet-gold">Средняя освещенность (люмен-метод):</strong> {illuminationValues.avgByFlux} лк
-            </p>
-            <p>
-              <strong className="text-zasvet-gold">Минимальная освещенность:</strong> {illuminationValues.minimum} лк
-            </p>
-            {bestResult?.perfectGrid && (
-              <p className="mt-2">
+        {bestResult?.perfectGrid && (
+          <Alert className="bg-zasvet-gray/20 border-zasvet-gold/20">
+            <div className="text-white text-sm">
+              <p>
                 <strong className="text-zasvet-gold">✓ Идеальная сетка:</strong> {bestResult.grid?.rows} × {bestResult.grid?.cols}
               </p>
-            )}
-          </div>
-        </Alert>
+            </div>
+          </Alert>
+        )}
       </div>
     </div>
   );
