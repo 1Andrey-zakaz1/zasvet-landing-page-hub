@@ -29,7 +29,7 @@ const Index = () => {
         <DesignersSection />
         <InstallersSection />
         
-        <section className="container mx-auto px-4 py-16 md:py-20">
+        <section className="container mx-auto px-4 py-16 md:py-20 mt-20">
           <Alert 
             variant="default" 
             className="mb-4 bg-zasvet-gold text-zasvet-black border-transparent text-center text-base font-bold"
@@ -63,4 +63,3 @@ const Index = () => {
 };
 
 export default Index;
-
