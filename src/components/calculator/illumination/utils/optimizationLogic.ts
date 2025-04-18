@@ -114,6 +114,7 @@ export const calculateIllumination = (
     }
   }
   
+  // Updated calculation with Kz and eta coefficients
   const deliveredFlux = N * best.flux * eta / Kz;
   const avgByFlux = deliveredFlux / area;
   const avgPoint = (totalLux * eta / Kz) / (gp * gp);
