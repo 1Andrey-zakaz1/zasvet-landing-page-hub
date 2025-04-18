@@ -17,11 +17,16 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // 1) Initial N using lumen method (for optimization)
-    const phiReq0 = requiredLux * area * Kz / eta;
-    let N = Math.ceil(phiReq0 / m.flux);
+    // 1) Calculate effective flux considering efficiency and safety factor
+    const effFlux = m.flux * eta / Kz;
     
-    // 2) Iteratively increase N until point average >= E_req
+    // 2) Required total flux using lumen method
+    const phiReq = requiredLux * area;
+    
+    // 3) Initial number of luminaires from lumen method
+    let N = Math.ceil(phiReq / effFlux);
+    
+    // 4) Verify using point method and adjust if needed
     let avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
     
     const MAX_ITERATIONS = 200;
@@ -33,7 +38,7 @@ export const calculateOptimalLuminaires = (
       iterations++;
     }
     
-    // 3) Use findBestGrid for optimal grid layout
+    // 5) Find optimal grid layout
     const grid = findBestGrid(N, roomLength, roomWidth);
     
     if (grid.rows * grid.cols > N) {
@@ -41,13 +46,16 @@ export const calculateOptimalLuminaires = (
       avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
     }
     
+    // 6) Calculate average illumination using effective flux
+    const avgByFlux = (N * effFlux) / area;
+    
     const cost = N * m.price;
     
     tableData.push({
       ...m,
       count: N,
       totalCost: cost,
-      achieved: avgPt.toFixed(1),
+      achieved: avgByFlux.toFixed(1),
       grid,
       perfectGrid: true
     });
