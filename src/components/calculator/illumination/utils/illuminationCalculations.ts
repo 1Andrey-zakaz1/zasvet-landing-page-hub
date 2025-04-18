@@ -1,9 +1,8 @@
-
 import { findBestGrid } from './gridCalculations';
 
 // Constants
-export const Kz = 1.0;   // reserve coefficient (changed from 1.1 to 1.0)
-export const eta = 0.90;  // utilization coefficient (changed from 0.85 to 0.90)
+export const Kz = 0.8;   // reserve coefficient changed from 0.90 to 0.80
+export const eta = 0.90;  // utilization coefficient remains the same
 
 /**
  * Calculates average illumination using point method for given number of luminaires
