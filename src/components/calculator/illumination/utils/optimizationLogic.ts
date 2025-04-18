@@ -1,4 +1,3 @@
-
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { calculatePointAverage } from './illuminationCalculations';
@@ -23,8 +22,24 @@ export const calculateOptimalLuminaires = (
     // 2) Required total flux using lumen method
     const phiReq = requiredLux * area;
     
-    // 3) Initial number of luminaires from lumen method
-    let N = Math.ceil(phiReq / effFlux);
+    // 3) Calculate optimal number of luminaires
+    const rawN = phiReq / effFlux;
+    
+    const nFloor = Math.floor(rawN);
+    const nCeil = Math.ceil(rawN);
+    
+    const cand = [];
+    if (nFloor > 0) cand.push(nFloor);
+    if (nCeil > 0) cand.push(nCeil);
+    
+    const best = cand
+      .map(n => {
+        const avg = (effFlux * n) / area;
+        return { n, avg, diff: Math.abs(avg - requiredLux) };
+      })
+      .reduce((a, b) => a.diff <= b.diff ? a : b);
+    
+    let N = best.n;
     
     // 4) Verify using point method and adjust if needed
     let avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
@@ -47,7 +62,7 @@ export const calculateOptimalLuminaires = (
     }
     
     // 6) Calculate average illumination using effective flux
-    const avgByFlux = (N * effFlux) / area;
+    const avgLux = (N * effFlux) / area;
     
     const cost = N * m.price;
     
@@ -55,7 +70,7 @@ export const calculateOptimalLuminaires = (
       ...m,
       count: N,
       totalCost: cost,
-      achieved: avgByFlux.toFixed(1),
+      achieved: avgLux.toFixed(1),
       grid,
       perfectGrid: true
     });
