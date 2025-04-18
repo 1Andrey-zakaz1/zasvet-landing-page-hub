@@ -1,12 +1,14 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { recommendedLux } from './illumination/data';
 import { IlluminationFormData, TableData } from './illumination/types';
 import { calculateOptimalLuminaires } from './illumination/utils/optimizationLogic';
 import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const IlluminationCalculator = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -85,6 +87,7 @@ const IlluminationCalculator = () => {
     });
     
     setShowResults(true);
+    // Don't hide the form after calculation
   };
   
   return (
@@ -93,65 +96,67 @@ const IlluminationCalculator = () => {
         <h2 className="section-title text-zasvet-white mb-12">Калькулятор расчета освещенности помещения</h2>
         
         <div className="max-w-4xl mx-auto">
-          <div 
-            className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg mb-4 cursor-pointer border border-zasvet-gold/30"
-            onClick={toggleForm}
-            style={{ display: (showResults) ? 'none' : 'flex' }}
+          <Collapsible 
+            open={isExpanded}
+            onOpenChange={setIsExpanded}
+            className="mb-4"
           >
-            <h3 className="text-xl font-bold text-zasvet-white flex items-center">
-              <Lightbulb className="mr-2 h-5 w-5" /> 
-              Расчет - подбор светильников
-            </h3>
-            <Button 
-              variant="gold" 
-              className="transition-all duration-300"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsExpanded(true);
-              }}
+            <div 
+              className="flex justify-between items-center bg-zasvet-gray/20 p-4 rounded-lg cursor-pointer border border-zasvet-gold/30"
             >
-              {isExpanded ? 
-                <><ChevronUp className="mr-1" /> Свернуть</> : 
-                <><ChevronDown className="mr-1" /> Рассчитать</>
-              }
-            </Button>
-          </div>
-          
-          {isExpanded && !showResults && (
-            <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
-              <CardHeader className="bg-transparent text-zasvet-white rounded-t-lg">
-                <CardTitle className="text-xl flex items-center" />
-              </CardHeader>
+              <h3 className="text-xl font-bold text-zasvet-white flex items-center">
+                <Lightbulb className="mr-2 h-5 w-5" /> 
+                Расчет - подбор светильников
+              </h3>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="gold" 
+                  className="transition-all duration-300"
+                >
+                  {isExpanded ? 
+                    <><ChevronUp className="mr-1" /> Свернуть</> : 
+                    <><ChevronDown className="mr-1" /> Рассчитать</>
+                  }
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent>
+              <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8 mt-4">
+                <CardHeader className="bg-transparent text-zasvet-white rounded-t-lg">
+                  <CardTitle className="text-xl flex items-center" />
+                </CardHeader>
+                
+                <CardContent className="pt-6">
+                  <div className="space-y-4">
+                    <IlluminationForm 
+                      formData={formData}
+                      handleChange={handleChange}
+                      handleSelectChange={handleSelectChange}
+                      calculateResults={calculateResults}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
               
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <IlluminationForm 
-                    formData={formData}
-                    handleChange={handleChange}
-                    handleSelectChange={handleSelectChange}
-                    calculateResults={calculateResults}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          )}
-          
-          {showResults && (
-            <IlluminationResults 
-              tableData={tableData}
-              bestResult={bestResult}
-              illuminationValues={{
-                avgByFlux: 0,
-                average: 0,
-                minimum: 0,
-                uniformity: 0,
-                kz: 1.1,
-                eta: 0.85
-              }}
-              formData={formData}
-              layout={layout}
-            />
-          )}
+              {showResults && (
+                <IlluminationResults 
+                  tableData={tableData}
+                  bestResult={bestResult}
+                  illuminationValues={{
+                    avgByFlux: 0,
+                    average: 0,
+                    minimum: 0,
+                    uniformity: 0,
+                    kz: 1.1,
+                    eta: 0.85
+                  }}
+                  formData={formData}
+                  layout={layout}
+                />
+              )}
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
     </section>
