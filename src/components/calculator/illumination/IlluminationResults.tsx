@@ -1,6 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Alert } from '@/components/ui/alert';
+import { CircleCheck } from 'lucide-react';
 import { TableData, IlluminationFormData } from './types';
 import { drawRoomLayout } from './calculations';
 
@@ -68,11 +69,16 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
                 key={index}
                 className={`${
                   row.model === bestResult?.model 
-                    ? "bg-zasvet-gold/10 font-medium" 
+                    ? "bg-zasvet-gold/30 font-bold border-2 border-zasvet-gold" 
                     : "bg-zasvet-gray/10"
                 }`}
               >
-                <td className="border border-zasvet-gold/20 p-2 text-left text-white">{row.model}</td>
+                <td className="border border-zasvet-gold/20 p-2 text-left text-white">
+                  {row.model === bestResult?.model && (
+                    <CircleCheck className="inline-block mr-2 text-zasvet-gold" />
+                  )}
+                  {row.model}
+                </td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.flux}</td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.power}</td>
                 <td className="border border-zasvet-gold/20 p-2 text-center text-white">{row.price}</td>
@@ -97,9 +103,10 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
         
         {bestResult?.perfectGrid && (
           <Alert className="bg-zasvet-gray/20 border-zasvet-gold/20">
-            <div className="text-white text-sm">
+            <div className="text-white text-sm flex items-center">
+              <CircleCheck className="mr-2 text-zasvet-gold" />
               <p>
-                <strong className="text-zasvet-gold">✓ Идеальная сетка:</strong> {bestResult.grid?.rows} × {bestResult.grid?.cols}
+                <strong className="text-zasvet-gold">Идеальная сетка:</strong> {bestResult.grid?.rows} × {bestResult.grid?.cols}
               </p>
             </div>
           </Alert>
@@ -110,3 +117,4 @@ const IlluminationResults: React.FC<IlluminationResultsProps> = ({
 };
 
 export default IlluminationResults;
+
