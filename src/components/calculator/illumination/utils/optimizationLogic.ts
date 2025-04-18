@@ -1,3 +1,4 @@
+
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { calculatePointAverage } from './illuminationCalculations';
