@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +20,11 @@ const IlluminationForm: React.FC<IlluminationFormProps> = ({
   handleSelectChange,
   calculateResults
 }) => {
+  // Sort room types by illumination level
+  const sortedRoomTypes = Object.entries(recommendedLux)
+    .sort(([, a], [, b]) => a - b)
+    .map(([type]) => type);
+
   return (
     <form onSubmit={calculateResults} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -83,12 +89,21 @@ const IlluminationForm: React.FC<IlluminationFormProps> = ({
                 <SelectValue placeholder="Выберите тип помещения" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="office">Офис</SelectItem>
-                <SelectItem value="warehouse">Склад</SelectItem>
-                <SelectItem value="corridor">Коридор</SelectItem>
-                <SelectItem value="kladovka">Кладовка</SelectItem>
-                <SelectItem value="retail">Торговый зал</SelectItem>
-                <SelectItem value="vitrina">Витрина</SelectItem>
+                {sortedRoomTypes.map(type => {
+                  const labels: Record<string, string> = {
+                    corridor: 'Коридор',
+                    kladovka: 'Кладовка',
+                    warehouse: 'Склад',
+                    office: 'Офис',
+                    retail: 'Торговый зал',
+                    vitrina: 'Витрина'
+                  };
+                  return (
+                    <SelectItem key={type} value={type}>
+                      {labels[type]}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
           </div>
