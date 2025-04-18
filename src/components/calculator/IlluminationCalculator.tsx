@@ -97,7 +97,7 @@ const IlluminationCalculator = () => {
         
         <div className="max-w-4xl mx-auto">
           <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
-            <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
+            <CardHeader className="bg-transparent text-zasvet-white rounded-t-lg">
               <CardTitle className="text-xl flex items-center">
                 <LightbulbIcon className="mr-2 h-5 w-5" /> 
                 Расчет освещенности помещения
