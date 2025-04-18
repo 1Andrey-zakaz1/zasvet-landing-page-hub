@@ -1,3 +1,4 @@
+
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { calculatePointAverage } from './illuminationCalculations';
@@ -46,7 +47,8 @@ export const calculateOptimalLuminaires = (
 
     const bestOpt = options.reduce((a, b) => a.diff <= b.diff ? a : b);
 
-    const N = bestOpt.N_full;
+    // Changed from const to let so we can modify N in the loop below
+    let N = bestOpt.N_full;
     const grid = bestOpt.grid;
     const achievedLux = bestOpt.avg;
     
