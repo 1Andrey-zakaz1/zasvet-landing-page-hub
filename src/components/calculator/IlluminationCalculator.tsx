@@ -9,13 +9,13 @@ import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
 
 const IlluminationCalculator: React.FC = () => {
-  // Form state
+  // Form state with new default value of 301
   const [formData, setFormData] = useState<IlluminationFormData>({
     roomLength: '',
     roomWidth: '',
     roomHeight: '3',
     roomType: 'office',
-    requiredLux: '300',
+    requiredLux: '301',
     luminaireType: 'office'
   });
   
