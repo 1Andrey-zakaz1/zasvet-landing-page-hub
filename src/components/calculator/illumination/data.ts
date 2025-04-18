@@ -1,10 +1,11 @@
-
-// Recommended illumination by room type (СП 52.13330.2016)
+// Recommended illumination levels by room type (СП 52.13330.2016)
 export const recommendedLux = {
-  "office": 300,    // Office: 300 lx
-  "warehouse": 75,  // Warehouse: 75 lx
-  "corridor": 50,   // Corridor: 50 lx
-  "retail": 300     // Retail: 300 lx
+  "corridor": 51,     // Corridor: 51 lx
+  "kladovka": 71,     // Storage room: 71 lx
+  "warehouse": 201,   // Warehouse: 201 lx
+  "office": 301,      // Office: 301 lx
+  "retail": 501,      // Trading hall: 501 lx
+  "vitrina": 1001     // Display window: 1001 lx
 };
 
 // Luminaire models database

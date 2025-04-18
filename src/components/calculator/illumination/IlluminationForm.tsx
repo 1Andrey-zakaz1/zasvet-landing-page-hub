@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -87,7 +86,9 @@ const IlluminationForm: React.FC<IlluminationFormProps> = ({
                 <SelectItem value="office">Офис</SelectItem>
                 <SelectItem value="warehouse">Склад</SelectItem>
                 <SelectItem value="corridor">Коридор</SelectItem>
+                <SelectItem value="kladovka">Кладовка</SelectItem>
                 <SelectItem value="retail">Торговый зал</SelectItem>
+                <SelectItem value="vitrina">Витрина</SelectItem>
               </SelectContent>
             </Select>
           </div>
