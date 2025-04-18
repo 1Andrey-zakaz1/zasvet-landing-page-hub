@@ -29,6 +29,8 @@ const Index = () => {
         <DesignersSection />
         <InstallersSection />
         
+        <LedCalculator />
+        
         <section className="container mx-auto px-4 py-16 md:py-24">
           <Alert 
             variant="default" 
@@ -47,7 +49,6 @@ const Index = () => {
           </Alert>
         </section>
         
-        <LedCalculator />
         <CableCalculator />
         <IlluminationCalculator />
         <VideoSlider />
