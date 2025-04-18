@@ -1,7 +1,8 @@
+
 import { findBestGrid } from './gridCalculations';
 
 // Constants
-export const Kz = 0.8;   // reserve coefficient changed from 0.90 to 0.80
+export const Kz = 1.2;   // safety coefficient updated from 0.8 to 1.2
 export const eta = 0.90;  // utilization coefficient remains the same
 
 /**
