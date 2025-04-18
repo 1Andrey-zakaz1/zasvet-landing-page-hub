@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LightbulbIcon } from 'lucide-react';
@@ -8,7 +7,7 @@ import { calculateOptimalLuminaires } from './illumination/utils/optimizationLog
 import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
 
-const IlluminationCalculator: React.FC = () => {
+const IlluminationCalculator = () => {
   // Form state with new default value of 301
   const [formData, setFormData] = useState<IlluminationFormData>({
     roomLength: '',
@@ -92,47 +91,52 @@ const IlluminationCalculator: React.FC = () => {
   };
   
   return (
-    <section className="container mx-auto px-4 py-12">
-      <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
-        <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
-          <CardTitle className="text-xl flex items-center">
-            <LightbulbIcon className="mr-2 h-5 w-5" />
-            Расчет освещенности помещения
-          </CardTitle>
-        </CardHeader>
+    <section id="calculator" className="bg-zasvet-black py-16 md:py-24">
+      <div className="container mx-auto px-4">
+        <h2 className="section-title text-zasvet-white mb-12">Калькулятор расчета освещенности помещения</h2>
         
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <IlluminationForm 
-              formData={formData}
-              handleChange={handleChange}
-              handleSelectChange={handleSelectChange}
-              calculateResults={calculateResults}
-            />
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-zasvet-gray/10 border border-zasvet-gold/20 shadow-xl mb-8">
+            <CardHeader className="bg-zasvet-gold/90 text-zasvet-black rounded-t-lg">
+              <CardTitle className="text-xl flex items-center">
+                <LightbulbIcon className="mr-2 h-5 w-5" /> 
+                Расчет освещенности помещения
+              </CardTitle>
+            </CardHeader>
             
-            {/* Results section */}
-            {showResults && (
-              <IlluminationResults 
-                tableData={tableData}
-                bestResult={bestResult}
-                illuminationValues={{
-                  avgByFlux: 0,
-                  average: 0,
-                  minimum: 0,
-                  uniformity: 0,
-                  kz: 1.1,
-                  eta: 0.85
-                }}
-                formData={formData}
-                layout={layout}
-              />
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <IlluminationForm 
+                  formData={formData}
+                  handleChange={handleChange}
+                  handleSelectChange={handleSelectChange}
+                  calculateResults={calculateResults}
+                />
+                
+                {/* Results section */}
+                {showResults && (
+                  <IlluminationResults 
+                    tableData={tableData}
+                    bestResult={bestResult}
+                    illuminationValues={{
+                      avgByFlux: 0,
+                      average: 0,
+                      minimum: 0,
+                      uniformity: 0,
+                      kz: 1.1,
+                      eta: 0.85
+                    }}
+                    formData={formData}
+                    layout={layout}
+                  />
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </section>
   );
 };
 
 export default IlluminationCalculator;
-
