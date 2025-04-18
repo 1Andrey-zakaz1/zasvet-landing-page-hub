@@ -1,9 +1,8 @@
-
 import { TableData, IlluminationGrid } from './types';
 import { luminaireModels } from './data';
 
 // ======= Запас и коэффициент использования =======
-const Kz = 1.1;   // коэффициент запаса
+const Kz = 1.0;   // коэффициент запаса (изменен с 1.1 на 1.0)
 const eta = 0.85;  // коэффициент использования
 
 /**
