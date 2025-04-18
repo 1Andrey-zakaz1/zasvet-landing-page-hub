@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -29,10 +28,10 @@ const Index = () => {
         <DesignersSection />
         <InstallersSection />
         
-        <section className="container mx-auto px-4 py-16 md:py-24">
+        <section className="container mx-auto px-4 py-8 md:py-12">
           <Alert 
             variant="default" 
-            className="mb-8 bg-zasvet-gold text-zasvet-black border-transparent text-center text-base font-bold"
+            className="mb-4 bg-zasvet-gold text-zasvet-black border-transparent text-center text-base font-bold"
           >
             <div className="flex items-center justify-center">
               <AlertTriangle className="h-5 w-5 mr-2 text-zasvet-black" />
