@@ -47,9 +47,11 @@ const Index = () => {
           </Alert>
         </section>
         
-        <LedCalculator />
-        <CableCalculator />
-        <IlluminationCalculator />
+        <div className="container mx-auto px-4 mt-20">
+          <LedCalculator />
+          <CableCalculator />
+          <IlluminationCalculator />
+        </div>
 
         <VideoSlider />
         <ProductSlider />
