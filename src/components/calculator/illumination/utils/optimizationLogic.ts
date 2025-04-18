@@ -1,4 +1,3 @@
-
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { findExactGrid } from './gridCalculations';

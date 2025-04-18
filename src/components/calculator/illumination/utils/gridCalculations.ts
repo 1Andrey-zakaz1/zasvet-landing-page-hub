@@ -5,7 +5,7 @@ import { IlluminationGrid } from '../types';
  * minimizing |cols/rows – (L/W)|.
  * Returns {rows:1, cols:N} for prime N.
  */
-export function findExactGrid(N: number, L: number, W: number) {
+export function findExactGrid(N: number, L: number, W: number): IlluminationGrid {
   const target = L / W;
   let best = { rows: 1, cols: N, diff: Math.abs(N - target) };
   
@@ -32,7 +32,8 @@ export function findExactGrid(N: number, L: number, W: number) {
   return {
     rows: best.rows,
     cols: best.cols,
-    ratioDiff: best.diff
+    ratioDiff: best.diff,
+    wasted: 0  // Exact grid always has 0 wasted cells
   };
 }
 
