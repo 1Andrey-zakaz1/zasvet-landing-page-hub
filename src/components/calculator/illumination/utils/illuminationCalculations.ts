@@ -2,7 +2,7 @@
 import { findBestGrid } from './gridCalculations';
 
 // Constants
-export const Kz = 1.2;   // safety coefficient updated from 0.8 to 1.2
+export const Kz = 1.1;   // safety coefficient updated from 1.2 to 1.1
 export const eta = 0.90;  // utilization coefficient remains the same
 
 /**
