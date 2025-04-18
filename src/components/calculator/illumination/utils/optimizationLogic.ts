@@ -22,26 +22,35 @@ export const calculateOptimalLuminaires = (
     // 2) Required total flux using lumen method
     const phiReq = requiredLux * area;
     
-    // 3) Calculate optimal number of luminaires
+    // 3) Calculate optimal number of luminaires with grid consideration
     const rawN = phiReq / effFlux;
-    
     const nFloor = Math.floor(rawN);
     const nCeil = Math.ceil(rawN);
+    const candidates = [];
+    if (nFloor > 0) candidates.push(nFloor);
+    if (nCeil > 0 && nCeil !== nFloor) candidates.push(nCeil);
+
+    // Find best option considering grid layout
+    const options = candidates.map(n0 => {
+      const grid = findBestGrid(n0, roomLength, roomWidth);
+      const N_full = grid.rows * grid.cols;
+      const avg = (effFlux * N_full) / area;
+      return {
+        n0,
+        N_full,
+        grid,
+        avg,
+        diff: Math.abs(avg - requiredLux)
+      };
+    });
+
+    const bestOpt = options.reduce((a, b) => a.diff <= b.diff ? a : b);
+
+    const N = bestOpt.N_full;
+    const grid = bestOpt.grid;
+    const achievedLux = bestOpt.avg;
     
-    const cand = [];
-    if (nFloor > 0) cand.push(nFloor);
-    if (nCeil > 0) cand.push(nCeil);
-    
-    const best = cand
-      .map(n => {
-        const avg = (effFlux * n) / area;
-        return { n, avg, diff: Math.abs(avg - requiredLux) };
-      })
-      .reduce((a, b) => a.diff <= b.diff ? a : b);
-    
-    let N = best.n;
-    
-    // 4) Verify using point method and adjust if needed
+    // 4) Verify using point method
     let avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
     
     const MAX_ITERATIONS = 200;
@@ -53,24 +62,13 @@ export const calculateOptimalLuminaires = (
       iterations++;
     }
     
-    // 5) Find optimal grid layout
-    const grid = findBestGrid(N, roomLength, roomWidth);
-    
-    if (grid.rows * grid.cols > N) {
-      N = grid.rows * grid.cols;
-      avgPt = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
-    }
-    
-    // 6) Calculate average illumination using effective flux
-    const avgLux = (N * effFlux) / area;
-    
     const cost = N * m.price;
     
     tableData.push({
       ...m,
       count: N,
       totalCost: cost,
-      achieved: avgLux.toFixed(1),
+      achieved: achievedLux.toFixed(1),
       grid,
       perfectGrid: true
     });
