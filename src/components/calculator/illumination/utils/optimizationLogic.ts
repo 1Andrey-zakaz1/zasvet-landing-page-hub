@@ -1,7 +1,7 @@
 
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
-import { findBestGrid } from './gridCalculations';
+import { findExactGrid } from './gridCalculations';
 import { Kz, eta } from './illuminationCalculations';
 
 export const calculateOptimalLuminaires = (
@@ -30,17 +30,11 @@ export const calculateOptimalLuminaires = (
     if (nFloor > 0) candidates.push(nFloor);
     if (nCeil > 0 && nCeil !== nFloor) candidates.push(nCeil);
     
-    // 4) For each candidate, find the final grid and calculate diff
-    const options = candidates.map(n0 => {
-      const grid = findBestGrid(n0, roomLength, roomWidth);
-      const N_full = grid.rows * grid.cols;
-      
-      // Average by lumen method
-      const avgLux = (effFlux * N_full) / area;
-      
+    // 4) For each candidate calculate average illumination
+    const options = candidates.map(N => {
+      const avgLux = (effFlux * N) / area;
       return {
-        N_full,
-        grid,
+        N,
         avgLux,
         diff: Math.abs(avgLux - requiredLux)
       };
@@ -49,9 +43,9 @@ export const calculateOptimalLuminaires = (
     // 5) Choose the option with minimal difference
     const bestOpt = options.reduce((a, b) => a.diff <= b.diff ? a : b);
     
-    // 6) Final N and grid that will go to the table
-    const N = bestOpt.N_full;
-    const grid = bestOpt.grid;
+    // 6) Final N and exact grid calculation
+    const N = bestOpt.N;
+    const grid = findExactGrid(N, roomLength, roomWidth);
     const achievedLux = bestOpt.avgLux;
     
     tableData.push({
@@ -63,15 +57,8 @@ export const calculateOptimalLuminaires = (
     });
   });
   
-  // Select the best option from all models
-  const perfectOptions = tableData.filter(r => r.perfectGrid);
-  let best: TableData | null = null;
-  
-  if (perfectOptions.length > 0) {
-    best = perfectOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
-  } else {
-    best = tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
-  }
+  // Select the best option by minimal total cost
+  const best = tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
   
   return { tableData, bestResult: best };
 };
@@ -82,7 +69,6 @@ export const calculateIllumination = (
   roomHeight: number,
   best: TableData
 ) => {
-  // Using the final grid values from the table data
   const N = best.count;
   const { rows, cols } = best.grid!;
   

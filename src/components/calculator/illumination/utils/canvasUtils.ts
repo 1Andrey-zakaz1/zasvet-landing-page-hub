@@ -24,10 +24,11 @@ export const drawRoomLayout = (
     
     const xSpacing = roomLength / layout.cols;
     const ySpacing = roomWidth / layout.rows;
+    let idx = 0;
     
     for (let r = 0; r < layout.rows; r++) {
       for (let c = 0; c < layout.cols; c++) {
-        if (r * layout.cols + c >= layout.N) break;
+        if (idx++ >= layout.N) break;
         
         const x = (c + 0.5) * xSpacing * scale;
         const y = (r + 0.5) * ySpacing * scale;

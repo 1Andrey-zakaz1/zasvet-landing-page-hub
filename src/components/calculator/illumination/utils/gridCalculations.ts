@@ -1,5 +1,40 @@
-
 import { IlluminationGrid } from '../types';
+
+/**
+ * For given N and L×W proportions, finds rows×cols == N,
+ * minimizing |cols/rows – (L/W)|.
+ * Returns {rows:1, cols:N} for prime N.
+ */
+export function findExactGrid(N: number, L: number, W: number) {
+  const target = L / W;
+  let best = { rows: 1, cols: N, diff: Math.abs(N - target) };
+  
+  for (let r = 1; r <= Math.sqrt(N); r++) {
+    if (N % r === 0) {
+      const c = N / r;
+      const diff = Math.abs((c/r) - target);
+      if (diff < best.diff) {
+        best = { rows: r, cols: c, diff };
+      }
+      // Try mirrored variant
+      const diff2 = Math.abs((r/c) - target);
+      if (diff2 < best.diff) {
+        best = { rows: c, cols: r, diff: diff2 };
+      }
+    }
+  }
+  
+  // Align rows along the longer side
+  if (L >= W && best.cols < best.rows) {
+    [best.rows, best.cols] = [best.cols, best.rows];
+  }
+  
+  return {
+    rows: best.rows,
+    cols: best.cols,
+    ratioDiff: best.diff
+  };
+}
 
 /**
  * For given N and L×W proportions, selects rows×cols ≥ N
