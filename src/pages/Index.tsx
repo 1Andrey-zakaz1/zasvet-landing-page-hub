@@ -16,6 +16,7 @@ import CableCalculator from '@/components/calculator/CableCalculator';
 import IlluminationCalculator from '@/components/calculator/IlluminationCalculator';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
+import CatalogSection from '@/components/catalog/CatalogSection';
 
 const Index = () => {
   return (
@@ -51,6 +52,11 @@ const Index = () => {
           <LedCalculator />
           <CableCalculator />
           <IlluminationCalculator />
+        </div>
+        
+        {/* Каталог светильников добавлен после калькуляторов */}
+        <div className="container mx-auto px-4 mt-20">
+          <CatalogSection />
         </div>
 
         <VideoSlider />
