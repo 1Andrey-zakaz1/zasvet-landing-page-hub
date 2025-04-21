@@ -5,7 +5,7 @@ import CatalogList from "@/components/catalog/CatalogList";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { catalogData } from "@/components/catalog/catalogData";
-import { makePrettyKSS } from "@/components/catalog/useNormalizedKssList";
+import { makePrettyKSS, getNormalizedKssKey } from "@/components/catalog/useNormalizedKssList";
 
 export interface Fixture {
   id: number;
@@ -71,18 +71,21 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
     if (filters.lumen_max && f.luminous_flux > Number(filters.lumen_max)) return false;
     if (filters.ip_rating && f.ip_rating !== filters.ip_rating) return false;
     
-    // Improved KSS type filtering
-    if (filters.kss_type && f.beam_angle) {
-      // Преобразуем beam_angle в нормализованный формат для сравнения
-      const pretty = makePrettyKSS(f.beam_angle);
-      const normalized = pretty || f.beam_angle.replace(/\s+/g, " ").replace("°", "").trim();
-      
-      // Если не совпадает с фильтром, возвращаем false
-      if (normalized !== filters.kss_type) {
-        return false;
+    // Improved KSS type filtering with normalization for comparison
+    if (filters.kss_type) {
+      if (f.beam_angle) {
+        // Преобразуем beam_angle в нормализованный формат для сравнения
+        const pretty = makePrettyKSS(f.beam_angle) ?? f.beam_angle.replace(/\s+/g, " ").replace("°", "").trim();
+        const normalizedBeamAngle = getNormalizedKssKey(pretty);
+
+        const normalizedFilter = getNormalizedKssKey(filters.kss_type);
+
+        if (normalizedBeamAngle !== normalizedFilter) {
+          return false;
+        }
+      } else {
+        return false; // Если у светильника нет КСС, но фильтр установлен
       }
-    } else if (filters.kss_type) {
-      return false; // Если у светильника нет КСС, но фильтр установлен
     }
     
     if (filters.length_min && Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0) < Number(filters.length_min)) return false;
@@ -186,3 +189,4 @@ const CatalogPage: React.FC = () => {
 };
 
 export default CatalogPage;
+

@@ -1,4 +1,6 @@
 
+// Modify PowerSliderFilter to use minimal power 10W as minimum instead of 24W
+
 import React from "react";
 import { SliderRange } from "../SliderRange";
 import type { FilterValues } from "../CatalogFilterPanel";
@@ -18,7 +20,7 @@ const PowerSliderFilter: React.FC<Props> = ({
   <SliderRange
     label="Мощность, Вт"
     value={value}
-    min={min}
+    min={Math.min(min, 10)}  // ensure minimum is at least 10 if catalog data includes 10W
     max={max}
     onChange={([minVal, maxVal]) => setFilters(f => ({
       ...f,
@@ -30,3 +32,4 @@ const PowerSliderFilter: React.FC<Props> = ({
 );
 
 export default PowerSliderFilter;
+
