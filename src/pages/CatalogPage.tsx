@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
@@ -69,6 +70,9 @@ const CatalogPage: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const filtered = filterFixtures(catalogData, filters);
 
+  // Сортировка по убыванию светового потока:
+  const sorted = [...filtered].sort((a, b) => b.luminous_flux - a.luminous_flux);
+
   return (
     <div className="bg-zasvet-black min-h-screen py-10 px-4">
       <div className="container mx-auto max-w-7xl">
@@ -96,14 +100,14 @@ const CatalogPage: React.FC = () => {
         {isExpanded && (
           <>
             <CatalogFilterPanel filters={filters} setFilters={setFilters} />
-            <CatalogList fixtures={filtered.slice(0, 5)} />
-            {filtered.length > 5 && (
+            <CatalogList fixtures={sorted.slice(0, 5)} />
+            {sorted.length > 5 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
-                Найдено подходящих светильников: {filtered.length}. Показаны только первые 5. <br />
+                Найдено подходящих светильников: {sorted.length}. Показаны только первые 5. <br />
                 Уточните параметры поиска, чтобы увидеть остальные результаты.
               </div>
             )}
-            {filtered.length === 0 && (
+            {sorted.length === 0 && (
               <div className="mt-8 text-center text-zasvet-gold text-lg">
                 Светильники не найдены. Попробуйте скорректировать параметры поиска.
               </div>
