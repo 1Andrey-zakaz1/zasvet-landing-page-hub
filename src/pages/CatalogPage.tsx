@@ -88,6 +88,8 @@ const CatalogPage: React.FC = () => {
     power_max: "",
     lumen_min: "",
     lumen_max: "",
+    price_min: "",
+    price_max: "",
     ip_rating: "",
     kss_type: "",
     kss_angle: "",

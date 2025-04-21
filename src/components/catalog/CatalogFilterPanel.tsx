@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,11 +51,9 @@ const CatalogFilterPanel: React.FC<Props> = ({
   allIpRatings,
   allKssTypes,
 }) => {
-  // Диапазоны всех фильруемых чисел
   const [powerMin, powerMax] = getCatalogMinMax(catalogData, "power", false);
   const [lumenMin, lumenMax] = getCatalogMinMax(catalogData, "luminous_flux", false);
   const [lengthMin, lengthMax] = useMemo(() => {
-    // Парсим из строки L: ****
     const arr = catalogData.map(f => Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
   }, []);
@@ -70,7 +67,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
   }, []);
   const [priceMin, priceMax] = getCatalogMinMax(catalogData, "price", true);
 
-  // Текущее значение каждого диапазона (min/max)
   const current = {
     power: [
       filters.power_min !== "" ? Number(filters.power_min) : powerMin,
@@ -98,7 +94,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
     ] as [number, number],
   };
 
-  // Новая обработка КСС типов (без дублей, красивая сортировка)
   const uniqueKssTypes = useNormalizedKssList(allKssTypes);
 
   return (
@@ -127,7 +122,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         </select>
       </div>
 
-      {/* Бегунок мощности */}
       <SliderRange
         label="Мощность, Вт"
         value={current.power}
@@ -141,7 +135,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         colorThumb="primary"
       />
 
-      {/* Бегунок светового потока */}
       <SliderRange
         label="Световой поток, лм"
         value={current.lumen}
@@ -155,7 +148,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         colorThumb="orange"
       />
 
-      {/* Новый бегунок по цене */}
       <SliderRange
         label="Цена, ₽"
         value={current.price}
@@ -182,7 +174,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         </select>
       </div>
 
-      {/* КСС: новые значения и сортировка */}
       <div>
         <select
           className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
@@ -196,7 +187,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         </select>
       </div>
 
-      {/* Бегунки размеров */}
       <SliderRange
         label="Длина, мм"
         value={current.length}

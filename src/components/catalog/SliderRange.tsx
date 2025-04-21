@@ -40,18 +40,16 @@ export const SliderRange: React.FC<Props> = ({
     <div className="flex items-center gap-3">
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[0]}{unit}</span>
       <Slider
-        className="mx-2 w-full"
+        className={clsx("mx-2 w-full", 
+          "[&>.slider-thumb-0]:border-2", 
+          `[&>.slider-thumb-0]:${thumbColor[colorThumb]}`
+        )}
         min={min}
         max={max}
         step={step}
         value={[value[0], value[1]]}
         minStepsBetweenThumbs={1}
         onValueChange={([val1, val2]) => onChange([val1, val2])}
-        // Цвета точек слайдера
-        thumbClassName={clsx(
-          "border-2",
-          thumbColor[colorThumb]
-        )}
         style={{ maxWidth: "90%" }}
       />
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[1]}{unit}</span>
