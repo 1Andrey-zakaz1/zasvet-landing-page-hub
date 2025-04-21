@@ -10,18 +10,19 @@ type Props = {
   step?: number;
   onChange: (value: [number, number]) => void;
   label: string;
-  colorThumb?: "primary" | "orange" | "green" | "blue";
+  colorThumb?: "primary" | "orange" | "green" | "blue" | "custom"; // добавил custom для красно-синего
   unit?: string;
   minLabel?: string;
   maxLabel?: string;
 };
 
-// Новые цвета для двух бегунков для явного их различия
+// Цвета для бегунков: минимум — синий, максимум — красный
 const thumbColors = {
   primary: ["bg-[#9b87f5] border-[#9b87f5]", "bg-[#7E69AB] border-[#7E69AB]"],
   orange: ["bg-[#F97316] border-[#F97316]", "bg-[#FCA745] border-[#FCA745]"],
   green: ["bg-[#22c55e] border-[#22c55e]", "bg-[#16a34a] border-[#16a34a]"],
   blue: ["bg-[#1EAEDB] border-[#1EAEDB]", "bg-[#0FA0CE] border-[#0FA0CE]"],
+  custom: ["bg-[#1EAEDB] border-[#1EAEDB]", "bg-[#ea384c] border-[#ea384c]"], // синий и красный
 };
 
 export const SliderRange: React.FC<Props> = ({
