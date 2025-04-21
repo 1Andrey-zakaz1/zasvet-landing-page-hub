@@ -27,13 +27,8 @@ type Props = {
   filters: FilterValues;
   setFilters: React.Dispatch<React.SetStateAction<FilterValues>>;
   allSeries: string[];
+  allIpRatings: string[];
 };
-
-const ipOptions = [
-  { value: "", label: "Любой IP" },
-  { value: "20", label: "IP20" },
-  { value: "67", label: "IP67" }
-];
 
 const kssOptions = [
   { value: "", label: "Любая КСС" },
@@ -43,7 +38,7 @@ const kssOptions = [
   { value: "Г", label: "Г - 60°" }
 ];
 
-const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries }) => {
+const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries, allIpRatings }) => {
   return (
     <form
       className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in"
@@ -119,8 +114,9 @@ const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries })
           value={filters.ip_rating}
           onChange={e => setFilters(f => ({ ...f, ip_rating: e.target.value }))}
         >
-          {ipOptions.map(opt => (
-            <option value={opt.value} key={opt.value}>{opt.label}</option>
+          <option value="">Любой IP</option>
+          {allIpRatings.map(ip => (
+            <option value={ip} key={ip}>{`IP${ip}`}</option>
           ))}
         </select>
       </div>

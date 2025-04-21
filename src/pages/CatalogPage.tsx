@@ -27,6 +27,14 @@ export interface Fixture {
 const allSeries = Array.from(new Set(catalogData.map(f => f.name.split(" ")[0])))
   .sort((a, b) => a.localeCompare(b));
 
+// Новый список уникальных IP в базе (например, ["20", "44", "54", "65", "66", "67"]), отсортированный по возрастанию
+const allIpRatings = Array.from(new Set(catalogData.map(f => f.ip_rating)))
+  .map(ip => ip.replace(/^IP/i, "")) // убрать IP если вдруг где-то есть
+  .filter(ip => !!ip && /^\d+$/.test(ip))
+  .map(Number)
+  .sort((a, b) => a - b)
+  .map(ip => String(ip));
+
 // Проверяем наличие дубликатов по имени
 const duplicateCheck = catalogData.reduce((acc, fixture) => {
   acc[fixture.name] = (acc[fixture.name] || 0) + 1;
@@ -120,7 +128,7 @@ const CatalogPage: React.FC = () => {
         </div>
         {isExpanded && (
           <>
-            <CatalogFilterPanel filters={filters} setFilters={setFilters} allSeries={allSeries} />
+            <CatalogFilterPanel filters={filters} setFilters={setFilters} allSeries={allSeries} allIpRatings={allIpRatings} />
             <CatalogList fixtures={sorted.slice(0, 5)} />
             {sorted.length > 5 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
@@ -146,3 +154,4 @@ const CatalogPage: React.FC = () => {
 };
 
 export default CatalogPage;
+
