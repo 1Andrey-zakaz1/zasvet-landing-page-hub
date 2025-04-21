@@ -1,149 +1,54 @@
 
 import type { Fixture } from "./CatalogSection";
 
+// Простор (и другие серии по вашему списку, остальные удалить если не указаны)
 export const catalogPart4: Fixture[] = [
   {
-    id: 270,
-    name: "Простор 30-54-5000-Д-220-универсальное",
-    power: 30,
-    luminous_flux: 3750,
-    ip_rating: "54",
-    color_temperature: 5000,
-    category: "Универсальное",
-    beam_angle: undefined,
-    warranty: undefined,
-    price: 6336,
-    material: "Сталь/призма 8 мм",
-    dimensions: "L: 1195 мм, W: 180 мм, H: 85 мм",
-    availability: true,
-    properties: {
-      "I": "5",
-      "P": "4",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -20 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 280,
+    name: "Простор 26-67-5000-Ш-220-Консоль",
+    power: 26, luminous_flux: 3400, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 7000,
+    material: "Алюминий", dimensions: "L: 280 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 271,
-    name: "Простор 40-54-5000-Д-220-универсальное",
-    power: 40,
-    luminous_flux: 5000,
-    ip_rating: "54",
-    color_temperature: 5000,
-    category: "Универсальное",
-    beam_angle: undefined,
-    warranty: undefined,
-    price: 7260,
-    material: "Сталь/призма 8 мм",
-    dimensions: "L: 1195 мм, W: 180 мм, H: 85 мм",
-    availability: true,
-    properties: {
-      "I": "5",
-      "P": "4",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -20 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 281,
+    name: "Простор 52-67-5000-Ш-220-Консоль",
+    power: 52, luminous_flux: 6800, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 12000,
+    material: "Алюминий", dimensions: "L: 550 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 172,
-    name: "Сокол 156-67-5000-Д-220-Скоба",
-    power: 156,
-    luminous_flux: 24024,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Поворотная лира",
-    beam_angle: undefined,
-    warranty: undefined,
-    price: 25644,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 450 мм, W: 350 мм, H: 100 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -60 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 282,
+    name: "Простор 78-67-5000-Ш-220-Консоль",
+    power: 78, luminous_flux: 10200, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 18000,
+    material: "Алюминий", dimensions: "L: 820 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 173,
-    name: "Сокол 156-67-5000-С-220-Скоба",
-    power: 156,
-    luminous_flux: 24024,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Поворотная лира",
-    beam_angle: undefined,
-    warranty: undefined,
-    price: 25644,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 450 мм, W: 350 мм, H: 100 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"С\"- 90°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -60 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 283,
+    name: "Простор 104-67-5000-Ш-220-Консоль",
+    power: 104, luminous_flux: 13600, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 24000,
+    material: "Алюминий", dimensions: "L: 1100 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 174,
-    name: "Сокол 156-67-5000-Г-220-Скоба",
-    power: 156,
-    luminous_flux: 24024,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Поворотная лира",
-    beam_angle: undefined,
-    warranty: undefined,
-    price: 25644,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 450 мм, W: 350 мм, H: 100 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Г\" - 60°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -60 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 284,
+    name: "Простор 128-67-5000-Ш-220-Консоль",
+    power: 128, luminous_flux: 17000, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 30000,
+    material: "Алюминий", dimensions: "L: 1350 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 175,
-    name: "Сокол 312-67-5000-Д-220-Скоба",
-    power: 312,
-    luminous_flux: 48048, 
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Поворотная лира",
-    beam_angle: "Д - 120°",
-    warranty: 5,
-    price: 51288,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 450 мм, W: 350 мм, H: 100 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "220",
-      "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -60 до + 40 °С",
-      "Светодиоды": "Lumileds"
-    }
+    id: 285,
+    name: "Простор 156-67-5000-Ш-220-Консоль",
+    power: 156, luminous_flux: 20800, ip_rating: "67", color_temperature: 5000,
+    category: "Консольное", beam_angle: "Ш", warranty: 5, price: 35000,
+    material: "Алюминий", dimensions: "L: 1650 мм, W: 120 мм, H: 80 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   }
 ];
