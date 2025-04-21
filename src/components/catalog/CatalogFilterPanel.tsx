@@ -1,6 +1,8 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 
 export interface FilterValues {
   query: string;
@@ -30,48 +32,83 @@ type Props = {
   allKssTypes: string[];
 };
 
+// Получение числового угла из строки КСС
 const getAngleFromKSS = (kss: string): number => {
-  const match = kss.match(/(\d+)°?/);
+  // КСС Ш (широкая) = 140, Д = 120, С = 90, Г = 60
+  if (kss === "Ш") return 140;
+  if (kss.startsWith("Д")) return 120;
+  if (kss.startsWith("С")) return 90;
+  if (kss.startsWith("Г")) return 60;
+
+  // К-12
+  if (kss.includes("12")) return 12;
+  // К-30
+  if (kss.includes("30")) return 30;
+
+  // Попробовать парсить числовое значение
+  const match = kss.match(/(\d+)[°]?/);
   if (match && match[1]) {
     return parseInt(match[1], 10);
   }
-  
-  if (kss === "Ш") return 140;
-  if (kss === "Д") return 120;
-  if (kss === "С") return 90;
-  if (kss === "Г") return 60;
-  if (kss.includes("К-30") || kss.includes("К30") || kss.includes("K-30") || kss.includes("K30")) return 30;
-  if (kss.includes("К-12") || kss.includes("К12") || kss.includes("K-12") || kss.includes("K12")) return 12;
-  
   return 0;
 };
+
+// Унификация и сортировка КСС
+function normalizedKssList(kssArr: string[]): string[] {
+  // Парсим все варианты, группируем: "К-12", "K-12", "К12", "K12", "К - 12°", etc → "К - 12°"
+  const set = new Set<string>();
+  let hasK12 = false, hasK30 = false;
+  kssArr.forEach(kss => {
+    if (/(к|k)[\s\-]?12/i.test(kss)) {
+      hasK12 = true;
+    } else if (/(к|k)[\s\-]?30/i.test(kss)) {
+      hasK30 = true;
+    } else if (/^ш$/i.test(kss)) {
+      set.add("Ш");
+    } else if (/^д/i.test(kss)) {
+      set.add("Д-120");
+    } else if (/^с/i.test(kss)) {
+      set.add("С");
+    } else if (/^г/i.test(kss)) {
+      set.add("Г");
+    } else {
+      set.add(kss.replace(/\s+/g, " ").replace("°", "").trim() + (kss.includes("°") ? "°" : ""));
+    }
+  });
+  if (hasK12) set.add("К - 12°");
+  if (hasK30) set.add("К - 30°");
+  // Удаляем возможные исходные K12/K-12/K-30/K30 и дубли (они уже добавлены красивым названием)
+  const arr = Array.from(set)
+    .filter(k => !/(к|k)[\s\-]?12/i.test(k) && !/(к|k)[\s\-]?30/i.test(k))
+    .concat(hasK12 ? ["К - 12°"] : [], hasK30 ? ["К - 30°"] : []);
+
+  // Специальная ручная сортировка:
+  // 1. "Ш", 2. "Д-120", далее по убыванию угла
+  return arr
+    .sort((a, b) => {
+      if (a === "Ш") return -1;
+      if (b === "Ш") return 1;
+      if (a === "Д-120") return -1;
+      if (b === "Д-120") return 1;
+      return getAngleFromKSS(b) - getAngleFromKSS(a);
+    });
+}
 
 const CatalogFilterPanel: React.FC<Props> = ({
   filters,
   setFilters,
   allSeries,
   allIpRatings,
-  allKssTypes
+  allKssTypes,
 }) => {
-  const kssTypeSet = new Set<string>();
-  
-  allKssTypes.forEach(kss => {
-    if (kss.includes("К-12") || kss.includes("К12") || kss.includes("K-12") || kss.includes("K12")) {
-      kssTypeSet.add("К - 12°");
-    }
-    else if (kss.includes("К-30") || kss.includes("К30") || kss.includes("K-30") || kss.includes("K30")) {
-      kssTypeSet.add("К - 30°");
-    }
-    else {
-      kssTypeSet.add(kss);
-    }
-  });
-  
-  const uniqueKssTypes = Array.from(kssTypeSet).sort((a, b) => {
-    const angleA = getAngleFromKSS(a);
-    const angleB = getAngleFromKSS(b);
-    return angleB - angleA;
-  });
+  // Мощность: диапазон значений бегунка
+  const powerMinMax = [0, 500];
+  // Определяем текущие min/max слайдера из фильтра (если пусто, границы)
+  const currentPowerMin = filters.power_min !== "" ? Number(filters.power_min) : powerMinMax[0];
+  const currentPowerMax = filters.power_max !== "" ? Number(filters.power_max) : powerMinMax[1];
+
+  // Обновлённый список КСС без дублей и красиво отсортированный
+  const uniqueKssTypes = normalizedKssList(allKssTypes);
 
   return (
     <form
@@ -98,28 +135,36 @@ const CatalogFilterPanel: React.FC<Props> = ({
           ))}
         </select>
       </div>
-      <div>
-        <Input
-          placeholder="Мощность от, Вт"
-          value={filters.power_min}
-          type="number"
-          min={0}
-          max={500}
-          onChange={e => setFilters(f => ({ ...f, power_min: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
+
+      {/* Мощность по диапазону */}
+      <div className="col-span-1 md:col-span-2 flex flex-col justify-end">
+        <label className="text-zasvet-gold text-sm mb-1 ml-1 select-none">Мощность, Вт</label>
+        <div className="flex items-center gap-3">
+          <span className="text-zasvet-white text-xs min-w-[2.5em]">{currentPowerMin}</span>
+          <Slider
+            className="mx-2 w-full"
+            min={powerMinMax[0]}
+            max={powerMinMax[1]}
+            step={1}
+            value={[currentPowerMin, currentPowerMax]}
+            minStepsBetweenThumbs={1}
+            onValueChange={([min, max]) => {
+              setFilters(f => ({
+                ...f,
+                power_min: min === powerMinMax[0] ? "" : String(min),
+                power_max: max === powerMinMax[1] ? "" : String(max),
+              }));
+            }}
+            style={{ maxWidth: "90%" }}
+          />
+          <span className="text-zasvet-white text-xs min-w-[2.5em]">{currentPowerMax}</span>
+        </div>
+        <div className="flex justify-between px-1 mt-1 text-zasvet-gray/70 text-xs">
+          <span>Минимум: {powerMinMax[0]}</span>
+          <span>Максимум: {powerMinMax[1]}</span>
+        </div>
       </div>
-      <div>
-        <Input
-          placeholder="Мощность до, Вт"
-          value={filters.power_max}
-          type="number"
-          min={0}
-          max={500}
-          onChange={e => setFilters(f => ({ ...f, power_max: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
+
       <div>
         <Input
           placeholder="Световой поток от, лм"
@@ -154,6 +199,8 @@ const CatalogFilterPanel: React.FC<Props> = ({
           ))}
         </select>
       </div>
+
+      {/* КСС: новые значения и сортировка */}
       <div>
         <select
           className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
@@ -161,13 +208,12 @@ const CatalogFilterPanel: React.FC<Props> = ({
           onChange={e => setFilters(f => ({ ...f, kss_type: e.target.value }))}
         >
           <option value="">Любая КСС</option>
-          {uniqueKssTypes.map((kss) => (
-            <option value={kss} key={kss}>
-              {kss}
-            </option>
-          ))}
+          {uniqueKssTypes.map((kss) =>
+            <option value={kss} key={kss}>{kss}</option>
+          )}
         </select>
       </div>
+      {/* --- остальные поля фильтра --- */}
       <div>
         <Input
           placeholder="Длина от, мм"
