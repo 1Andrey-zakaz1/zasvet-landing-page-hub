@@ -1,8 +1,6 @@
-import React, { useMemo } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
+import React from "react";
 import { useNormalizedKssList } from "./useNormalizedKssList";
-import { SliderRange } from "./SliderRange";
 import { catalogData } from "./catalogData";
 import SearchFilter from "./filters/SearchFilter";
 import SeriesFilter from "./filters/SeriesFilter";
@@ -14,7 +12,6 @@ import KssTypeFilter from "./filters/KssTypeFilter";
 import LengthSliderFilter from "./filters/LengthSliderFilter";
 import WidthSliderFilter from "./filters/WidthSliderFilter";
 import HeightSliderFilter from "./filters/HeightSliderFilter";
-import AvailabilityFilter from "./filters/AvailabilityFilter";
 import ResetFiltersButton from "./filters/ResetFiltersButton";
 
 export interface FilterValues {
@@ -48,8 +45,8 @@ type Props = {
 };
 
 const getCatalogMinMax = (
-  arr: { [key: string]: any }[], 
-  field: string, 
+  arr: { [key: string]: any }[],
+  field: string,
   keepZero = false
 ): [number, number] => {
   const nums = arr.map(item => Number(item[field])).filter(x => !isNaN(x) && (keepZero || x > 0));
@@ -65,15 +62,15 @@ const CatalogFilterPanel: React.FC<Props> = ({
 }) => {
   const [powerMin, powerMax] = getCatalogMinMax(catalogData, "power", false);
   const [lumenMin, lumenMax] = getCatalogMinMax(catalogData, "luminous_flux", false);
-  const [lengthMin, lengthMax] = useMemo(() => {
+  const [lengthMin, lengthMax] = React.useMemo(() => {
     const arr = catalogData.map(f => Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
   }, []);
-  const [widthMin, widthMax] = useMemo(() => {
+  const [widthMin, widthMax] = React.useMemo(() => {
     const arr = catalogData.map(f => Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
   }, []);
-  const [heightMin, heightMax] = useMemo(() => {
+  const [heightMin, heightMax] = React.useMemo(() => {
     const arr = catalogData.map(f => Number(f.dimensions.match(/H:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
   }, []);
@@ -110,70 +107,76 @@ const CatalogFilterPanel: React.FC<Props> = ({
 
   return (
     <form
-      className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in"
+      className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 flex flex-col gap-4 animate-fade-in"
       onSubmit={e => e.preventDefault()}
     >
-      <div>
-        <SearchFilter query={filters.query} setFilters={setFilters} />
+      <div className="flex flex-col gap-1">
+        <label className="text-zasvet-gold text-xs font-medium mb-0 ml-1">
+          Поиск по названию
+        </label>
+        <div>
+          <SearchFilter query={filters.query} setFilters={setFilters} />
+        </div>
       </div>
-      <div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <SeriesFilter series={filters.series} setFilters={setFilters} allSeries={allSeries} />
-      </div>
-      <div>
+        <KssTypeFilter kss_type={filters.kss_type} setFilters={setFilters} uniqueKssTypes={uniqueKssTypes} />
         <IpRatingFilter ip_rating={filters.ip_rating} setFilters={setFilters} allIpRatings={allIpRatings} />
       </div>
-      <PowerSliderFilter
-        value={current.power}
-        min={powerMin}
-        max={powerMax}
-        setFilters={setFilters}
-        powerMin={powerMin}
-        powerMax={powerMax}
-      />
-      <LumenSliderFilter
-        value={current.lumen}
-        min={lumenMin}
-        max={lumenMax}
-        setFilters={setFilters}
-        lumenMin={lumenMin}
-        lumenMax={lumenMax}
-      />
-      <PriceSliderFilter
-        value={current.price}
-        min={priceMin}
-        max={priceMax}
-        setFilters={setFilters}
-        priceMin={priceMin}
-        priceMax={priceMax}
-      />
-      <div>
-        <KssTypeFilter kss_type={filters.kss_type} setFilters={setFilters} uniqueKssTypes={uniqueKssTypes} />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
+        <PowerSliderFilter
+          value={current.power}
+          min={powerMin}
+          max={powerMax}
+          setFilters={setFilters}
+          powerMin={powerMin}
+          powerMax={powerMax}
+        />
+        <LumenSliderFilter
+          value={current.lumen}
+          min={lumenMin}
+          max={lumenMax}
+          setFilters={setFilters}
+          lumenMin={lumenMin}
+          lumenMax={lumenMax}
+        />
+        <PriceSliderFilter
+          value={current.price}
+          min={priceMin}
+          max={priceMax}
+          setFilters={setFilters}
+          priceMin={priceMin}
+          priceMax={priceMax}
+        />
+        <LengthSliderFilter
+          value={current.length}
+          min={lengthMin}
+          max={lengthMax}
+          setFilters={setFilters}
+          lengthMin={lengthMin}
+          lengthMax={lengthMax}
+        />
+        <WidthSliderFilter
+          value={current.width}
+          min={widthMin}
+          max={widthMax}
+          setFilters={setFilters}
+          widthMin={widthMin}
+          widthMax={widthMax}
+        />
+        <HeightSliderFilter
+          value={current.height}
+          min={heightMin}
+          max={heightMax}
+          setFilters={setFilters}
+          heightMin={heightMin}
+          heightMax={heightMax}
+        />
       </div>
-      <LengthSliderFilter
-        value={current.length}
-        min={lengthMin}
-        max={lengthMax}
-        setFilters={setFilters}
-        lengthMin={lengthMin}
-        lengthMax={lengthMax}
-      />
-      <WidthSliderFilter
-        value={current.width}
-        min={widthMin}
-        max={widthMax}
-        setFilters={setFilters}
-        widthMin={widthMin}
-        widthMax={widthMax}
-      />
-      <HeightSliderFilter
-        value={current.height}
-        min={heightMin}
-        max={heightMax}
-        setFilters={setFilters}
-        heightMin={heightMin}
-        heightMax={heightMax}
-      />
-      <div>
+
+      <div className="mt-2">
         <ResetFiltersButton setFilters={setFilters} />
       </div>
     </form>

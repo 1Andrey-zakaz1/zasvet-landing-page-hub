@@ -9,7 +9,7 @@ type Props = {
 };
 const SearchFilter: React.FC<Props> = ({ query, setFilters }) => (
   <Input
-    placeholder="Поиск"
+    placeholder="Поиск по названию"
     value={query}
     onChange={e => setFilters(f => ({ ...f, query: e.target.value }))}
     className="bg-zasvet-black text-zasvet-white border-zasvet-gold/30"
