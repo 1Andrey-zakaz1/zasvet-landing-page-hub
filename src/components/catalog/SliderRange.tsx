@@ -16,11 +16,12 @@ type Props = {
   maxLabel?: string;
 };
 
-const thumbColor = {
-  primary: "bg-[#9b87f5] border-[#9b87f5]",
-  orange: "bg-[#F97316] border-[#F97316]",
-  green: "bg-[#22c55e] border-[#22c55e]",
-  blue: "bg-[#1EAEDB] border-[#1EAEDB]",
+// Новые цвета для двух бегунков для явного их различия
+const thumbColors = {
+  primary: ["bg-[#9b87f5] border-[#9b87f5]", "bg-[#7E69AB] border-[#7E69AB]"],
+  orange: ["bg-[#F97316] border-[#F97316]", "bg-[#FCA745] border-[#FCA745]"],
+  green: ["bg-[#22c55e] border-[#22c55e]", "bg-[#16a34a] border-[#16a34a]"],
+  blue: ["bg-[#1EAEDB] border-[#1EAEDB]", "bg-[#0FA0CE] border-[#0FA0CE]"],
 };
 
 export const SliderRange: React.FC<Props> = ({
@@ -40,9 +41,13 @@ export const SliderRange: React.FC<Props> = ({
     <div className="flex items-center gap-3">
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[0]}{unit}</span>
       <Slider
-        className={clsx("mx-2 w-full", 
-          "[&>.slider-thumb-0]:border-2", 
-          `[&>.slider-thumb-0]:${thumbColor[colorThumb]}`
+        className={clsx(
+          "mx-2 w-full",
+          // Стили для бегунков с разными цветами
+          "[&>.slider-thumb-0]:border-2",
+          `[&>.slider-thumb-0]:${thumbColors[colorThumb][0]}`,
+          "[&>.slider-thumb-1]:border-2",
+          `[&>.slider-thumb-1]:${thumbColors[colorThumb][1]}`
         )}
         min={min}
         max={max}

@@ -81,13 +81,15 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
 }
 
 const CatalogSection: React.FC = () => {
-  const [filters, setFilters] = useState<FilterValues>({
+  const [filters, setFilters] = React.useState<FilterValues>({
     query: "",
     series: "",
     power_min: "",
     power_max: "",
     lumen_min: "",
     lumen_max: "",
+    price_min: "",
+    price_max: "",
     ip_rating: "",
     kss_type: "",
     kss_angle: "",
@@ -98,7 +100,7 @@ const CatalogSection: React.FC = () => {
     width_max: "",
     height_min: "",
     height_max: "",
-    only_available: true
+    only_available: true,
   });
 
   const [isExpanded, setIsExpanded] = useState(false);
