@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
@@ -25,6 +26,20 @@ export interface Fixture {
 // Получаем массив уникальных серий по первым словам из name, отсортировано по алфавиту
 const allSeries = Array.from(new Set(catalogData.map(f => f.name.split(" ")[0])))
   .sort((a, b) => a.localeCompare(b));
+
+// Проверяем наличие дубликатов по имени
+const duplicateCheck = catalogData.reduce((acc, fixture) => {
+  acc[fixture.name] = (acc[fixture.name] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const duplicates = Object.entries(duplicateCheck)
+  .filter(([_, count]) => count > 1)
+  .map(([name]) => name);
+
+if (duplicates.length > 0) {
+  console.log("Warning: Found duplicate fixtures:", duplicates);
+}
 
 function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
   return data.filter(f => {

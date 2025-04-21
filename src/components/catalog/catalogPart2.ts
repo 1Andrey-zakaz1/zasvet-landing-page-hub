@@ -1,3 +1,4 @@
+
 import type { Fixture } from "./CatalogSection";
 
 export const catalogPart2: Fixture[] = [
@@ -49,5 +50,5 @@ export const catalogPart2: Fixture[] = [
       "Светодиоды": "Lumileds"
     }
   }
-  // Удалены дублирующиеся светильники "Буран", т.к. они определены в catalogPart3.ts
+  // Удалены все светильники "Буран", т.к. они определены в catalogPart3.ts
 ];
