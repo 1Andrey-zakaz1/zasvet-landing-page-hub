@@ -16,7 +16,7 @@ type Props = {
   maxLabel?: string;
 };
 
-// Цвета для бегунков
+// Цвета для бегунков (левая и правая точка)
 const thumbColors = {
   primary: ["bg-[#9b87f5] border-[#9b87f5]", "bg-[#7E69AB] border-[#7E69AB]"],
   orange: ["bg-[#F97316] border-[#F97316]", "bg-[#FCA745] border-[#FCA745]"],
@@ -24,6 +24,20 @@ const thumbColors = {
   blue: ["bg-[#1EAEDB] border-[#1EAEDB]", "bg-[#0FA0CE] border-[#0FA0CE]"],
   custom: ["bg-[#1EAEDB] border-[#1EAEDB]", "bg-[#ea384c] border-[#ea384c]"], // синий и красный
 };
+
+// Новый компонент кастомного бегунка с нужными классами
+const SliderThumb: React.FC<{ className?: string }> = ({ className }) => (
+  <span
+    className={clsx(
+      "block h-5 w-5 rounded-full border-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors disabled:pointer-events-none disabled:opacity-50",
+      className
+    )}
+    tabIndex={0}
+    style={{ boxSizing: "border-box" }}
+    // IMPORTANT для совместимости с Radix
+    data-radix-slider-thumb=""
+  />
+);
 
 export const SliderRange: React.FC<Props> = ({
   value,
@@ -36,51 +50,38 @@ export const SliderRange: React.FC<Props> = ({
   unit,
   minLabel,
   maxLabel,
-}) => (
-  <div className="flex flex-col justify-end">
-    <label className="text-zasvet-gold text-sm mb-1 ml-1 select-none">{label}</label>
-    <div className="flex items-center gap-3">
-      <span className="text-zasvet-white text-xs min-w-[3em]">{value[0]}{unit}</span>
-      <div className="w-full relative" style={{ maxWidth: "90%" }}>
-        <Slider
-          className="mx-2 w-full"
-          min={min}
-          max={max}
-          step={step}
-          value={[value[0], value[1]]}
-          minStepsBetweenThumbs={1}
-          onValueChange={([val1, val2]) => onChange([val1, val2])}
-        />
-        {/* Using a styled component approach for the thumbs */}
-        <style dangerouslySetInnerHTML={{ __html: `
-          /* Style for the minimum (first) thumb */
-          .radix-slider-thumb:first-child {
-            background-color: #1EAEDB !important;
-            border-color: #1EAEDB !important;
-            border-width: 2px !important;
-          }
-          
-          /* Style for the maximum (second) thumb */
-          .radix-slider-thumb:last-child {
-            background-color: #ea384c !important;
-            border-color: #ea384c !important;
-            border-width: 2px !important;
-          }
-          
-          /* Make sure both thumbs are visible */
-          .radix-slider-thumb {
-            display: block !important;
-            opacity: 1 !important;
-            height: 20px !important;
-            width: 20px !important;
-          }
-        `}} />
+}) => {
+  // Определяем классы для обеих точек
+  const [leftColor, rightColor] = thumbColors[colorThumb] || thumbColors.primary;
+  return (
+    <div className="flex flex-col justify-end">
+      <label className="text-zasvet-gold text-sm mb-1 ml-1 select-none">{label}</label>
+      <div className="flex items-center gap-3">
+        <span className="text-zasvet-white text-xs min-w-[3em]">{value[0]}{unit}</span>
+        <div className="w-full relative" style={{ maxWidth: "90%" }}>
+          {/* Кастомный слайдер с двумя цветными бегунками */}
+          <Slider
+            className="mx-2 w-full"
+            min={min}
+            max={max}
+            step={step}
+            value={[value[0], value[1]]}
+            minStepsBetweenThumbs={1}
+            onValueChange={([val1, val2]) => onChange([val1, val2])}
+            // Передаём кастомные компоненты для обоих бегунков
+            renderThumb={() => null}
+          >
+            {/* Кастомные бегунки */}
+            <SliderThumb className={leftColor + " radix-slider-thumb z-10"} />
+            <SliderThumb className={rightColor + " radix-slider-thumb z-10"} />
+          </Slider>
+        </div>
+        <span className="text-zasvet-white text-xs min-w-[3em]">{value[1]}{unit}</span>
       </div>
-      <span className="text-zasvet-white text-xs min-w-[3em]">{value[1]}{unit}</span>
+      <div className="flex justify-between px-1 mt-1 text-zasvet-gray/70 text-xs">
+        <span>{minLabel ?? `Минимум: ${min}`}</span>
+        <span>{maxLabel ?? `Максимум: ${max}`}</span>
+      </div>
     </div>
-    <div className="flex justify-between px-1 mt-1 text-zasvet-gray/70 text-xs">
-      <span>{minLabel ?? `Минимум: ${min}`}</span>
-      <span>{maxLabel ?? `Максимум: ${max}`}</span>
-    </div>
-  </div>
-);
+  );
+};
