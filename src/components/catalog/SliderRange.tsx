@@ -44,7 +44,6 @@ export const SliderRange: React.FC<Props> = ({
       <Slider
         className={clsx(
           "mx-2 w-full",
-          // Стили для бегунков с разными цветами
           "[&>.slider-thumb-0]:border-2",
           `[&>.slider-thumb-0]:${thumbColors[colorThumb][0]}`,
           "[&>.slider-thumb-1]:border-2",
