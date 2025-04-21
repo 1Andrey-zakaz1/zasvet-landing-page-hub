@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { catalogData } from "@/components/catalog/catalogData";
+import { makePrettyKSS } from "@/components/catalog/useNormalizedKssList";
 
 export interface Fixture {
   id: number;

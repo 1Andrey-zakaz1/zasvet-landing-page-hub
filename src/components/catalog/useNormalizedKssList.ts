@@ -16,7 +16,7 @@ export function getAngleFromKSS(kss: string): number {
   return 0;
 }
 
-function makePrettyKSS(kss: string): string | null {
+export function makePrettyKSS(kss: string): string | null {
   if (/(к|k)[\s\-]?12/i.test(kss)) return "К - 12°";
   if (/(к|k)[\s\-]?30/i.test(kss)) return "К - 30°";
   if (/^ш$/i.test(kss)) return "Ш";
