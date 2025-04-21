@@ -32,34 +32,19 @@ function makePrettyKSS(kss: string): string | null {
 
 export function useNormalizedKssList(rawKssList: string[]): string[] {
   return useMemo(() => {
-    // Собираем уникальные КСС, красиво подписываем К-12° и К-30°
+    // Собираем уникальные КСС, красиво подписываем
     const set = new Set<string>();
-    let hasK12 = false, hasK30 = false;
 
     rawKssList.forEach(kss => {
-      if (/(к|k)[\s\-]?12/i.test(kss)) {
-        hasK12 = true;
-      } else if (/(к|k)[\s\-]?30/i.test(kss)) {
-        hasK30 = true;
+      const pretty = makePrettyKSS(kss);
+      if (pretty) {
+        set.add(pretty);
       } else {
-        const pretty = makePrettyKSS(kss);
-        if (pretty) set.add(pretty);
-        else set.add(kss.replace(/\s+/g, " ").replace("°", "").trim());
+        set.add(kss.replace(/\s+/g, " ").replace("°", "").trim());
       }
     });
 
-    if (hasK12) set.add("К - 12°");
-    if (hasK30) set.add("К - 30°");
-
-    // Теперь убираем все некрасивая версии К12/К30 (оставили только красивые)
-    const arr = Array.from(set).filter(k =>
-      !/(к|k)[\s\-]?12($|[^0-9])/i.test(k) &&
-      !/(к|k)[\s\-]?30($|[^0-9])/i.test(k)
-    );
-
-    // Добавляем красивые, если были
-    if (hasK12) arr.push("К - 12°");
-    if (hasK30) arr.push("К - 30°");
+    const arr = Array.from(set);
 
     // Сортировка:
     // 1. "Ш" всегда в начале
