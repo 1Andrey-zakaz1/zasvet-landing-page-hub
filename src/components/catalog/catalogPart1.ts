@@ -1,3 +1,4 @@
+
 import type { Fixture } from "./CatalogSection";
 
 // ВНИМАНИЕ: В этом файле теперь только "Минивольт" и "Сокол" из вашего списка. Вся лишняя продукция удалена.
@@ -280,4 +281,6 @@ export const catalogPart1: Fixture[] = [
     category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
     color_temperature: 5000, beam_angle: "К30", warranty: 3, price: 14700,
     material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "
+    properties: { "I": "6", "P": "7", "КСС": "\"К30\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+  }
+];
