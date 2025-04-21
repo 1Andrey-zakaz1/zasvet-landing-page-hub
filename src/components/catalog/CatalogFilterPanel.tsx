@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNormalizedKssList } from "./useNormalizedKssList";
 import { catalogData } from "./catalogData";
@@ -59,12 +60,18 @@ const CatalogFilterPanel: React.FC<Props> = ({
   allIpRatings,
   allKssTypes,
 }) => {
-  const [powerMin, powerMax] = getCatalogMinMax(catalogData, "power", false);
-  const [lumenMin, lumenMax] = getCatalogMinMax(catalogData, "luminous_flux", false);
-  const [lengthMin, lengthMax] = React.useMemo(() => {
+  const [powerMinOrig, powerMax] = getCatalogMinMax(catalogData, "power", false);
+  const powerMin = Math.min(powerMinOrig, 10);
+
+  const [lumenMinOrig, lumenMax] = getCatalogMinMax(catalogData, "luminous_flux", false);
+  const lumenMin = Math.min(lumenMinOrig, 1360); // минимальный световой поток 1360лм
+
+  const [lengthMinOrig, lengthMax] = React.useMemo(() => {
     const arr = catalogData.map(f => Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
   }, []);
+  const lengthMin = Math.min(lengthMinOrig, 180); // минимальная длина 180 мм
+
   const [widthMin, widthMax] = React.useMemo(() => {
     const arr = catalogData.map(f => Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
     return [Math.min(...arr), Math.max(...arr)];
@@ -109,7 +116,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
       className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 flex flex-col gap-4 animate-fade-in"
       onSubmit={e => e.preventDefault()}
     >
-      <div className="flex flex-col gap-1">
+      <div className=" flex flex-col gap-1">
         <label className="text-zasvet-gold text-xs font-medium mb-0 ml-1">
           Поиск по названию
         </label>
@@ -183,3 +190,4 @@ const CatalogFilterPanel: React.FC<Props> = ({
 };
 
 export default CatalogFilterPanel;
+
