@@ -30,6 +30,12 @@ export function makePrettyKSS(kss: string): string | null {
   return null;
 }
 
+// Create normalized key for KSS value to use for deduplication
+function getNormalizedKssKey(kss: string): string {
+  // Convert to lowercase and remove degree symbol for consistent comparison
+  return kss.toLowerCase().replace(/°/g, '').replace(/\s+/g, ' ').trim();
+}
+
 export function useNormalizedKssList(rawKssList: string[]): string[] {
   return useMemo(() => {
     // Создаем уникальный список КСС
@@ -40,8 +46,13 @@ export function useNormalizedKssList(rawKssList: string[]): string[] {
       const pretty = makePrettyKSS(kss);
       const normalized = pretty || kss.replace(/\s+/g, " ").replace("°", "").trim();
       
-      // Используем нормализованное значение как ключ, чтобы избежать дубликатов
-      uniqueKss.set(normalized.toLowerCase(), normalized);
+      // Get a normalized key for uniqueness checking (without degree symbol)
+      const key = getNormalizedKssKey(normalized);
+      
+      // Use prioritized value if key exists (prefer the one with the degree symbol)
+      if (!uniqueKss.has(key) || normalized.includes("°")) {
+        uniqueKss.set(key, normalized);
+      }
     });
     
     // Преобразуем Map в массив уникальных значений
