@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
+import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export interface Fixture {
   id: number;
@@ -193,7 +195,11 @@ const DATA: Fixture[] = [
 
 function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
   return data.filter(f => {
-    if (filters.series && !f.name.toLowerCase().includes(filters.series.toLowerCase())) return false;
+    // Поиск по названию (поиск — главный акцент)
+    if (filters.query && !f.name.toLowerCase().includes(filters.query.toLowerCase()))
+      return false;
+    if (filters.series && !f.name.toLowerCase().includes(filters.series.toLowerCase()))
+      return false;
     if (filters.power_min && f.power < Number(filters.power_min)) return false;
     if (filters.power_max && f.power > Number(filters.power_max)) return false;
     if (filters.lumen_min && f.luminous_flux < Number(filters.lumen_min)) return false;
@@ -206,7 +212,6 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
     if (filters.width_max && Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0) > Number(filters.width_max)) return false;
     if (filters.height_min && Number(f.dimensions.match(/H:\s*(\d+)/)?.[1] ?? 0) < Number(filters.height_min)) return false;
     if (filters.height_max && Number(f.dimensions.match(/H:\s*(\d+)/)?.[1] ?? 0) > Number(filters.height_max)) return false;
-    // Только доступные светильники
     if (filters.only_available && !f.availability) return false;
     return true;
   });
@@ -216,34 +221,71 @@ const CatalogPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterValues>({
     query: "",
     series: "",
-    power_min: "",
-    power_max: "",
-    lumen_min: "",
-    lumen_max: "",
+    power_min: 0,
+    power_max: 500,
+    lumen_min: 0,
+    lumen_max: 100000,
     ip_rating: "",
     kss_type: "",
     kss_angle: "",
     mounting: "",
-    length_min: "",
-    length_max: "",
-    width_min: "",
-    width_max: "",
-    height_min: "",
-    height_max: "",
+    length_min: 180,
+    length_max: 3000,
+    width_min: 60,
+    width_max: 710,
+    height_min: 40,
+    height_max: 200,
     only_available: true
   });
 
+  const [isExpanded, setIsExpanded] = useState(true);
   const filtered = filterFixtures(DATA, filters);
 
   return (
-    <div className="bg-zasvet-black min-h-screen py-12 px-4">
+    <div className="bg-zasvet-black min-h-screen py-10 px-4">
       <div className="container mx-auto max-w-7xl">
-        <h1 className="section-title text-zasvet-white mb-8">Каталог светильников</h1>
-        <CatalogFilterPanel filters={filters} setFilters={setFilters} />
-        <CatalogList fixtures={filtered} />
-        {filtered.length === 0 && (
-          <div className="mt-8 text-center text-zasvet-gold text-lg">
-            Нет подходящих светильников. Попробуйте другие параметры фильтра.
+        {/* Кнопка сворачивания/разворачивания */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="section-title text-zasvet-white flex items-center gap-2">
+            <Search className="h-6 w-6 text-zasvet-gold" />
+            Каталог светильников
+          </h1>
+          <Button
+            variant="gold"
+            className="transition-all duration-300 flex items-center gap-1"
+            onClick={() => setIsExpanded((prev) => !prev)}
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="mr-1" /> Свернуть
+              </>
+            ) : (
+              <>
+                <ChevronDown className="mr-1" /> Развернуть
+              </>
+            )}
+          </Button>
+        </div>
+        {isExpanded && (
+          <>
+            <CatalogFilterPanel filters={filters} setFilters={setFilters} />
+            <CatalogList fixtures={filtered.slice(0, 5)} />
+            {filtered.length > 5 && (
+              <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
+                Найдено подходящих светильников: {filtered.length}. Показаны только первые 5. <br />
+                Уточните параметры поиска, чтобы увидеть остальные результаты.
+              </div>
+            )}
+            {filtered.length === 0 && (
+              <div className="mt-8 text-center text-zasvet-gold text-lg">
+                Светильники не найдены. Попробуйте скорректировать параметры поиска.
+              </div>
+            )}
+          </>
+        )}
+        {!isExpanded && (
+          <div className="text-zasvet-gray/60 text-center py-10 animate-fade-in">
+            Каталог скрыт. Нажмите «Развернуть», чтобы отобразить список.
           </div>
         )}
       </div>
