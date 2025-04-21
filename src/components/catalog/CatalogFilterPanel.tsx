@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,14 +31,6 @@ type Props = {
   allKssTypes: string[];
 };
 
-const kssOptions = [
-  { value: "", label: "Любая КСС" },
-  { value: "Д", label: "Д - 120°" },
-  { value: "Ш", label: "Ш" },
-  { value: "С", label: "С - 90°" },
-  { value: "Г", label: "Г - 60°" }
-];
-
 const CatalogFilterPanel: React.FC<Props> = ({
   filters,
   setFilters,
@@ -45,6 +38,18 @@ const CatalogFilterPanel: React.FC<Props> = ({
   allIpRatings,
   allKssTypes
 }) => {
+  // Filter out duplicate K12 and K30 values
+  const uniqueKssTypes = allKssTypes.filter(kss => {
+    // If the KSS type is "K-12" or "K-30", 
+    // skip it if we've already encountered "К-12" or "К-30"
+    if (kss === "K-12" && allKssTypes.includes("К-12")) return false;
+    if (kss === "K-30" && allKssTypes.includes("К-30")) return false;
+    // Also skip "K12" or "K30" if we have "К-12" or "К-30"
+    if (kss === "K12" && (allKssTypes.includes("К-12") || allKssTypes.includes("K-12"))) return false;
+    if (kss === "K30" && (allKssTypes.includes("К-30") || allKssTypes.includes("K-30"))) return false;
+    return true;
+  });
+
   return (
     <form
       className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in"
@@ -133,7 +138,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           onChange={e => setFilters(f => ({ ...f, kss_type: e.target.value }))}
         >
           <option value="">Любая КСС</option>
-          {allKssTypes.map((kss) => (
+          {uniqueKssTypes.map((kss) => (
             <option value={kss} key={kss}>
               {kss}
             </option>
