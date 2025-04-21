@@ -1,8 +1,10 @@
-import React from "react";
+
+import React, { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { useNormalizedKssList } from "./useNormalizedKssList";
+import { SliderRange } from "./SliderRange";
+import { catalogData } from "./catalogData";
 
 export interface FilterValues {
   query: string;
@@ -11,6 +13,8 @@ export interface FilterValues {
   power_max: string;
   lumen_min: string;
   lumen_max: string;
+  price_min: string;
+  price_max: string;
   ip_rating: string;
   kss_type: string;
   kss_angle: string;
@@ -32,6 +36,15 @@ type Props = {
   allKssTypes: string[];
 };
 
+const getCatalogMinMax = (
+  arr: { [key: string]: any }[], 
+  field: string, 
+  keepZero = false
+): [number, number] => {
+  const nums = arr.map(item => Number(item[field])).filter(x => !isNaN(x) && (keepZero || x > 0));
+  return [Math.min(...nums), Math.max(...nums)];
+};
+
 const CatalogFilterPanel: React.FC<Props> = ({
   filters,
   setFilters,
@@ -39,13 +52,53 @@ const CatalogFilterPanel: React.FC<Props> = ({
   allIpRatings,
   allKssTypes,
 }) => {
-  // Мощность: диапазон значений бегунка
-  const powerMinMax = [0, 500];
-  // Определяем текущие min/max слайдера из фильтра (если пусто, границы)
-  const currentPowerMin = filters.power_min !== "" ? Number(filters.power_min) : powerMinMax[0];
-  const currentPowerMax = filters.power_max !== "" ? Number(filters.power_max) : powerMinMax[1];
+  // Диапазоны всех фильруемых чисел
+  const [powerMin, powerMax] = getCatalogMinMax(catalogData, "power", false);
+  const [lumenMin, lumenMax] = getCatalogMinMax(catalogData, "luminous_flux", false);
+  const [lengthMin, lengthMax] = useMemo(() => {
+    // Парсим из строки L: ****
+    const arr = catalogData.map(f => Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
+    return [Math.min(...arr), Math.max(...arr)];
+  }, []);
+  const [widthMin, widthMax] = useMemo(() => {
+    const arr = catalogData.map(f => Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
+    return [Math.min(...arr), Math.max(...arr)];
+  }, []);
+  const [heightMin, heightMax] = useMemo(() => {
+    const arr = catalogData.map(f => Number(f.dimensions.match(/H:\s*(\d+)/)?.[1] ?? 0)).filter(Boolean);
+    return [Math.min(...arr), Math.max(...arr)];
+  }, []);
+  const [priceMin, priceMax] = getCatalogMinMax(catalogData, "price", true);
 
-  // Новая обработка КСС типов — без дублей, красивая сортировка
+  // Текущее значение каждого диапазона (min/max)
+  const current = {
+    power: [
+      filters.power_min !== "" ? Number(filters.power_min) : powerMin,
+      filters.power_max !== "" ? Number(filters.power_max) : powerMax
+    ] as [number, number],
+    lumen: [
+      filters.lumen_min !== "" ? Number(filters.lumen_min) : lumenMin,
+      filters.lumen_max !== "" ? Number(filters.lumen_max) : lumenMax
+    ] as [number, number],
+    price: [
+      filters.price_min !== "" ? Number(filters.price_min) : priceMin,
+      filters.price_max !== "" ? Number(filters.price_max) : priceMax
+    ] as [number, number],
+    length: [
+      filters.length_min !== "" ? Number(filters.length_min) : lengthMin,
+      filters.length_max !== "" ? Number(filters.length_max) : lengthMax
+    ] as [number, number],
+    width: [
+      filters.width_min !== "" ? Number(filters.width_min) : widthMin,
+      filters.width_max !== "" ? Number(filters.width_max) : widthMax
+    ] as [number, number],
+    height: [
+      filters.height_min !== "" ? Number(filters.height_min) : heightMin,
+      filters.height_max !== "" ? Number(filters.height_max) : heightMax
+    ] as [number, number],
+  };
+
+  // Новая обработка КСС типов (без дублей, красивая сортировка)
   const uniqueKssTypes = useNormalizedKssList(allKssTypes);
 
   return (
@@ -74,57 +127,48 @@ const CatalogFilterPanel: React.FC<Props> = ({
         </select>
       </div>
 
-      {/* Мощность по диапазону */}
-      <div className="col-span-1 md:col-span-2 flex flex-col justify-end">
-        <label className="text-zasvet-gold text-sm mb-1 ml-1 select-none">Мощность, Вт</label>
-        <div className="flex items-center gap-3">
-          <span className="text-zasvet-white text-xs min-w-[2.5em]">{currentPowerMin}</span>
-          <Slider
-            className="mx-2 w-full"
-            min={powerMinMax[0]}
-            max={powerMinMax[1]}
-            step={1}
-            value={[currentPowerMin, currentPowerMax]}
-            minStepsBetweenThumbs={1}
-            onValueChange={([min, max]) => {
-              setFilters(f => ({
-                ...f,
-                power_min: min === powerMinMax[0] ? "" : String(min),
-                power_max: max === powerMinMax[1] ? "" : String(max),
-              }));
-            }}
-            style={{ maxWidth: "90%" }}
-          />
-          <span className="text-zasvet-white text-xs min-w-[2.5em]">{currentPowerMax}</span>
-        </div>
-        <div className="flex justify-between px-1 mt-1 text-zasvet-gray/70 text-xs">
-          <span>Минимум: {powerMinMax[0]}</span>
-          <span>Максимум: {powerMinMax[1]}</span>
-        </div>
-      </div>
+      {/* Бегунок мощности */}
+      <SliderRange
+        label="Мощность, Вт"
+        value={current.power}
+        min={powerMin}
+        max={powerMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          power_min: min === powerMin ? "" : String(min),
+          power_max: max === powerMax ? "" : String(max),
+        }))}
+        colorThumb="primary"
+      />
 
-      <div>
-        <Input
-          placeholder="Световой поток от, лм"
-          value={filters.lumen_min}
-          type="number"
-          min={0}
-          max={100000}
-          onChange={e => setFilters(f => ({ ...f, lumen_min: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Световой поток до, лм"
-          value={filters.lumen_max}
-          type="number"
-          min={0}
-          max={100000}
-          onChange={e => setFilters(f => ({ ...f, lumen_max: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
+      {/* Бегунок светового потока */}
+      <SliderRange
+        label="Световой поток, лм"
+        value={current.lumen}
+        min={lumenMin}
+        max={lumenMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          lumen_min: min === lumenMin ? "" : String(min),
+          lumen_max: max === lumenMax ? "" : String(max),
+        }))}
+        colorThumb="orange"
+      />
+
+      {/* Новый бегунок по цене */}
+      <SliderRange
+        label="Цена, ₽"
+        value={current.price}
+        min={priceMin}
+        max={priceMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          price_min: min === priceMin ? "" : String(min),
+          price_max: max === priceMax ? "" : String(max),
+        }))}
+        colorThumb="green"
+      />
+
       <div>
         <select
           className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
@@ -151,73 +195,45 @@ const CatalogFilterPanel: React.FC<Props> = ({
           )}
         </select>
       </div>
-      {/* --- остальные поля фильтра --- */}
-      <div>
-        <Input
-          placeholder="Длина от, мм"
-          value={filters.length_min}
-          type="number"
-          min={0}
-          max={3000}
-          onChange={e => setFilters(f => ({ ...f, length_min: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Длина до, мм"
-          value={filters.length_max}
-          type="number"
-          min={0}
-          max={3000}
-          onChange={e => setFilters(f => ({ ...f, length_max: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Ширина от, мм"
-          value={filters.width_min}
-          type="number"
-          min={0}
-          max={710}
-          onChange={e => setFilters(f => ({ ...f, width_min: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Ширина до, мм"
-          value={filters.width_max}
-          type="number"
-          min={0}
-          max={710}
-          onChange={e => setFilters(f => ({ ...f, width_max: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Высота от, мм"
-          value={filters.height_min}
-          type="number"
-          min={0}
-          max={200}
-          onChange={e => setFilters(f => ({ ...f, height_min: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
-      <div>
-        <Input
-          placeholder="Высота до, мм"
-          value={filters.height_max}
-          type="number"
-          min={0}
-          max={200}
-          onChange={e => setFilters(f => ({ ...f, height_max: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white"
-        />
-      </div>
+
+      {/* Бегунки размеров */}
+      <SliderRange
+        label="Длина, мм"
+        value={current.length}
+        min={lengthMin}
+        max={lengthMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          length_min: min === lengthMin ? "" : String(min),
+          length_max: max === lengthMax ? "" : String(max),
+        }))}
+        colorThumb="blue"
+      />
+      <SliderRange
+        label="Ширина, мм"
+        value={current.width}
+        min={widthMin}
+        max={widthMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          width_min: min === widthMin ? "" : String(min),
+          width_max: max === widthMax ? "" : String(max),
+        }))}
+        colorThumb="green"
+      />
+      <SliderRange
+        label="Высота, мм"
+        value={current.height}
+        min={heightMin}
+        max={heightMax}
+        onChange={([min, max]) => setFilters(f => ({
+          ...f,
+          height_min: min === heightMin ? "" : String(min),
+          height_max: max === heightMax ? "" : String(max),
+        }))}
+        colorThumb="orange"
+      />
+
       <div className="flex items-center">
         <label className="flex items-center cursor-pointer gap-2 select-none text-zasvet-gold">
           <input
@@ -228,6 +244,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           Только в наличии
         </label>
       </div>
+
       <div>
         <Button 
           type="button"
@@ -240,6 +257,8 @@ const CatalogFilterPanel: React.FC<Props> = ({
             power_max: "",
             lumen_min: "",
             lumen_max: "",
+            price_min: "",
+            price_max: "",
             ip_rating: "",
             kss_type: "",
             kss_angle: "",
