@@ -26,6 +26,7 @@ export interface FilterValues {
 type Props = {
   filters: FilterValues;
   setFilters: React.Dispatch<React.SetStateAction<FilterValues>>;
+  allSeries: string[];
 };
 
 const ipOptions = [
@@ -42,7 +43,7 @@ const kssOptions = [
   { value: "Г", label: "Г - 60°" }
 ];
 
-const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters }) => {
+const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries }) => {
   return (
     <form
       className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in"
@@ -57,12 +58,16 @@ const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters }) => {
         />
       </div>
       <div>
-        <Input
-          placeholder="Серия"
+        <select
+          className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
           value={filters.series}
           onChange={e => setFilters(f => ({ ...f, series: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white border-zasvet-gold/30"
-        />
+        >
+          <option value="">Любая серия</option>
+          {allSeries.map(series => (
+            <option value={series} key={series}>{series}</option>
+          ))}
+        </select>
       </div>
       <div>
         <Input
@@ -239,3 +244,4 @@ const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters }) => {
 };
 
 export default CatalogFilterPanel;
+

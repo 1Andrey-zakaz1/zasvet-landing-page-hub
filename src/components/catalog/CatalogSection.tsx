@@ -23,18 +23,22 @@ export interface Fixture {
   properties: Record<string, string>;
 }
 
+// Получаем массив уникальных серий по первым словам из name, отсортировано по алфавиту
+const allSeries = Array.from(new Set(catalogData.map(f => f.name.split(" ")[0])))
+  .sort((a, b) => a.localeCompare(b));
+
 function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
   return data.filter(f => {
     if (filters.query && !f.name.toLowerCase().includes(filters.query.toLowerCase()))
       return false;
-    if (filters.series && !f.name.toLowerCase().includes(filters.series.toLowerCase()))
+    if (filters.series && f.name.split(" ")[0] !== filters.series)
       return false;
     if (filters.power_min && f.power < Number(filters.power_min)) return false;
     if (filters.power_max && f.power > Number(filters.power_max)) return false;
     if (filters.lumen_min && f.luminous_flux < Number(filters.lumen_min)) return false;
     if (filters.lumen_max && f.luminous_flux > Number(filters.lumen_max)) return false;
     if (filters.ip_rating && f.ip_rating !== filters.ip_rating) return false;
-    if (filters.kss_type && !f.beam_angle.includes(filters.kss_type)) return false;
+    if (filters.kss_type && !f.beam_angle?.includes(filters.kss_type)) return false;
     if (filters.length_min && Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0) < Number(filters.length_min)) return false;
     if (filters.length_max && Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0) > Number(filters.length_max)) return false;
     if (filters.width_min && Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0) < Number(filters.width_min)) return false;
@@ -102,7 +106,7 @@ const CatalogSection: React.FC = () => {
         </div>
         {isExpanded && (
           <>
-            <CatalogFilterPanel filters={filters} setFilters={setFilters} />
+            <CatalogFilterPanel filters={filters} setFilters={setFilters} allSeries={allSeries} />
             <CatalogList fixtures={sorted.slice(0, 8)} />
             {sorted.length > 8 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
@@ -128,3 +132,4 @@ const CatalogSection: React.FC = () => {
 };
 
 export default CatalogSection;
+
