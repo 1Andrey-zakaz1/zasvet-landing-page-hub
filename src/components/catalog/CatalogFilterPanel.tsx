@@ -1,10 +1,21 @@
-
 import React, { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNormalizedKssList } from "./useNormalizedKssList";
 import { SliderRange } from "./SliderRange";
 import { catalogData } from "./catalogData";
+import SearchFilter from "./filters/SearchFilter";
+import SeriesFilter from "./filters/SeriesFilter";
+import PowerSliderFilter from "./filters/PowerSliderFilter";
+import LumenSliderFilter from "./filters/LumenSliderFilter";
+import PriceSliderFilter from "./filters/PriceSliderFilter";
+import IpRatingFilter from "./filters/IpRatingFilter";
+import KssTypeFilter from "./filters/KssTypeFilter";
+import LengthSliderFilter from "./filters/LengthSliderFilter";
+import WidthSliderFilter from "./filters/WidthSliderFilter";
+import HeightSliderFilter from "./filters/HeightSliderFilter";
+import AvailabilityFilter from "./filters/AvailabilityFilter";
+import ResetFiltersButton from "./filters/ResetFiltersButton";
 
 export interface FilterValues {
   query: string;
@@ -103,168 +114,70 @@ const CatalogFilterPanel: React.FC<Props> = ({
       onSubmit={e => e.preventDefault()}
     >
       <div>
-        <Input
-          placeholder="Поиск"
-          value={filters.query}
-          onChange={e => setFilters(f => ({ ...f, query: e.target.value }))}
-          className="bg-zasvet-black text-zasvet-white border-zasvet-gold/30"
-        />
+        <SearchFilter query={filters.query} setFilters={setFilters} />
       </div>
       <div>
-        <select
-          className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
-          value={filters.series}
-          onChange={e => setFilters(f => ({ ...f, series: e.target.value }))}
-        >
-          <option value="">Любая серия</option>
-          {allSeries.map(series => (
-            <option value={series} key={series}>{series}</option>
-          ))}
-        </select>
+        <SeriesFilter series={filters.series} setFilters={setFilters} allSeries={allSeries} />
       </div>
-
-      <SliderRange
-        label="Мощность, Вт"
+      <PowerSliderFilter
         value={current.power}
         min={powerMin}
         max={powerMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          power_min: min === powerMin ? "" : String(min),
-          power_max: max === powerMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        powerMin={powerMin}
+        powerMax={powerMax}
       />
-
-      <SliderRange
-        label="Световой поток, лм"
+      <LumenSliderFilter
         value={current.lumen}
         min={lumenMin}
         max={lumenMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          lumen_min: min === lumenMin ? "" : String(min),
-          lumen_max: max === lumenMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        lumenMin={lumenMin}
+        lumenMax={lumenMax}
       />
-
-      <SliderRange
-        label="Цена, ₽"
+      <PriceSliderFilter
         value={current.price}
         min={priceMin}
         max={priceMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          price_min: min === priceMin ? "" : String(min),
-          price_max: max === priceMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        priceMin={priceMin}
+        priceMax={priceMax}
       />
-
       <div>
-        <select
-          className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
-          value={filters.ip_rating}
-          onChange={e => setFilters(f => ({ ...f, ip_rating: e.target.value }))}
-        >
-          <option value="">Любой IP</option>
-          {allIpRatings.map(ip => (
-            <option value={ip} key={ip}>{`IP${ip}`}</option>
-          ))}
-        </select>
+        <IpRatingFilter ip_rating={filters.ip_rating} setFilters={setFilters} allIpRatings={allIpRatings} />
       </div>
-
       <div>
-        <select
-          className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
-          value={filters.kss_type}
-          onChange={e => setFilters(f => ({ ...f, kss_type: e.target.value }))}
-        >
-          <option value="">Любая КСС</option>
-          {uniqueKssTypes.map((kss) =>
-            <option value={kss} key={kss}>{kss}</option>
-          )}
-        </select>
+        <KssTypeFilter kss_type={filters.kss_type} setFilters={setFilters} uniqueKssTypes={uniqueKssTypes} />
       </div>
-
-      <SliderRange
-        label="Длина, мм"
+      <LengthSliderFilter
         value={current.length}
         min={lengthMin}
         max={lengthMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          length_min: min === lengthMin ? "" : String(min),
-          length_max: max === lengthMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        lengthMin={lengthMin}
+        lengthMax={lengthMax}
       />
-      <SliderRange
-        label="Ширина, мм"
+      <WidthSliderFilter
         value={current.width}
         min={widthMin}
         max={widthMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          width_min: min === widthMin ? "" : String(min),
-          width_max: max === widthMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        widthMin={widthMin}
+        widthMax={widthMax}
       />
-      <SliderRange
-        label="Высота, мм"
+      <HeightSliderFilter
         value={current.height}
         min={heightMin}
         max={heightMax}
-        onChange={([min, max]) => setFilters(f => ({
-          ...f,
-          height_min: min === heightMin ? "" : String(min),
-          height_max: max === heightMax ? "" : String(max),
-        }))}
-        colorThumb="custom"
+        setFilters={setFilters}
+        heightMin={heightMin}
+        heightMax={heightMax}
       />
-
       <div className="flex items-center">
-        <label className="flex items-center cursor-pointer gap-2 select-none text-zasvet-gold">
-          <input
-            type="checkbox"
-            checked={filters.only_available}
-            onChange={e => setFilters(f => ({ ...f, only_available: e.target.checked }))}
-          />
-          Только в наличии
-        </label>
+        <AvailabilityFilter only_available={filters.only_available} setFilters={setFilters} />
       </div>
-
       <div>
-        <Button 
-          type="button"
-          variant="gold"
-          className="w-full"
-          onClick={() => setFilters({
-            query: "",
-            series: "",
-            power_min: "",
-            power_max: "",
-            lumen_min: "",
-            lumen_max: "",
-            price_min: "",
-            price_max: "",
-            ip_rating: "",
-            kss_type: "",
-            kss_angle: "",
-            mounting: "",
-            length_min: "",
-            length_max: "",
-            width_min: "",
-            width_max: "",
-            height_min: "",
-            height_max: "",
-            only_available: true,
-          })}
-        >
-          Сбросить фильтры
-        </Button>
+        <ResetFiltersButton setFilters={setFilters} />
       </div>
     </form>
   );
