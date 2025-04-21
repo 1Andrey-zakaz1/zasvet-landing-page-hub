@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -31,6 +30,22 @@ type Props = {
   allKssTypes: string[];
 };
 
+const getAngleFromKSS = (kss: string): number => {
+  const match = kss.match(/(\d+)°?/);
+  if (match && match[1]) {
+    return parseInt(match[1], 10);
+  }
+  
+  if (kss === "Ш") return 140;
+  if (kss === "Д") return 120;
+  if (kss === "С") return 90;
+  if (kss === "Г") return 60;
+  if (kss.includes("К-30") || kss.includes("К30") || kss.includes("K-30") || kss.includes("K30")) return 30;
+  if (kss.includes("К-12") || kss.includes("К12") || kss.includes("K-12") || kss.includes("K12")) return 12;
+  
+  return 0;
+};
+
 const CatalogFilterPanel: React.FC<Props> = ({
   filters,
   setFilters,
@@ -38,16 +53,24 @@ const CatalogFilterPanel: React.FC<Props> = ({
   allIpRatings,
   allKssTypes
 }) => {
-  // Filter out duplicate K12 and K30 values
-  const uniqueKssTypes = allKssTypes.filter(kss => {
-    // If the KSS type is "K-12" or "K-30", 
-    // skip it if we've already encountered "К-12" or "К-30"
-    if (kss === "K-12" && allKssTypes.includes("К-12")) return false;
-    if (kss === "K-30" && allKssTypes.includes("К-30")) return false;
-    // Also skip "K12" or "K30" if we have "К-12" or "К-30"
-    if (kss === "K12" && (allKssTypes.includes("К-12") || allKssTypes.includes("K-12"))) return false;
-    if (kss === "K30" && (allKssTypes.includes("К-30") || allKssTypes.includes("K-30"))) return false;
-    return true;
+  const kssTypeSet = new Set<string>();
+  
+  allKssTypes.forEach(kss => {
+    if (kss.includes("К-12") || kss.includes("К12") || kss.includes("K-12") || kss.includes("K12")) {
+      kssTypeSet.add("К - 12°");
+    }
+    else if (kss.includes("К-30") || kss.includes("К30") || kss.includes("K-30") || kss.includes("K30")) {
+      kssTypeSet.add("К - 30°");
+    }
+    else {
+      kssTypeSet.add(kss);
+    }
+  });
+  
+  const uniqueKssTypes = Array.from(kssTypeSet).sort((a, b) => {
+    const angleA = getAngleFromKSS(a);
+    const angleB = getAngleFromKSS(b);
+    return angleB - angleA;
   });
 
   return (
