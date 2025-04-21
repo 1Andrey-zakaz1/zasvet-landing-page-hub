@@ -119,6 +119,9 @@ const CatalogFilterPanel: React.FC<Props> = ({
       <div>
         <SeriesFilter series={filters.series} setFilters={setFilters} allSeries={allSeries} />
       </div>
+      <div>
+        <IpRatingFilter ip_rating={filters.ip_rating} setFilters={setFilters} allIpRatings={allIpRatings} />
+      </div>
       <PowerSliderFilter
         value={current.power}
         min={powerMin}
@@ -143,9 +146,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         priceMin={priceMin}
         priceMax={priceMax}
       />
-      <div>
-        <IpRatingFilter ip_rating={filters.ip_rating} setFilters={setFilters} allIpRatings={allIpRatings} />
-      </div>
       <div>
         <KssTypeFilter kss_type={filters.kss_type} setFilters={setFilters} uniqueKssTypes={uniqueKssTypes} />
       </div>
@@ -173,9 +173,6 @@ const CatalogFilterPanel: React.FC<Props> = ({
         heightMin={heightMin}
         heightMax={heightMax}
       />
-      <div className="flex items-center">
-        <AvailabilityFilter only_available={filters.only_available} setFilters={setFilters} />
-      </div>
       <div>
         <ResetFiltersButton setFilters={setFilters} />
       </div>
