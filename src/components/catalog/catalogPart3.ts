@@ -1,6 +1,7 @@
 
 import type { Fixture } from "./CatalogSection";
 
+// Реальные модели для Буран, КСС только "Д - 120°"
 export const catalogPart3: Fixture[] = [
   {
     id: 0,
@@ -28,6 +29,30 @@ export const catalogPart3: Fixture[] = [
   },
   {
     id: 1,
+    name: "Буран 72-67-5000-Д-220-Консоль",
+    power: 72,
+    luminous_flux: 13047,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 7515,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 375 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 2,
     name: "Буран 96-67-5000-Д-220-Консоль",
     power: 96,
     luminous_flux: 17396,
@@ -51,7 +76,31 @@ export const catalogPart3: Fixture[] = [
     }
   },
   {
-    id: 2,
+    id: 3,
+    name: "Буран 120-67-5000-Д-220-Консоль",
+    power: 120,
+    luminous_flux: 21745,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 12525,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 625 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 4,
     name: "Буран 144-67-5000-Д-220-Консоль",
     power: 144,
     luminous_flux: 26094,
@@ -75,7 +124,7 @@ export const catalogPart3: Fixture[] = [
     }
   },
   {
-    id: 3,
+    id: 5,
     name: "Буран 192-67-5000-Д-220-Консоль",
     power: 192,
     luminous_flux: 34792,
