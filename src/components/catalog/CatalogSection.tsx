@@ -253,7 +253,7 @@ const CatalogSection: React.FC = () => {
           <Button
             variant="gold"
             className="transition-all duration-300 flex items-center gap-1"
-            onClick={() => setIsExpanded((prev) => !prev)}
+            onClick={() => setIsExpanded(prev => !prev)}
           >
             {isExpanded ? (
               <>
@@ -269,10 +269,10 @@ const CatalogSection: React.FC = () => {
         {isExpanded && (
           <>
             <CatalogFilterPanel filters={filters} setFilters={setFilters} />
-            <CatalogList fixtures={filtered.slice(0, 5)} />
-            {filtered.length > 5 && (
+            <CatalogList fixtures={filtered.slice(0, 8)} />
+            {filtered.length > 8 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
-                Найдено подходящих светильников: {filtered.length}. Показаны только первые 5. <br />
+                Найдено подходящих светильников: {filtered.length}. Показаны только первые 8. <br />
                 Уточните параметры поиска, чтобы увидеть остальные результаты.
               </div>
             )}
