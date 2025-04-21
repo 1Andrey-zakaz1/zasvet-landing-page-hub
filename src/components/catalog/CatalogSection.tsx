@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { catalogData } from "./catalogData";
-import { makePrettyKSS } from "./useNormalizedKssList";
+import { makePrettyKSS, getNormalizedKssKey } from "./useNormalizedKssList";
 
 export interface Fixture {
   id: number;
@@ -69,6 +68,8 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
     if (filters.power_max && f.power > Number(filters.power_max)) return false;
     if (filters.lumen_min && f.luminous_flux < Number(filters.lumen_min)) return false;
     if (filters.lumen_max && f.luminous_flux > Number(filters.lumen_max)) return false;
+    if (filters.price_min && f.price < Number(filters.price_min)) return false;
+    if (filters.price_max && f.price > Number(filters.price_max)) return false;
     if (filters.ip_rating && f.ip_rating !== filters.ip_rating) return false;
     
     // Improved KSS type filtering
@@ -76,9 +77,11 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
       // Преобразуем beam_angle в нормализованный формат для сравнения
       const pretty = makePrettyKSS(f.beam_angle);
       const normalized = pretty || f.beam_angle.replace(/\s+/g, " ").replace("°", "").trim();
+      const normalizedBeamAngle = getNormalizedKssKey(normalized);
+      const normalizedFilter = getNormalizedKssKey(filters.kss_type);
       
       // Если не совпадает с фильтром, возвращаем false
-      if (normalized !== filters.kss_type) {
+      if (normalizedBeamAngle !== normalizedFilter) {
         return false;
       }
     } else if (filters.kss_type) {

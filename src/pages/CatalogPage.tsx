@@ -69,6 +69,8 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
     if (filters.power_max && f.power > Number(filters.power_max)) return false;
     if (filters.lumen_min && f.luminous_flux < Number(filters.lumen_min)) return false;
     if (filters.lumen_max && f.luminous_flux > Number(filters.lumen_max)) return false;
+    if (filters.price_min && f.price < Number(filters.price_min)) return false;
+    if (filters.price_max && f.price > Number(filters.price_max)) return false;
     if (filters.ip_rating && f.ip_rating !== filters.ip_rating) return false;
     
     // Improved KSS type filtering with normalization for comparison
