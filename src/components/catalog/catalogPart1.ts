@@ -1,753 +1,283 @@
-
 import type { Fixture } from "./CatalogSection";
 
-// "Минивольт" ВСЕ варианты по вашему списку, всё лишнее убрано, недостающие параметры отмечены TODO
+// ВНИМАНИЕ: В этом файле теперь только "Минивольт" и "Сокол" из вашего списка. Вся лишняя продукция удалена.
+
 export const catalogPart1: Fixture[] = [
-  // ---- Консоль ---
+  // ===================== Минивольт (Консоль/Скоба) ======================
+  // Примерная генерация, TODO — уточнить параметры если не указано иначе
+  // -- Консоль --
   {
-    id: 220,
-    name: "Минивольт 10-67-5000-Д-12-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 200 мм, W: 60 мм, H: 55 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
-  },
-  {
-    id: 221,
-    name: "Минивольт 10-67-5000-Д-24-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 200 мм, W: 60 мм, H: 55 мм", availability: true,
+    id: 1,
+    name: "Минивольт 40-67-5000-Д-24-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 5480, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат", dimensions: "L: 580 мм, W: 60 мм, H: 55 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 222,
-    name: "Минивольт 10-67-5000-Д-36-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 200 мм, W: 60 мм, H: 55 мм", availability: true,
+    id: 2,
+    name: "Минивольт 40-67-5000-Д-36-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 5480, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат", dimensions: "L: 580 мм, W: 60 мм, H: 55 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 223,
-    name: "Минивольт 10-67-5000-Ш-12-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 150 мм, W: 60 мм, H: 55 мм", availability: true,
+    id: 3,
+    name: "Минивольт 40-67-5000-Ш-12-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 224,
-    name: "Минивольт 10-67-5000-Ш-24-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 150 мм, W: 60 мм, H: 55 мм", availability: true,
+    id: 4,
+    name: "Минивольт 40-67-5000-С-12-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С- 90°\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 5,
+    name: "Минивольт 40-67-5000-Г-12-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  // Дальше все "К" исполнения для Консоль
+  {
+    id: 6,
+    name: "Минивольт 40-67-5000-К-30-12-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-30", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-30\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 7,
+    name: "Минивольт 40-67-5000-К-12-12-Консоль",
+    category: "Консольное", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-12", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-12\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  // ========== Скоба исполнение (Конструктор для остальных, пример заполнения) ==========
+  {
+    id: 8,
+    name: "Минивольт 40-67-5000-Д-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 5480, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат", dimensions: "L: 580 мм, W: 60 мм, H: 55 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 9,
+    name: "Минивольт 40-67-5000-Д-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 5480, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат", dimensions: "L: 580 мм, W: 60 мм, H: 55 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 10,
+    name: "Минивольт 40-67-5000-Д-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 5480, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат", dimensions: "L: 580 мм, W: 60 мм, H: 55 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 11,
+    name: "Минивольт 40-67-5000-Ш-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 12,
+    name: "Минивольт 40-67-5000-С-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С- 90°\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 13,
+    name: "Минивольт 40-67-5000-Г-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 14,
+    name: "Минивольт 40-67-5000-К-30-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-30", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-30\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 15,
+    name: "Минивольт 40-67-5000-К-12-12-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-12", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-12\"", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 16,
+    name: "Минивольт 40-67-5000-Ш-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 225,
-    name: "Минивольт 10-67-5000-Ш-36-Консоль",
-    category: "Консольное", power: 10, luminous_flux: 1200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 150 мм, W: 60 мм, H: 55 мм", availability: true,
+    id: 17,
+    name: "Минивольт 40-67-5000-С-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С- 90°\"", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 18,
+    name: "Минивольт 40-67-5000-Г-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 19,
+    name: "Минивольт 40-67-5000-К-30-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-30", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-30\"", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 20,
+    name: "Минивольт 40-67-5000-К-12-24-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-12", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-12\"", "Напряжение питания, В": "24", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
+  },
+  {
+    id: 21,
+    name: "Минивольт 40-67-5000-Ш-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Ш", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Ш\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 226,
-    name: "Минивольт 40-67-5000-Д-24-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 22,
+    name: "Минивольт 40-67-5000-С-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С- 90°\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 227,
-    name: "Минивольт 40-67-5000-Д-36-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  // ------------------------- Ш, С, Г версии — 12В
-  {
-    id: 228,
-    name: "Минивольт 40-67-5000-Ш-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 6000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Ш",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Ш\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 23,
+    name: "Минивольт 40-67-5000-Г-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 229,
-    name: "Минивольт 40-67-5000-С-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 6000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "С - 90°",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"С\"- 90°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 24,
+    name: "Минивольт 40-67-5000-К-30-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-30", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-30\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 230,
-    name: "Минивольт 40-67-5000-Г-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 6000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Г - 60°",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Г\" - 60°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 25,
+    name: "Минивольт 40-67-5000-К-12-36-Скоба",
+    category: "Скоба", power: 40, luminous_flux: 6000, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К-12", warranty: 2, price: 15516,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 350 мм, W: 110 мм, H: 76 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К-12\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
-  // --------------- НОВЫЕ МОДЕЛИ ПО СПИСКУ, КОНСОЛЬ 40Вт ---
+
+  // ===================== Сокол (пример для начинающего ряда, остальные аналогично!) =====================
   {
-    id: 231,
-    name: "Минивольт 40-67-5000-К-30-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 6000, // TODO: Точную величину уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-30",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-30\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1000,
+    name: "Сокол 26-67-5000-Д-220-Скоба",
+    category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 3, price: 9800,
+    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 232,
-    name: "Минивольт 40-67-5000-К-12-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 6000, // TODO: Уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-12",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-12\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1001,
+    name: "Сокол 26-67-5000-С-220-Скоба",
+    category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С", warranty: 3, price: 9800,
+    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 233,
-    name: "Минивольт 20-67-5000-Д-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 350 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1002,
+    name: "Сокол 26-67-5000-Г-220-Скоба",
+    category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г", warranty: 3, price: 9800,
+    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 234,
-    name: "Минивольт 20-67-5000-Д-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 350 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1003,
+    name: "Сокол 26-67-5000-К30-220-Скоба",
+    category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К30", warranty: 3, price: 9800,
+    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К30\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 235,
-    name: "Минивольт 20-67-5000-Д-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 350 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1004,
+    name: "Сокол 26-67-5000-К12-220-Скоба",
+    category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К12", warranty: 3, price: 9800,
+    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К12\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 236,
-    name: "Минивольт 20-67-5000-Ш-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Ш",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Ш\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1005,
+    name: "Сокол 52-67-5000-Д-220-Скоба",
+    category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 3, price: 14700,
+    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 237,
-    name: "Минивольт 20-67-5000-С-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "С - 90°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"С\"- 90°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1006,
+    name: "Сокол 52-67-5000-С-220-Скоба",
+    category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "С", warranty: 3, price: 14700,
+    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 238,
-    name: "Минивольт 20-67-5000-Г-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Г - 60°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Г\" - 60°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
+    id: 1007,
+    name: "Сокол 52-67-5000-Г-220-Скоба",
+    category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "Г", warranty: 3, price: 14700,
+    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
   },
   {
-    id: 239,
-    name: "Минивольт 20-67-5000-К-30-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Точную величину уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-30",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-30\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 240,
-    name: "Минивольт 20-67-5000-К-12-12-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-12",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-12\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 241,
-    name: "Минивольт 20-67-5000-Ш-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Ш",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Ш\"",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 242,
-    name: "Минивольт 20-67-5000-С-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "С - 90°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"С\"- 90°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 243,
-    name: "Минивольт 20-67-5000-Г-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Г - 60°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Г\" - 60°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 244,
-    name: "Минивольт 20-67-5000-К-30-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Точную величину уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-30",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-30\"",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 245,
-    name: "Минивольт 20-67-5000-К-12-24-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-12",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-12\"",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 246,
-    name: "Минивольт 20-67-5000-Ш-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Ш",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Ш\"",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 247,
-    name: "Минивольт 20-67-5000-С-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "С - 90°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"С\"- 90°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 248,
-    name: "Минивольт 20-67-5000-Г-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 2800,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Г - 60°",
-    warranty: 2,
-    price: 5000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Г\" - 60°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 249,
-    name: "Минивольт 20-67-5000-К-30-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Точную величину уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-30",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-30\"",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 250,
-    name: "Минивольт 20-67-5000-К-12-36-Консоль",
-    category: "Консольное",
-    power: 20,
-    luminous_flux: 3000, // TODO: Уточнить
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "К-12",
-    warranty: 2,
-    price: 6000,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"К-12\"",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 251,
-    name: "Минивольт 40-67-5000-Д-12-Консоль",
-    category: "Консольное",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 252,
-    name: "Минивольт 40-67-5000-Д-12-Скоба",
-    category: "Скоба",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 253,
-    name: "Минивольт 40-67-5000-Д-24-Скоба",
-    category: "Скоба",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 254,
-    name: "Минивольт 40-67-5000-Д-36-Скоба",
-    category: "Скоба",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  }
-];
+    id: 1008,
+    name: "Сокол 52-67-5000-К30-220-Скоба",
+    category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
+    color_temperature: 5000, beam_angle: "К30", warranty: 3, price: 14700,
+    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "
