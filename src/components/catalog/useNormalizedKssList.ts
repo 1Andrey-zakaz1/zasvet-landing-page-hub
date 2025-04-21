@@ -31,7 +31,8 @@ export function makePrettyKSS(kss: string): string | null {
 }
 
 // Create normalized key for KSS value to use for deduplication
-function getNormalizedKssKey(kss: string): string {
+// Export the function so it can be used in CatalogPage.tsx
+export function getNormalizedKssKey(kss: string): string {
   // Convert to lowercase and remove degree symbol for consistent comparison
   return kss.toLowerCase().replace(/°/g, '').replace(/\s+/g, ' ').trim();
 }
