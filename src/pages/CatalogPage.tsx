@@ -72,6 +72,9 @@ const CatalogPage: React.FC = () => {
 
   // Сортировка по убыванию светового потока:
   const sorted = [...filtered].sort((a, b) => b.luminous_flux - a.luminous_flux);
+  
+  // Проверяем, есть ли светильник "Сокол" с потоком 48048 в начале списка
+  console.log("CatalogPage sorted fixtures:", sorted.map(f => `${f.name}: ${f.luminous_flux}`).slice(0, 3));
 
   return (
     <div className="bg-zasvet-black min-h-screen py-10 px-4">
