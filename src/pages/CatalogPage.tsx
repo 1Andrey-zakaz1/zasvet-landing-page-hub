@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
@@ -24,79 +23,7 @@ export interface Fixture {
 
 const DATA: Fixture[] = [
   {
-    id: 220,
-    name: "Минивольт 40-67-5000-Д-24-Консоль",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Консольное",
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "24",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 221,
-    name: "Минивольт 40-67-5000-Д-36-Консоль",
-    power: 40,
-    luminous_flux: 5480,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Консольное",
-    beam_angle: "Д - 120°",
-    warranty: 2,
-    price: 7470,
-    material: "Алюминий/прозрачный противоударный поликарбонат",
-    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Д\" - 120°",
-      "Напряжение питания, В": "36",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 222,
-    name: "Минивольт 40-67-5000-Ш-12-Консоль",
-    power: 40,
-    luminous_flux: 6000,
-    ip_rating: "67",
-    color_temperature: 5000,
-    category: "Консольное",
-    beam_angle: "Ш",
-    warranty: 2,
-    price: 15516,
-    material: "Алюминий/оптика ППМА",
-    dimensions: "L: 350 мм, W: 110 мм, H: 76 мм",
-    availability: true,
-    properties: {
-      "I": "6",
-      "P": "7",
-      "КСС": "\"Ш\"",
-      "Напряжение питания, В": "12",
-      "Гарантия, лет": "2",
-      "Рабочий диапазон температур": "от -40 до + 40 °C",
-      "Светодиоды": "Lumileds"
-    }
-  },
-  {
-    id: 119,
+    id: 234,
     name: "Гармония 34-20-5000-Д-220-универсальное",
     power: 34,
     luminous_flux: 4250,
@@ -120,7 +47,7 @@ const DATA: Fixture[] = [
     }
   },
   {
-    id: 120,
+    id: 235,
     name: "Гармония 40-20-5000-Д-220-универсальное",
     power: 40,
     luminous_flux: 5400,
@@ -144,58 +71,201 @@ const DATA: Fixture[] = [
     }
   },
   {
-    id: 121,
-    name: "Гармония 42-20-5000-Д-220-универсальное",
-    power: 42,
-    luminous_flux: 5670,
-    ip_rating: "20",
+    id: 256,
+    name: "Буран 96-67-5000-Д-220-Консоль",
+    power: 96,
+    luminous_flux: 17396,
+    ip_rating: "67",
     color_temperature: 5000,
-    category: "Универсальное",
+    category: "Консольное",
     beam_angle: "Д - 120°",
     warranty: 5,
-    price: 3633,
-    material: "Сталь/микропризма",
-    dimensions: "L: 595 мм, W: 595 мм, H: 40 мм",
+    price: 10020,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 500 мм, W: 110 мм, H: 70 мм",
     availability: true,
     properties: {
-      "I": "2",
-      "P": "0",
+      "I": "6",
+      "P": "7",
       "КСС": "\"Д\" - 120°",
       "Напряжение питания, В": "220",
       "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -20 до + 30 °С",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
       "Светодиоды": "Lumileds"
     }
   },
   {
-    id: 122,
-    name: "Гармония 52-20-5000-Д-220-универсальное",
-    power: 52,
-    luminous_flux: 7100,
-    ip_rating: "20",
+    id: 257,
+    name: "Буран 144-67-5000-Д-220-Консоль",
+    power: 144,
+    luminous_flux: 26094,
+    ip_rating: "67",
     color_temperature: 5000,
-    category: "Универсальное",
+    category: "Консольное",
     beam_angle: "Д - 120°",
     warranty: 5,
-    price: 3747,
-    material: "Сталь/микропризма",
-    dimensions: "L: 595 мм, W: 595 мм, H: 40 мм",
+    price: 15036,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 750 мм, W: 110 мм, H: 70 мм",
     availability: true,
     properties: {
-      "I": "2",
-      "P": "0",
+      "I": "6",
+      "P": "7",
       "КСС": "\"Д\" - 120°",
       "Напряжение питания, В": "220",
       "Гарантия, лет": "5",
-      "Рабочий диапазон температур": "от -20 до + 30 °С",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
       "Светодиоды": "Lumileds"
     }
   },
+  {
+    id: 258,
+    name: "Буран 192-67-5000-Д-220-Консоль",
+    power: 192,
+    luminous_flux: 34792,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 20040,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 1000 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 1,
+    name: "Буран 96-67-5000-Д-220-Консоль",
+    power: 96,
+    luminous_flux: 17396,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 10020,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 500 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 2,
+    name: "Буран 144-67-5000-Д-220-Консоль",
+    power: 144,
+    luminous_flux: 26094,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 15036,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 750 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 3,
+    name: "Буран 192-67-5000-Д-220-Консоль",
+    power: 192,
+    luminous_flux: 34792,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Д - 120°",
+    warranty: 5,
+    price: 20052,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 1000 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 4,
+    name: "Буран 96-67-5000-Ш-220-Консоль",
+    power: 96,
+    luminous_flux: 16704,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "Ш",
+    warranty: 5,
+    price: 18930,
+    material: "Алюминий/оптика ППМА",
+    dimensions: "L: 500 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Ш\"",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 5,
+    name: "Буран 96-67-5000-С-220-Консоль",
+    power: 96,
+    luminous_flux: 16704,
+    ip_rating: "67",
+    color_temperature: 5000,
+    category: "Консольное",
+    beam_angle: "С - 90°",
+    warranty: 5,
+    price: 18930,
+    material: "Алюминий/оптика ППМА",
+    dimensions: "L: 500 мм, W: 110 мм, H: 70 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"С\"- 90°",
+      "Напряжение питания, В": "220",
+      "Гарантия, лет": "5",
+      "Рабочий диапазон температур": "от -60 до + 40 °С",
+      "Светодиоды": "Lumileds"
+    }
+  }
 ];
 
 function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
   return data.filter(f => {
-    // Поиск по названию (поиск — главный акцент)
     if (filters.query && !f.name.toLowerCase().includes(filters.query.toLowerCase()))
       return false;
     if (filters.series && !f.name.toLowerCase().includes(filters.series.toLowerCase()))
@@ -244,7 +314,6 @@ const CatalogPage: React.FC = () => {
   return (
     <div className="bg-zasvet-black min-h-screen py-10 px-4">
       <div className="container mx-auto max-w-7xl">
-        {/* Кнопка сворачивания/разворачивания */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="section-title text-zasvet-white flex items-center gap-2">
             <Search className="h-6 w-6 text-zasvet-gold" />
