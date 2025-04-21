@@ -1,3 +1,4 @@
+
 import type { Fixture } from "./CatalogSection";
 
 // "Минивольт" ВСЕ варианты по вашему списку, всё лишнее убрано, недостающие параметры отмечены TODO
@@ -8,7 +9,7 @@ export const catalogPart1: Fixture[] = [
     name: "Минивольт 10-67-5000-Д-12-Консоль",
     category: "Консольное", power: 10, luminous_flux: 1400, ip_rating: "67",
     color_temperature: 5000, beam_angle: "Д - 120°", warranty: 2, price: 3400,
-    material: "Алюминий/поликарбонат", dimensions: "L: 200 мм, W: 60 мм, H: 55 мм", availability: true,
+    material: "Алюминий/поликарбонат", dimensions: "L: 200 мм, W: 60 мм, H: 55 мм", availability: true,
     properties: { "I": "6", "P": "7", "КСС": "\"Д\" - 120°", "Напряжение питания, В": "12", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
@@ -630,3 +631,123 @@ export const catalogPart1: Fixture[] = [
     }
   },
   {
+    id: 250,
+    name: "Минивольт 20-67-5000-К-12-36-Консоль",
+    category: "Консольное",
+    power: 20,
+    luminous_flux: 3000, // TODO: Уточнить
+    ip_rating: "67",
+    color_temperature: 5000,
+    beam_angle: "К-12",
+    warranty: 2,
+    price: 6000,
+    material: "Алюминий/оптика ППМА",
+    dimensions: "L: 300 мм, W: 110 мм, H: 76 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"К-12\"",
+      "Напряжение питания, В": "36",
+      "Гарантия, лет": "2",
+      "Рабочий диапазон температур": "от -40 до + 40 °C",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 251,
+    name: "Минивольт 40-67-5000-Д-12-Консоль",
+    category: "Консольное",
+    power: 40,
+    luminous_flux: 5480,
+    ip_rating: "67",
+    color_temperature: 5000,
+    beam_angle: "Д - 120°",
+    warranty: 2,
+    price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "12",
+      "Гарантия, лет": "2",
+      "Рабочий диапазон температур": "от -40 до + 40 °C",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 252,
+    name: "Минивольт 40-67-5000-Д-12-Скоба",
+    category: "Скоба",
+    power: 40,
+    luminous_flux: 5480,
+    ip_rating: "67",
+    color_temperature: 5000,
+    beam_angle: "Д - 120°",
+    warranty: 2,
+    price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "12",
+      "Гарантия, лет": "2",
+      "Рабочий диапазон температур": "от -40 до + 40 °C",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 253,
+    name: "Минивольт 40-67-5000-Д-24-Скоба",
+    category: "Скоба",
+    power: 40,
+    luminous_flux: 5480,
+    ip_rating: "67",
+    color_temperature: 5000,
+    beam_angle: "Д - 120°",
+    warranty: 2,
+    price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "24",
+      "Гарантия, лет": "2",
+      "Рабочий диапазон температур": "от -40 до + 40 °C",
+      "Светодиоды": "Lumileds"
+    }
+  },
+  {
+    id: 254,
+    name: "Минивольт 40-67-5000-Д-36-Скоба",
+    category: "Скоба",
+    power: 40,
+    luminous_flux: 5480,
+    ip_rating: "67",
+    color_temperature: 5000,
+    beam_angle: "Д - 120°",
+    warranty: 2,
+    price: 7470,
+    material: "Алюминий/прозрачный противоударный поликарбонат",
+    dimensions: "L: 580 мм, W: 60 мм, H: 55 мм",
+    availability: true,
+    properties: {
+      "I": "6",
+      "P": "7",
+      "КСС": "\"Д\" - 120°",
+      "Напряжение питания, В": "36",
+      "Гарантия, лет": "2",
+      "Рабочий диапазон температур": "от -40 до + 40 °C",
+      "Светодиоды": "Lumileds"
+    }
+  }
+];
