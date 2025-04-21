@@ -2,10 +2,12 @@ import type { Fixture } from "./CatalogSection";
 
 // Серия светильников Минивольт
 import { catalogMinivoltPart1 } from "./catalogMinivoltPart1";
+import { catalogMinivoltPart2 } from "./catalogMinivoltPart2";
 
 // Собираем все части (добавляйте новые части в этот массив при необходимости)
 export const catalogMinivolt = [
   ...catalogMinivoltPart1,
+  ...catalogMinivoltPart2,
   // Дальше все "К" исполнения для Консоль
   {
     id: 6,
