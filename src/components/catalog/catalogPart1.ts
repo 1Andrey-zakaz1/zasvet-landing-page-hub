@@ -1,4 +1,3 @@
-
 import type { Fixture } from "./CatalogSection";
 
 // ВНИМАНИЕ: В этом файле теперь только "Минивольт" и "Сокол" из вашего списка. Вся лишняя продукция удалена.
@@ -210,77 +209,75 @@ export const catalogPart1: Fixture[] = [
     properties: { "I": "6", "P": "7", "КСС": "\"К-12\"", "Напряжение питания, В": "36", "Гарантия, лет": "2", "Рабочий диапазон температур": "от -40 до + 40 °C", "Светодиоды": "Lumileds" }
   },
 
-  // ===================== Сокол (пример для начинающего ряда, остальные аналогично!) =====================
+  // ===================== Сокол (Обновленные данные по всей серии) =====================
+  // Сокол 26 Вт
   {
     id: 1000,
     name: "Сокол 26-67-5000-Д-220-Скоба",
     category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 3, price: 9800,
-    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 5, price: 9800,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1001,
     name: "Сокол 26-67-5000-С-220-Скоба",
     category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "С", warranty: 3, price: 9800,
-    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"С\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 5, price: 9800,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С - 90°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1002,
     name: "Сокол 26-67-5000-Г-220-Скоба",
     category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Г", warranty: 3, price: 9800,
-    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"Г\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 5, price: 9800,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1003,
     name: "Сокол 26-67-5000-К30-220-Скоба",
     category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "К30", warranty: 3, price: 9800,
-    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"К30\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "К - 30°", warranty: 5, price: 9800,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К - 30°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1004,
     name: "Сокол 26-67-5000-К12-220-Скоба",
     category: "Скоба", power: 26, luminous_flux: 3200, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "К12", warranty: 3, price: 9800,
-    material: "Алюминий/стекло", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"К12\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "К - 12°", warranty: 5, price: 9800,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 250 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"К - 12°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
+  
+  // Сокол 52 Вт
   {
     id: 1005,
     name: "Сокол 52-67-5000-Д-220-Скоба",
     category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 3, price: 14700,
-    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "Д - 120°", warranty: 5, price: 14700,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Д - 120°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1006,
     name: "Сокол 52-67-5000-С-220-Скоба",
     category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "С", warranty: 3, price: 14700,
-    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"С\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "С - 90°", warranty: 5, price: 14700,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"С - 90°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1007,
     name: "Сокол 52-67-5000-Г-220-Скоба",
     category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "Г", warranty: 3, price: 14700,
-    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"Г\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
+    color_temperature: 5000, beam_angle: "Г - 60°", warranty: 5, price: 14700,
+    material: "Алюминий/оптика ППМА", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
+    properties: { "I": "6", "P": "7", "КСС": "\"Г - 60°\"", "Напряжение питания, В": "220", "Гарантия, лет": "5", "Рабочий диапазон температур": "от -60 до + 40 °C", "Светодиоды": "Lumileds" }
   },
   {
     id: 1008,
     name: "Сокол 52-67-5000-К30-220-Скоба",
     category: "Скоба", power: 52, luminous_flux: 6400, ip_rating: "67",
-    color_temperature: 5000, beam_angle: "К30", warranty: 3, price: 14700,
-    material: "Алюминий/стекло", dimensions: "L: 500 мм, W: 135 мм, H: 82 мм", availability: true,
-    properties: { "I": "6", "P": "7", "КСС": "\"К30\"", "Напряжение питания, В": "220", "Гарантия, лет": "3", "Рабочий диапазон температур": "от -40 до + 50 °C", "Светодиоды": "Lumileds" }
-  }
-];
