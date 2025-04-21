@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
@@ -34,6 +33,15 @@ const allIpRatings = Array.from(new Set(catalogData.map(f => f.ip_rating)))
   .map(Number)
   .sort((a, b) => a - b)
   .map(ip => String(ip));
+
+// Получаем массив уникальных beam_angle (КСС) по алфавиту, исключая пустые
+const allKssTypes = Array.from(
+  new Set(
+    catalogData.map((f) =>
+      (f.beam_angle || "").trim()
+    ).filter(Boolean)
+  )
+).sort((a, b) => a.localeCompare(b));
 
 // Проверяем наличие дубликатов по имени
 const duplicateCheck = catalogData.reduce((acc, fixture) => {
@@ -128,7 +136,13 @@ const CatalogPage: React.FC = () => {
         </div>
         {isExpanded && (
           <>
-            <CatalogFilterPanel filters={filters} setFilters={setFilters} allSeries={allSeries} allIpRatings={allIpRatings} />
+            <CatalogFilterPanel
+              filters={filters}
+              setFilters={setFilters}
+              allSeries={allSeries}
+              allIpRatings={allIpRatings}
+              allKssTypes={allKssTypes}
+            />
             <CatalogList fixtures={sorted.slice(0, 5)} />
             {sorted.length > 5 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
@@ -154,4 +168,3 @@ const CatalogPage: React.FC = () => {
 };
 
 export default CatalogPage;
-

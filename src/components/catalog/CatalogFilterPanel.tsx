@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,6 +27,7 @@ type Props = {
   setFilters: React.Dispatch<React.SetStateAction<FilterValues>>;
   allSeries: string[];
   allIpRatings: string[];
+  allKssTypes: string[];
 };
 
 const kssOptions = [
@@ -38,7 +38,13 @@ const kssOptions = [
   { value: "Г", label: "Г - 60°" }
 ];
 
-const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries, allIpRatings }) => {
+const CatalogFilterPanel: React.FC<Props> = ({
+  filters,
+  setFilters,
+  allSeries,
+  allIpRatings,
+  allKssTypes
+}) => {
   return (
     <form
       className="bg-zasvet-gray/10 rounded-lg p-4 mb-8 border border-zasvet-gold/30 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in"
@@ -126,8 +132,11 @@ const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries, a
           value={filters.kss_type}
           onChange={e => setFilters(f => ({ ...f, kss_type: e.target.value }))}
         >
-          {kssOptions.map(opt => (
-            <option value={opt.value} key={opt.value}>{opt.label}</option>
+          <option value="">Любая КСС</option>
+          {allKssTypes.map((kss) => (
+            <option value={kss} key={kss}>
+              {kss}
+            </option>
           ))}
         </select>
       </div>
@@ -240,4 +249,3 @@ const CatalogFilterPanel: React.FC<Props> = ({ filters, setFilters, allSeries, a
 };
 
 export default CatalogFilterPanel;
-

@@ -26,6 +26,15 @@ export interface Fixture {
 const allSeries = Array.from(new Set(catalogData.map(f => f.name.split(" ")[0])))
   .sort((a, b) => a.localeCompare(b));
 
+// Получаем массив уникальных beam_angle (КСС) по алфавиту, исключая пустые
+const allKssTypes = Array.from(
+  new Set(
+    catalogData.map((f) =>
+      (f.beam_angle || "").trim()
+    ).filter(Boolean)
+  )
+).sort((a, b) => a.localeCompare(b));
+
 // Новый список уникальных IP в базе, отсортированный по возрастанию (например, ["20", ...])
 const allIpRatings = Array.from(new Set(catalogData.map(f => f.ip_rating)))
   .map(ip => ip.replace(/^IP/i, "")) // убрать IP если вдруг где-то есть
@@ -127,7 +136,13 @@ const CatalogSection: React.FC = () => {
         </div>
         {isExpanded && (
           <>
-            <CatalogFilterPanel filters={filters} setFilters={setFilters} allSeries={allSeries} allIpRatings={allIpRatings} />
+            <CatalogFilterPanel
+              filters={filters}
+              setFilters={setFilters}
+              allSeries={allSeries}
+              allIpRatings={allIpRatings}
+              allKssTypes={allKssTypes}
+            />
             <CatalogList fixtures={sorted.slice(0, 8)} />
             {sorted.length > 8 && (
               <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
