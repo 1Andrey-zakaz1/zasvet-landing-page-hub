@@ -10,7 +10,7 @@ type Props = {
   step?: number;
   onChange: (value: [number, number]) => void;
   label: string;
-  colorThumb?: "primary" | "orange" | "green" | "blue" | "custom"; // добавил custom для красно-синего
+  colorThumb?: "primary" | "orange" | "green" | "blue" | "custom";
   unit?: string;
   minLabel?: string;
   maxLabel?: string;
@@ -44,10 +44,10 @@ export const SliderRange: React.FC<Props> = ({
       <Slider
         className={clsx(
           "mx-2 w-full",
-          "[&>.slider-thumb-0]:border-2",
-          `[&>.slider-thumb-0]:${thumbColors[colorThumb][0]}`,
-          "[&>.slider-thumb-1]:border-2",
-          `[&>.slider-thumb-1]:${thumbColors[colorThumb][1]}`
+          "[&>div:first-child>div:first-child>div]:border-2",
+          `[&>div:first-child>div:first-child>div]:${thumbColors[colorThumb][0]}`,
+          "[&>div:first-child>div:last-child>div]:border-2",
+          `[&>div:first-child>div:last-child>div]:${thumbColors[colorThumb][1]}`
         )}
         min={min}
         max={max}
@@ -65,3 +65,4 @@ export const SliderRange: React.FC<Props> = ({
     </div>
   </div>
 );
+
