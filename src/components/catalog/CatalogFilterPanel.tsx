@@ -1,8 +1,8 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useNormalizedKssList } from "./useNormalizedKssList";
 
 export interface FilterValues {
   query: string;
@@ -32,68 +32,6 @@ type Props = {
   allKssTypes: string[];
 };
 
-// Получение числового угла из строки КСС
-const getAngleFromKSS = (kss: string): number => {
-  // КСС Ш (широкая) = 140, Д = 120, С = 90, Г = 60
-  if (kss === "Ш") return 140;
-  if (kss.startsWith("Д")) return 120;
-  if (kss.startsWith("С")) return 90;
-  if (kss.startsWith("Г")) return 60;
-
-  // К-12
-  if (kss.includes("12")) return 12;
-  // К-30
-  if (kss.includes("30")) return 30;
-
-  // Попробовать парсить числовое значение
-  const match = kss.match(/(\d+)[°]?/);
-  if (match && match[1]) {
-    return parseInt(match[1], 10);
-  }
-  return 0;
-};
-
-// Унификация и сортировка КСС
-function normalizedKssList(kssArr: string[]): string[] {
-  // Парсим все варианты, группируем: "К-12", "K-12", "К12", "K12", "К - 12°", etc → "К - 12°"
-  const set = new Set<string>();
-  let hasK12 = false, hasK30 = false;
-  kssArr.forEach(kss => {
-    if (/(к|k)[\s\-]?12/i.test(kss)) {
-      hasK12 = true;
-    } else if (/(к|k)[\s\-]?30/i.test(kss)) {
-      hasK30 = true;
-    } else if (/^ш$/i.test(kss)) {
-      set.add("Ш");
-    } else if (/^д/i.test(kss)) {
-      set.add("Д-120");
-    } else if (/^с/i.test(kss)) {
-      set.add("С");
-    } else if (/^г/i.test(kss)) {
-      set.add("Г");
-    } else {
-      set.add(kss.replace(/\s+/g, " ").replace("°", "").trim() + (kss.includes("°") ? "°" : ""));
-    }
-  });
-  if (hasK12) set.add("К - 12°");
-  if (hasK30) set.add("К - 30°");
-  // Удаляем возможные исходные K12/K-12/K-30/K30 и дубли (они уже добавлены красивым названием)
-  const arr = Array.from(set)
-    .filter(k => !/(к|k)[\s\-]?12/i.test(k) && !/(к|k)[\s\-]?30/i.test(k))
-    .concat(hasK12 ? ["К - 12°"] : [], hasK30 ? ["К - 30°"] : []);
-
-  // Специальная ручная сортировка:
-  // 1. "Ш", 2. "Д-120", далее по убыванию угла
-  return arr
-    .sort((a, b) => {
-      if (a === "Ш") return -1;
-      if (b === "Ш") return 1;
-      if (a === "Д-120") return -1;
-      if (b === "Д-120") return 1;
-      return getAngleFromKSS(b) - getAngleFromKSS(a);
-    });
-}
-
 const CatalogFilterPanel: React.FC<Props> = ({
   filters,
   setFilters,
@@ -107,8 +45,8 @@ const CatalogFilterPanel: React.FC<Props> = ({
   const currentPowerMin = filters.power_min !== "" ? Number(filters.power_min) : powerMinMax[0];
   const currentPowerMax = filters.power_max !== "" ? Number(filters.power_max) : powerMinMax[1];
 
-  // Обновлённый список КСС без дублей и красиво отсортированный
-  const uniqueKssTypes = normalizedKssList(allKssTypes);
+  // Новая обработка КСС типов — без дублей, красивая сортировка
+  const uniqueKssTypes = useNormalizedKssList(allKssTypes);
 
   return (
     <form
