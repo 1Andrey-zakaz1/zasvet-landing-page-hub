@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNormalizedKssList } from "./useNormalizedKssList";
 import { catalogData } from "./catalogData";

@@ -9,16 +9,21 @@ type Props = {
 };
 
 const IpRatingFilter: React.FC<Props> = ({ ip_rating, setFilters, allIpRatings }) => (
-  <select
-    className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
-    value={ip_rating}
-    onChange={e => setFilters(f => ({ ...f, ip_rating: e.target.value }))}
-  >
-    <option value="">Любой IP</option>
-    {allIpRatings.map(ip => (
-      <option value={ip} key={ip}>{`IP${ip}`}</option>
-    ))}
-  </select>
+  <div className="flex flex-col gap-1">
+    <label className="text-zasvet-gold text-xs font-medium mb-0 ml-1">
+      IP класс
+    </label>
+    <select
+      className="w-full bg-zasvet-black text-zasvet-white border border-zasvet-gold/30 rounded-md h-10 px-3"
+      value={ip_rating}
+      onChange={e => setFilters(f => ({ ...f, ip_rating: e.target.value }))}
+    >
+      <option value="">Любой IP класс</option>
+      {allIpRatings.map(rating => (
+        <option value={rating} key={rating}>IP {rating}</option>
+      ))}
+    </select>
+  </div>
 );
 
 export default IpRatingFilter;
