@@ -51,8 +51,8 @@ export const SliderRange: React.FC<Props> = ({
           minStepsBetweenThumbs={1}
           onValueChange={([val1, val2]) => onChange([val1, val2])}
         />
-        {/* Custom styling applied directly to the Radix UI Slider thumbs */}
-        <style jsx global>{`
+        {/* Using a styled component approach for the thumbs */}
+        <style dangerouslySetInnerHTML={{ __html: `
           /* Style for the minimum (first) thumb */
           .radix-slider-thumb:first-child {
             background-color: #1EAEDB !important;
@@ -74,7 +74,7 @@ export const SliderRange: React.FC<Props> = ({
             height: 20px !important;
             width: 20px !important;
           }
-        `}</style>
+        `}} />
       </div>
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[1]}{unit}</span>
     </div>
