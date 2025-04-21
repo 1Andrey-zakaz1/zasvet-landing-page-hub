@@ -16,7 +16,7 @@ type Props = {
   maxLabel?: string;
 };
 
-// Цвета для бегунков: минимум — синий, максимум — красный
+// Цвета для бегунков
 const thumbColors = {
   primary: ["bg-[#9b87f5] border-[#9b87f5]", "bg-[#7E69AB] border-[#7E69AB]"],
   orange: ["bg-[#F97316] border-[#F97316]", "bg-[#FCA745] border-[#FCA745]"],
@@ -41,22 +41,41 @@ export const SliderRange: React.FC<Props> = ({
     <label className="text-zasvet-gold text-sm mb-1 ml-1 select-none">{label}</label>
     <div className="flex items-center gap-3">
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[0]}{unit}</span>
-      <Slider
-        className={clsx(
-          "mx-2 w-full",
-          "[&>div:first-child>div:first-child>div]:border-2",
-          `[&>div:first-child>div:first-child>div]:${thumbColors[colorThumb][0]}`,
-          "[&>div:first-child>div:last-child>div]:border-2",
-          `[&>div:first-child>div:last-child>div]:${thumbColors[colorThumb][1]}`
-        )}
-        min={min}
-        max={max}
-        step={step}
-        value={[value[0], value[1]]}
-        minStepsBetweenThumbs={1}
-        onValueChange={([val1, val2]) => onChange([val1, val2])}
-        style={{ maxWidth: "90%" }}
-      />
+      <div className="w-full relative" style={{ maxWidth: "90%" }}>
+        <Slider
+          className="mx-2 w-full"
+          min={min}
+          max={max}
+          step={step}
+          value={[value[0], value[1]]}
+          minStepsBetweenThumbs={1}
+          onValueChange={([val1, val2]) => onChange([val1, val2])}
+        />
+        {/* Custom styling applied directly to the Radix UI Slider thumbs */}
+        <style jsx global>{`
+          /* Style for the minimum (first) thumb */
+          .radix-slider-thumb:first-child {
+            background-color: #1EAEDB !important;
+            border-color: #1EAEDB !important;
+            border-width: 2px !important;
+          }
+          
+          /* Style for the maximum (second) thumb */
+          .radix-slider-thumb:last-child {
+            background-color: #ea384c !important;
+            border-color: #ea384c !important;
+            border-width: 2px !important;
+          }
+          
+          /* Make sure both thumbs are visible */
+          .radix-slider-thumb {
+            display: block !important;
+            opacity: 1 !important;
+            height: 20px !important;
+            width: 20px !important;
+          }
+        `}</style>
+      </div>
       <span className="text-zasvet-white text-xs min-w-[3em]">{value[1]}{unit}</span>
     </div>
     <div className="flex justify-between px-1 mt-1 text-zasvet-gray/70 text-xs">
@@ -65,4 +84,3 @@ export const SliderRange: React.FC<Props> = ({
     </div>
   </div>
 );
-

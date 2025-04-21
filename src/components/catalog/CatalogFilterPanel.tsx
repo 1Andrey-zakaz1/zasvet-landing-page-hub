@@ -1,3 +1,4 @@
+
 import React, { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -132,7 +133,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           power_min: min === powerMin ? "" : String(min),
           power_max: max === powerMax ? "" : String(max),
         }))}
-        colorThumb="primary"
+        colorThumb="custom"
       />
 
       <SliderRange
@@ -145,7 +146,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           lumen_min: min === lumenMin ? "" : String(min),
           lumen_max: max === lumenMax ? "" : String(max),
         }))}
-        colorThumb="orange"
+        colorThumb="custom"
       />
 
       <SliderRange
@@ -158,7 +159,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           price_min: min === priceMin ? "" : String(min),
           price_max: max === priceMax ? "" : String(max),
         }))}
-        colorThumb="green"
+        colorThumb="custom"
       />
 
       <div>
@@ -197,7 +198,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           length_min: min === lengthMin ? "" : String(min),
           length_max: max === lengthMax ? "" : String(max),
         }))}
-        colorThumb="blue"
+        colorThumb="custom"
       />
       <SliderRange
         label="Ширина, мм"
@@ -209,7 +210,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           width_min: min === widthMin ? "" : String(min),
           width_max: max === widthMax ? "" : String(max),
         }))}
-        colorThumb="green"
+        colorThumb="custom"
       />
       <SliderRange
         label="Высота, мм"
@@ -221,7 +222,7 @@ const CatalogFilterPanel: React.FC<Props> = ({
           height_min: min === heightMin ? "" : String(min),
           height_max: max === heightMax ? "" : String(max),
         }))}
-        colorThumb="orange"
+        colorThumb="custom"
       />
 
       <div className="flex items-center">
