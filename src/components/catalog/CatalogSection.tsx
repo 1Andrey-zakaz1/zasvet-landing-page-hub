@@ -68,7 +68,21 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
     if (filters.lumen_min && f.luminous_flux < Number(filters.lumen_min)) return false;
     if (filters.lumen_max && f.luminous_flux > Number(filters.lumen_max)) return false;
     if (filters.ip_rating && f.ip_rating !== filters.ip_rating) return false;
-    if (filters.kss_type && !f.beam_angle?.includes(filters.kss_type)) return false;
+    
+    // Improved KSS type filtering
+    if (filters.kss_type && f.beam_angle) {
+      // Преобразуем beam_angle в нормализованный формат для сравнения
+      const pretty = makePrettyKSS(f.beam_angle);
+      const normalized = pretty || f.beam_angle.replace(/\s+/g, " ").replace("°", "").trim();
+      
+      // Если не совпадает с фильтром, возвращаем false
+      if (normalized !== filters.kss_type) {
+        return false;
+      }
+    } else if (filters.kss_type) {
+      return false; // Если у светильника нет КСС, но фильтр установлен
+    }
+    
     if (filters.length_min && Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0) < Number(filters.length_min)) return false;
     if (filters.length_max && Number(f.dimensions.match(/L:\s*(\d+)/)?.[1] ?? 0) > Number(filters.length_max)) return false;
     if (filters.width_min && Number(f.dimensions.match(/W:\s*(\d+)/)?.[1] ?? 0) < Number(filters.width_min)) return false;

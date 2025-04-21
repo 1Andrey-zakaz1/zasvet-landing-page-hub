@@ -32,19 +32,20 @@ function makePrettyKSS(kss: string): string | null {
 
 export function useNormalizedKssList(rawKssList: string[]): string[] {
   return useMemo(() => {
-    // Собираем уникальные КСС, красиво подписываем
-    const set = new Set<string>();
-
+    // Создаем уникальный список КСС
+    const uniqueKss = new Map<string, string>();
+    
+    // Проходим по всем КСС и добавляем нормализованные значения
     rawKssList.forEach(kss => {
       const pretty = makePrettyKSS(kss);
-      if (pretty) {
-        set.add(pretty);
-      } else {
-        set.add(kss.replace(/\s+/g, " ").replace("°", "").trim());
-      }
+      const normalized = pretty || kss.replace(/\s+/g, " ").replace("°", "").trim();
+      
+      // Используем нормализованное значение как ключ, чтобы избежать дубликатов
+      uniqueKss.set(normalized.toLowerCase(), normalized);
     });
-
-    const arr = Array.from(set);
+    
+    // Преобразуем Map в массив уникальных значений
+    const arr = Array.from(uniqueKss.values());
 
     // Сортировка:
     // 1. "Ш" всегда в начале
