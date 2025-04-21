@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Электронный каталог светильников</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --primary-color: #F9B233;     /* Золотисто-желтый акцент */
+            --secondary-color: #cccccc;   /* Светло-серый для вторичных элементов */
+            --background-color: #111111;  /* Темный фон */
+            --border-color: #333333;      /* Темно-серый для границ */
+            --text-color: #FFFFFF;        /* Белый текст */
+            --light-text: #aaaaaa;        /* Светло-серый для вспомогательного текста */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #000000;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(249,178,51,0.2);
+            margin-bottom: 30px;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+        
+        .filter-panel {
+            background-color: #222222;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(249,178,51,0.2);
+            border: 1px solid #333333;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+        }
+        
+        .filter-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            background-color: #333333;
+            color: var(--text-color);
+        }
+        
+        select, input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #333333;
+            color: var(--text-color);
+        }
+        
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--light-text);
+            margin-top: 5px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #333333;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .fixtures-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #222222;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(249,178,51,0.2);
+            border: 1px solid #333333;
+        }
+        
+        .fixtures-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .fixtures-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .fixtures-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: var(--text-color);
+        }
+        
+        .fixtures-table tbody tr:hover {
+            background-color: #333333;
+        }
+        
+        .fixtures-table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            color: var(--text-color);
+        }
+        
+        .fixtures-table .model-cell {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        
+        .fixture-detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: #222222;
+            margin: 10% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(249,178,51,0.2);
+            position: relative;
+            border: 1px solid #333333;
+            color: var(--text-color);
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: #FFFFFF;
+        }
+        
+        .fixture-details {
+            margin-top: 20px;
+        }
+        
+        .fixture-details h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .fixture-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination button {
+            margin: 0 5px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: #222222;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination button:hover {
+            background-color: #333333;
+        }
+        
+        /* Стили для ползунков диапазона */
+        .range-slider {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        /* Стили для двух расположенных рядом ползунков */
+        .range-values {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        .double-slider-container {
+            position: relative;
+            height: 50px; /* Увеличили высоту контейнера */
+            margin: 15px 0;
+            width: 100%;
+        }
+        
+        .slider-container {
+            position: absolute;
+            width: 100%;
+            height: 50px; /* Увеличили высоту контейнера */
+            top: 0;
+        }
+        
+        /* Немного раздвинем слайдеры по вертикали */
+        .slider-container.min {
+            top: -8px; /* Сдвигаем немного вверх */
+        }
+        
+        .slider-container.max {
+            top: 8px; /* Сдвигаем немного вниз */
+        }
+        
+        .slider-track {
+            position: absolute;
+            width: 100%;
+            height: 8px; /* Увеличиваем толщину дорожки */
+            background-color: #555555; /* Более заметный цвет фона */
+            border-radius: 4px;
+            top: 22px; /* По центру контейнера */
+            z-index: 1;
+            border: 1px solid #777777; /* Более заметная рамка */
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); /* Внутренняя тень для объема */
+        }
+        
+        .slider-selection {
+            position: absolute;
+            height: 8px; /* Увеличиваем толщину выделения */
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            top: 22px; /* По центру контейнера */
+            z-index: 2;
+            box-shadow: 0 0 8px rgba(249,178,51,0.8); /* Усиливаем свечение */
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 30px; /* Увеличили высоту для лучшего захвата */
+            background: transparent;
+            outline: none;
+            position: relative;
+            z-index: 3;
+            pointer-events: auto;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px; /* Более крупный размер */
+            height: 30px; /* Более крупный размер */
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 4;
+            border: 3px solid white; /* Более толстая рамка */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5); /* Более выраженная тень */
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 30px; /* Более крупный размер */
+            height: 30px; /* Более крупный размер */
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 4;
+            border: 3px solid white; /* Более толстая рамка */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5); /* Более выраженная тень */
+        }
+        
+        .slider-min::-webkit-slider-thumb {
+            background-color: #FFD700; /* Яркий золотистый для мин */
+            z-index: 5; /* Выше, чем у max */
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); /* Усиленное свечение */
+        }
+        
+        .slider-max::-webkit-slider-thumb {
+            background-color: #FF8C00; /* Темно-оранжевый для макс */
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.8); /* Усиленное свечение */
+        }
+        
+        .slider-min::-moz-range-thumb {
+            background-color: #FFD700; /* Яркий золотистый для мин */
+            z-index: 5; /* Выше, чем у max */
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); /* Усиленное свечение */
+        }
+        
+        .slider-max::-moz-range-thumb {
+            background-color: #FF8C00; /* Темно-оранжевый для макс */
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.8); /* Усиленное свечение */
+        }
+        
+        /* Исправление z-index для контейнеров */
+        .slider-container.min {
+            z-index: 5; /* Выше, чем max */
+        }
+        
+        .slider-container.max {
+            z-index: 4;
+        }
+        
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            z-index: 99;
+            width: calc(100% - 30px);
+            background-color: #333333;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .autocomplete-items div {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .autocomplete-items div:hover {
+            background-color: #444444;
+        }
+        
+        @media (max-width: 768px) {
+            .catalog-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-panel {
+                order: 1;
+                margin-bottom: 20px;
+            }
+            
+            .products-section {
+                order: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Электронный каталог светильников</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="catalog-layout">
+            <div class="filter-panel">
+                <div class="filter-section">
+                    <h3>Поиск по названию</h3>
+                    <div style="position: relative;">
+                        <input type="text" id="search-input" class="search-input" placeholder="Введите название модели...">
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Серия</h3>
+                    <select id="series-filter">
+                        <option value="">Все серии</option>
+                        <option value="Буран">Буран</option>
+                        <option value="Бутик">Бутик</option>
+                        <option value="Гармония">Гармония</option>
+                        <option value="Гранит">Гранит</option>
+                        <option value="Минивольт">Минивольт</option>
+                        <option value="Простор">Простор</option>
+                        <option value="Сокол">Сокол</option>
+                    </select>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Мощность (Вт)</h3>
+                    <div class="range-values">
+                        От <span id="power-min-value">0</span> до <span id="power-max-value">500</span> Вт
+                    </div>
+                    <div class="double-slider-container">
+                        <div class="slider-container min">
+                            <input type="range" id="power-min" min="0" max="500" value="0" class="slider slider-min">
+                        </div>
+                        <div class="slider-container max">
+                            <input type="range" id="power-max" min="0" max="500" value="500" class="slider slider-max">
+                        </div>
+                        <div class="slider-track"></div>
+                        <div class="slider-selection" id="power-selection"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Световой поток (лм)</h3>
+                    <div class="range-values">
+                        От <span id="lumen-min-value">0</span> до <span id="lumen-max-value">100000</span> лм
+                    </div>
+                    <div class="double-slider-container">
+                        <div class="slider-container min">
+                            <input type="range" id="lumen-min" min="0" max="100000" value="0" class="slider slider-min">
+                        </div>
+                        <div class="slider-container max">
+                            <input type="range" id="lumen-max" min="0" max="100000" value="100000" class="slider slider-max">
+                        </div>
+                        <div class="slider-track"></div>
+                        <div class="slider-selection" id="lumen-selection"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Степень защиты (IP)</h3>
+                    <select id="ip-filter">
+                        <option value="">Любая</option>
+                        <option value="20">IP20</option>
+                        <option value="54">IP54</option>
+                        <option value="67">IP67</option>
+                    </select>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Тип КСС</h3>
+                    <select id="kss-combined-filter">
+                        <option value="">Любой</option>
+                        <option value="К-12">К(12°) - Концентрированная</option>
+                        <option value="К-30">К(30°) - Концентрированная</option>
+                        <option value="Г-60">Г(60°) - Глубокая</option>
+                        <option value="С-90">С(90°) - Синусная</option>
+                        <option value="Д-120">Д(120°) - Косинусная</option>
+                        <option value="Ш">Ш - Широкая</option>
+                    </select>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Крепление</h3>
+                    <select id="mounting-filter">
+                        <option value="">Любое</option>
+                        <option value="Подвесы">Подвесы</option>
+                        <option value="Поворотная лира">Поворотная лира</option>
+                        <option value="Консольное">Консольное</option>
+                        <option value="Кронштейн">Кронштейн</option>
+                        <option value="Универсальное">Универсальное</option>
+                    </select>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Длина (мм)</h3>
+                    <div class="range-values">
+                        От <span id="length-min-value">180</span> до <span id="length-max-value">3000</span> мм
+                    </div>
+                    <div class="double-slider-container">
+                        <div class="slider-container min">
+                            <input type="range" id="length-min" min="180" max="3000" value="180" class="slider slider-min">
+                        </div>
+                        <div class="slider-container max">
+                            <input type="range" id="length-max" min="180" max="3000" value="3000" class="slider slider-max">
+                        </div>
+                        <div class="slider-track"></div>
+                        <div class="slider-selection" id="length-selection"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Ширина (мм)</h3>
+                    <div class="range-values">
+                        От <span id="width-min-value">60</span> до <span id="width-max-value">710</span> мм
+                    </div>
+                    <div class="double-slider-container">
+                        <div class="slider-container min">
+                            <input type="range" id="width-min" min="60" max="710" value="60" class="slider slider-min">
+                        </div>
+                        <div class="slider-container max">
+                            <input type="range" id="width-max" min="60" max="710" value="710" class="slider slider-max">
+                        </div>
+                        <div class="slider-track"></div>
+                        <div class="slider-selection" id="width-selection"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3>Высота (мм)</h3>
+                    <div class="range-values">
+                        От <span id="height-min-value">40</span> до <span id="height-max-value">200</span> мм
+                    </div>
+                    <div class="double-slider-container">
+                        <div class="slider-container min">
+                            <input type="range" id="height-min" min="40" max="200" value="40" class="slider slider-min">
+                        </div>
+                        <div class="slider-container max">
+                            <input type="range" id="height-max" min="40" max="200" value="200" class="slider slider-max">
+                        </div>
+                        <div class="slider-track"></div>
+                        <div class="slider-selection" id="height-selection"></div>
+                    </div>
+                </div>
+                
+                <div class="filter-buttons">
+                    <button id="apply-filters" class="btn btn-primary">Применить</button>
+                    <button id="reset-filters" class="btn btn-secondary">Сбросить</button>
+                </div>
+            </div>
+            
+            <div class="products-section">
+                <table class="fixtures-table" id="fixtures-table">
+                    <thead>
+                        <tr>
+                            <th>Название модели</th>
+                            <th>Мощность, Вт</th>
+                            <th>Световой поток, лм</th>
+                            <th>IP</th>
+                            <th>КСС</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fixtures-list">
+                        <!-- Здесь будут строки светильников, загруженные через JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div id="pagination" class="pagination">
+                    <!-- Здесь будут кнопки пагинации -->
+                </div>
+                
+                <!-- Модальное окно для просмотра деталей светильника -->
+                <div id="fixture-modal" class="fixture-detail-modal">
+                    <div class="modal-content">
+                        <span class="close-modal" id="close-modal">&times;</span>
+                        <div id="fixture-details" class="fixture-details">
+                            <!-- Здесь будут отображены детали светильника -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы для слайдера мощности
+            const powerMin = document.getElementById('power-min');
+            const powerMax = document.getElementById('power-max');
+            const powerMinValue = document.getElementById('power-min-value');
+            const powerMaxValue = document.getElementById('power-max-value');
+            const powerSelection = document.getElementById('power-selection');
+            
+            // Элементы для слайдера светового потока
+            const lumenMin = document.getElementById('lumen-min');
+            const lumenMax = document.getElementById('lumen-max');
+            const lumenMinValue = document.getElementById('lumen-min-value');
+            const lumenMaxValue = document.getElementById('lumen-max-value');
+            const lumenSelection = document.getElementById('lumen-selection');
+            
+            // Элементы для слайдера длины
+            const lengthMin = document.getElementById('length-min');
+            const lengthMax = document.getElementById('length-max');
+            const lengthMinValue = document.getElementById('length-min-value');
+            const lengthMaxValue = document.getElementById('length-max-value');
+            const lengthSelection = document.getElementById('length-selection');
+            
+            // Элементы для слайдера ширины
+            const widthMin = document.getElementById('width-min');
+            const widthMax = document.getElementById('width-max');
+            const widthMinValue = document.getElementById('width-min-value');
+            const widthMaxValue = document.getElementById('width-max-value');
+            const widthSelection = document.getElementById('width-selection');
+            
+            // Элементы для слайдера высоты
+            const heightMin = document.getElementById('height-min');
+            const heightMax = document.getElementById('height-max');
+            const heightMinValue = document.getElementById('height-min-value');
+            const heightMaxValue = document.getElementById('height-max-value');
+            const heightSelection = document.getElementById('height-selection');
+            
+            // Функция для обновления диапазона мощности
+            function updatePowerRange() {
+                const min = parseInt(powerMin.value);
+                const max = parseInt(powerMax.value);
+                const range = powerMax.max - powerMin.min;
+                
+                // Обновляем отображаемые значения
+                powerMinValue.textContent = min;
+                powerMaxValue.textContent = max;
+                
+                // Обновляем позицию и ширину выбранного диапазона
+                const left = ((min - powerMin.min) / range) * 100;
+                const width = ((max - min) / range) * 100;
+                
+                powerSelection.style.left = left + '%';
+                powerSelection.style.width = width + '%';
+            }
+            
+            // Функция для обновления диапазона светового потока
+            function updateLumenRange() {
+                const min = parseInt(lumenMin.value);
+                const max = parseInt(lumenMax.value);
+                const range = lumenMax.max - lumenMin.min;
+                
+                // Обновляем отображаемые значения
+                lumenMinValue.textContent = min;
+                lumenMaxValue.textContent = max;
+                
+                // Обновляем позицию и ширину выбранного диапазона
+                const left = ((min - lumenMin.min) / range) * 100;
+                const width = ((max - min) / range) * 100;
+                
+                lumenSelection.style.left = left + '%';
+                lumenSelection.style.width = width + '%';
+            }
+            
+            // Функция для обновления диапазона длины
+            function updateLengthRange() {
+                const min = parseInt(lengthMin.value);
+                const max = parseInt(lengthMax.value);
+                const range = lengthMax.max - lengthMin.min;
+                
+                // Обновляем отображаемые значения
+                lengthMinValue.textContent = min;
+                lengthMaxValue.textContent = max;
+                
+                // Обновляем позицию и ширину выбранного диапазона
+                const left = ((min - lengthMin.min) / range) * 100;
+                const width = ((max - min) / range) * 100;
+                
+                lengthSelection.style.left = left + '%';
+                lengthSelection.style.width = width + '%';
+            }
+            
+            // Функция для обновления диапазона ширины
+            function updateWidthRange() {
+                const min = parseInt(widthMin.value);
+                const max = parseInt(widthMax.value);
+                const range = widthMax.max - widthMin.min;
+                
+                // Обновляем отображаемые значения
+                widthMinValue.textContent = min;
+                widthMaxValue.textContent = max;
+                
+                // Обновляем позицию и ширину выбранного диапазона
+                const left = ((min - widthMin.min) / range) * 100;
+                const width = ((max - min) / range) * 100;
+                
+                widthSelection.style.left = left + '%';
+                widthSelection.style.width = width + '%';
+            }
+            
+            // Функция для обновления диапазона высоты
+            function updateHeightRange() {
+                const min = parseInt(heightMin.value);
+                const max = parseInt(heightMax.value);
+                const range = heightMax.max - heightMin.min;
+                
+                // Обновляем отображаемые значения
+                heightMinValue.textContent = min;
+                heightMaxValue.textContent = max;
+                
+                // Обновляем позицию и ширину выбранного диапазона
+                const left = ((min - heightMin.min) / range) * 100;
+                const width = ((max - min) / range) * 100;
+                
+                heightSelection.style.left = left + '%';
+                heightSelection.style.width = width + '%';
+            }
+            
+            // Инициализируем начальные значения диапазонов
+            updatePowerRange();
+            updateLumenRange();
+            updateLengthRange();
+            updateWidthRange();
+            updateHeightRange();
+            
+            // Обработчики для слайдера мощности
+            powerMin.addEventListener('input', function() {
+                const min = parseInt(this.value);
+                const max = parseInt(powerMax.value);
+                
+                if (min > max) {
+                    this.value = max;
+                }
+                
+                updatePowerRange();
+            });
+            
+            powerMax.addEventListener('input', function() {
+                const max = parseInt(this.value);
+                const min = parseInt(powerMin.value);
+                
+                if (max < min) {
+                    this.value = min;
+                }
+                
+                updatePowerRange();
+            });
+            
+            // Обработчики для слайдера светового потока
+            lumenMin.addEventListener('input', function() {
+                const min = parseInt(this.value);
+                const max = parseInt(lumenMax.value);
+                
+                if (min > max) {
+                    this.value = max;
+                }
+                
+                updateLumenRange();
+            });
+            
+            lumenMax.addEventListener('input', function() {
+                const max = parseInt(this.value);
+                const min = parseInt(lumenMin.value);
+                
+                if (max < min) {
+                    this.value = min;
+                }
+                
+                updateLumenRange();
+            });
+            
+            // Обработчики для слайдера длины
+            lengthMin.addEventListener('input', function() {
+                const min = parseInt(this.value);
+                const max = parseInt(lengthMax.value);
+                
+                if (min > max) {
+                    this.value = max;
+                }
+                
+                updateLengthRange();
+            });
+            
+            lengthMax.addEventListener('input', function() {
+                const max = parseInt(this.value);
+                const min = parseInt(lengthMin.value);
+                
+                if (max < min) {
+                    this.value = min;
+                }
+                
+                updateLengthRange();
+            });
+            
+            // Обработчики для слайдера ширины
+            widthMin.addEventListener('input', function() {
+                const min = parseInt(this.value);
+                const max = parseInt(widthMax.value);
+                
+                if (min > max) {
+                    this.value = max;
+                }
+                
+                updateWidthRange();
+            });
+            
+            widthMax.addEventListener('input', function() {
+                const max = parseInt(this.value);
+                const min = parseInt(widthMin.value);
+                
+                if (max < min) {
+                    this.value = min;
+                }
+                
+                updateWidthRange();
+            });
