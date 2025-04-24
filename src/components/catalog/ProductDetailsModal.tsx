@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Fixture } from "@/pages/CatalogPage";
 import { products } from "@/components/ProductSlider";
+import { Package } from "lucide-react";
 
 interface ProductDetailsModalProps {
   fixture: Fixture;
@@ -77,12 +78,12 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
             size="lg" 
             className="font-medium"
           >
-            💡 Заказать надежный светильник
+            <Package className="mr-1" /> Заказать надежный светильник
           </Button>
           <Button 
             variant="gold" 
             size="lg" 
-            className="font-medium"
+            className="font-medium shadow-lg transform transition-transform active:translate-y-1 hover:-translate-y-1"
           >
             👨‍💼 Получить консультацию
           </Button>
