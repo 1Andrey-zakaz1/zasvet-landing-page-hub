@@ -70,7 +70,7 @@ const ProductSlider = () => {
           <CarouselContent>
             {products.map((product) => (
               <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 p-2">
-                <Card className="bg-zasvet-gray border-none overflow-hidden hover:transform hover:scale-105 transition-all">
+                <Card className="bg-zasvet-gray border-none overflow-hidden rounded-xl">
                   <CardContent className="p-0">
                     <div className="relative aspect-square">
                       <img
