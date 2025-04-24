@@ -8,13 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Fixture } from "@/pages/CatalogPage";
 import { products } from "@/components/ProductSlider";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 interface ProductDetailsModalProps {
   fixture: Fixture;
@@ -63,25 +56,16 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                 <li><span className="font-medium">Мощность:</span> {fixture.power} Вт</li>
                 <li><span className="font-medium">Световой поток:</span> {fixture.luminous_flux} лм</li>
                 <li><span className="font-medium">IP-защита:</span> {fixture.ip_rating}</li>
-                <li><span className="font-medium">КСС:</span> {fixture.beam_angle || "Не указано"}</li>
                 <li><span className="font-medium">Размеры:</span> {fixture.dimensions}</li>
                 <li><span className="font-medium">Материал:</span> {fixture.material}</li>
-                <li><span className="font-medium">Гарантия:</span> {fixture.warranty} года</li>
+                <li><span className="font-medium">Коэффициент пульсации:</span> менее 1%</li>
+                {Object.entries(fixture.properties).map(([key, value]) => (
+                  <li key={key}>
+                    <span className="font-medium">{key}:</span> {value}
+                  </li>
+                ))}
               </ul>
             </div>
-            
-            {Object.entries(fixture.properties).length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-zasvet-gold mb-2">Дополнительные характеристики:</h3>
-                <ul className="space-y-2 text-zasvet-white/80">
-                  {Object.entries(fixture.properties).map(([key, value]) => (
-                    <li key={key}>
-                      <span className="font-medium">{key}:</span> {value}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       </DialogContent>
