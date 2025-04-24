@@ -76,6 +76,13 @@ const products: Product[] = [
     description: "Специализированное освещение для медицинских учреждений.",
     imageSrc: "/placeholder.svg",
   },
+  {
+    id: 6,
+    name: 'Серия "Минивольт"',
+    description: "Низковольтные светильники на постоянный и переменный ток 12,24,36В. И разнообразными креплениям.",
+    slogan: "Минимум напряжения - максимум эффекта",
+    imageSrc: "/lovable-uploads/2d7f3e16-3edb-49c5-8685-21668a495b6e.png",
+  }
 ];
 
 const ProductSlider = () => {
