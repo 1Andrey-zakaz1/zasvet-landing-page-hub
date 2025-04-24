@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Fixture } from "@/pages/CatalogPage";
 import { products } from "@/components/ProductSlider";
 
@@ -69,6 +70,16 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               </ul>
             </div>
           </div>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <Button 
+            variant="gold" 
+            size="lg" 
+            className="font-medium"
+          >
+            Заказать надежный светильник
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
