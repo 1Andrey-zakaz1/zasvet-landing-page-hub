@@ -53,35 +53,18 @@ const products: Product[] = [
     imageSrc: "/lovable-uploads/dce9c18d-8932-4d5b-a1f5-2387a5fd0fa5.png",
   },
   {
-    id: 3,
-    name: "Серия Beta",
-    description: "Промышленные светильники повышенной прочности.",
-    imageSrc: "/placeholder.svg",
-  },
-  {
-    id: 4,
-    name: "Серия Gamma",
-    description: "Уличное освещение с защитой от атмосферных явлений.",
-    imageSrc: "/placeholder.svg",
-  },
-  {
-    id: 5,
-    name: "Серия Delta",
-    description: "Декоративное освещение для интерьерных решений.",
-    imageSrc: "/placeholder.svg",
-  },
-  {
-    id: 6,
-    name: "Серия Epsilon",
-    description: "Специализированное освещение для медицинских учреждений.",
-    imageSrc: "/placeholder.svg",
-  },
-  {
     id: 6,
     name: 'Серия "Минивольт"',
     description: "Низковольтные светильники на постоянный и переменный ток 12,24,36В. Разнообразные типы креплений.",
     slogan: "Минимум напряжения - максимум эффекта",
     imageSrc: "/lovable-uploads/2d7f3e16-3edb-49c5-8685-21668a495b6e.png",
+  },
+  {
+    id: 7,
+    name: 'Серия "Бутик"',
+    description: "Светильники для торговых площадей фитнесцентров, и административных зданий.",
+    slogan: "Яркость, которая побуждает к покупке",
+    imageSrc: "/lovable-uploads/a4376603-eade-45e1-b9b0-8fe989d2812f.png",
   }
 ];
 
