@@ -32,25 +32,25 @@ const products: Product[] = [
     imageSrc: "/placeholder.svg",
   },
   {
-    id: 2,
+    id: 3,
     name: "Серия Beta",
     description: "Промышленные светильники повышенной прочности.",
     imageSrc: "/placeholder.svg",
   },
   {
-    id: 3,
+    id: 4,
     name: "Серия Gamma",
     description: "Уличное освещение с защитой от атмосферных явлений.",
     imageSrc: "/placeholder.svg",
   },
   {
-    id: 4,
+    id: 5,
     name: "Серия Delta",
     description: "Декоративное освещение для интерьерных решений.",
     imageSrc: "/placeholder.svg",
   },
   {
-    id: 5,
+    id: 6,
     name: "Серия Epsilon",
     description: "Специализированное освещение для медицинских учреждений.",
     imageSrc: "/placeholder.svg",
@@ -66,10 +66,17 @@ const ProductSlider = () => {
           Ознакомьтесь с нашими сериями продукции, разработанными для различных потребностей и условий эксплуатации
         </p>
         
-        <Carousel className="w-full max-w-5xl mx-auto">
-          <CarouselContent>
+        <Carousel 
+          className="w-full max-w-5xl mx-auto"
+          opts={{
+            align: "start",
+            loop: true,
+            containScroll: "trimSnaps"
+          }}
+        >
+          <CarouselContent className="ml-0">
             {products.map((product) => (
-              <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 p-2">
+              <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 pl-4 pr-2">
                 <Card className="bg-zasvet-gray border-none overflow-hidden rounded-xl">
                   <CardContent className="p-0">
                     <div className="relative aspect-square">
@@ -99,8 +106,10 @@ const ProductSlider = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="text-zasvet-black bg-zasvet-gold hover:bg-zasvet-darkgold" />
-          <CarouselNext className="text-zasvet-black bg-zasvet-gold hover:bg-zasvet-darkgold" />
+          <div className="flex justify-center gap-2 mt-8">
+            <CarouselPrevious className="static mx-2 translate-y-0 text-zasvet-black bg-zasvet-gold hover:bg-zasvet-darkgold" />
+            <CarouselNext className="static mx-2 translate-y-0 text-zasvet-black bg-zasvet-gold hover:bg-zasvet-darkgold" />
+          </div>
         </Carousel>
       </div>
     </section>
