@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Carousel,
@@ -8,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   description: string;
@@ -16,7 +17,7 @@ type Product = {
   slogan?: string;
 };
 
-const products: Product[] = [
+export const products: Product[] = [
   {
     id: 1,
     name: 'Серия "Буран"',
