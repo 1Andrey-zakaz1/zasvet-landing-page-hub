@@ -43,7 +43,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
               </div>
             )}
             {matchingProduct?.slogan && (
-              <p className="text-zasvet-gold italic mt-2 text-sm">
+              <p className="text-zasvet-gold italic mt-2 text-sm text-center">
                 "{matchingProduct.slogan}"
               </p>
             )}
