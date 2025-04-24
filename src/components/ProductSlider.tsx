@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -19,6 +19,12 @@ type Product = {
 const products: Product[] = [
   {
     id: 1,
+    name: 'Серия "Буран"',
+    description: "Промышленные светильники с защитой IP67 мощностью от 48 до 192 Вт. Гарантия 5 лет.",
+    imageSrc: "/lovable-uploads/f13ee1fc-a08c-4b93-991e-38583c802305.png",
+  },
+  {
+    id: 2,
     name: "Серия Alpha",
     description: "Современные светодиодные панели для офисных помещений.",
     imageSrc: "/placeholder.svg",
