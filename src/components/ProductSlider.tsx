@@ -46,6 +46,13 @@ const products: Product[] = [
     imageSrc: "/lovable-uploads/f6f48988-544c-4a62-9d49-c566dea28792.png",
   },
   {
+    id: 5,
+    name: 'Серия "Сокол"',
+    description: "Уличные прожектора с большим выбором оптики (КСС Д, С, Г, К)",
+    slogan: "Зоркий взгляд с высоты - для идеального контроля",
+    imageSrc: "/lovable-uploads/dce9c18d-8932-4d5b-a1f5-2387a5fd0fa5.png",
+  },
+  {
     id: 3,
     name: "Серия Beta",
     description: "Промышленные светильники повышенной прочности.",
