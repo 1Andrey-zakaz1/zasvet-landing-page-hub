@@ -59,11 +59,13 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
                 <li><span className="font-medium">Размеры:</span> {fixture.dimensions}</li>
                 <li><span className="font-medium">Материал:</span> {fixture.material}</li>
                 <li><span className="font-medium">Коэффициент пульсации:</span> менее 1%</li>
-                {Object.entries(fixture.properties).map(([key, value]) => (
-                  <li key={key}>
-                    <span className="font-medium">{key}:</span> {value}
-                  </li>
-                ))}
+                {Object.entries(fixture.properties)
+                  .filter(([key]) => key !== 'I' && key !== 'P')
+                  .map(([key, value]) => (
+                    <li key={key}>
+                      <span className="font-medium">{key}:</span> {value}
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
