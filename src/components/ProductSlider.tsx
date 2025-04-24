@@ -33,7 +33,14 @@ const products: Product[] = [
     imageSrc: "/lovable-uploads/ab04b935-544e-45e3-b2a7-aaad30a26ad7.png",
   },
   {
-    id: 2,
+    id: 3,
+    name: 'Серия "Гранит"',
+    description: "Промышленный светильник с дополнительной защитой: от скачков напряжения, перегрева и грозозащитой.",
+    slogan: "Освещение прочное как сибирская скала",
+    imageSrc: "/lovable-uploads/8a4d6a22-1a29-40f0-a53c-ae031137e25f.png",
+  },
+  {
+    id: 4,
     name: "Серия Alpha",
     description: "Современные светодиодные панели для офисных помещений.",
     imageSrc: "/placeholder.svg",
