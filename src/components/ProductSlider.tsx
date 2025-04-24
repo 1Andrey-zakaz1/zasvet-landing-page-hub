@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Carousel,
@@ -41,9 +40,10 @@ const products: Product[] = [
   },
   {
     id: 4,
-    name: "Серия Alpha",
-    description: "Современные светодиодные панели для офисных помещений.",
-    imageSrc: "/placeholder.svg",
+    name: 'Серия "Гармония"',
+    description: "Офисные светильники для потолков типа \"Армстронг\" или для накладного монтажа.",
+    slogan: "Свет, который создает атмосферу вдохновения",
+    imageSrc: "/lovable-uploads/f6f48988-544c-4a62-9d49-c566dea28792.png",
   },
   {
     id: 3,
