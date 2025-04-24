@@ -14,13 +14,15 @@ type Product = {
   name: string;
   description: string;
   imageSrc: string;
+  slogan?: string;
 };
 
 const products: Product[] = [
   {
     id: 1,
     name: 'Серия "Буран"',
-    description: "Промышленные светильники с защитой IP67 мощностью от 48 до 192 Вт. Гарантия 5 лет.",
+    description: "Уличные светильники с дополнительной защитой от скачков напряжения, перегрева и грозовых разрядов.",
+    slogan: "Светильник, покоривший стихию",
     imageSrc: "/lovable-uploads/f13ee1fc-a08c-4b93-991e-38583c802305.png",
   },
   {
@@ -78,8 +80,19 @@ const ProductSlider = () => {
                       />
                     </div>
                     <div className="p-4">
-                      <h3 className="text-xl font-semibold text-zasvet-white">{product.name}</h3>
-                      <p className="text-sm text-zasvet-white/70 mt-2">{product.description}</p>
+                      <div className="flex flex-col">
+                        <h3 className="text-xl font-semibold text-zasvet-white mb-1">
+                          {product.name}
+                        </h3>
+                        {product.slogan && (
+                          <p className="text-sm text-zasvet-gold italic mb-2 opacity-80">
+                            "{product.slogan}"
+                          </p>
+                        )}
+                        <p className="text-sm text-zasvet-white/70">
+                          {product.description}
+                        </p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
