@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Carousel,
@@ -20,10 +19,10 @@ type Product = {
 const products: Product[] = [
   {
     id: 1,
-    name: 'Серия "Буран"',
-    description: "Уличные светильники с дополнительной защитой от скачков напряжения, перегрева и грозовых разрядов.",
-    slogan: "Светильник, покоривший стихию",
-    imageSrc: "/lovable-uploads/f13ee1fc-a08c-4b93-991e-38583c802305.png",
+    name: 'Серия "Простор"',
+    description: "Уличный светильник с оптикой \"Ш\" и дополнительными защитами: от скачков напряжения, перегрева и грозовых разрядов.",
+    slogan: "Освещение для российских просторов",
+    imageSrc: "/lovable-uploads/ab04b935-544e-45e3-b2a7-aaad30a26ad7.png",
   },
   {
     id: 2,
