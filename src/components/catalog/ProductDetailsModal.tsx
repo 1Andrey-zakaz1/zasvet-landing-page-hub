@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -72,13 +71,20 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
           </div>
         </div>
 
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center gap-4">
           <Button 
             variant="gold" 
             size="lg" 
             className="font-medium"
           >
-            Заказать надежный светильник
+            💡 Заказать надежный светильник
+          </Button>
+          <Button 
+            variant="gold" 
+            size="lg" 
+            className="font-medium"
+          >
+            👨‍💼 Получить консультацию
           </Button>
         </div>
       </DialogContent>
