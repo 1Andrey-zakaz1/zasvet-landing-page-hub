@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins, Send } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { openCalculatorChat } from "@/components/TelegramBotWidget";
+import { useContactForm } from "@/hooks/use-contact-form";
 
 type ServiceItem = {
   icon: React.ReactNode;
@@ -37,6 +39,7 @@ const TargetSection = ({
   bgColor = "bg-zasvet-black",
   showDiagonalCut = false,
 }: TargetSectionProps) => {
+  const { openContactForm } = useContactForm();
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
   const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
   
@@ -50,6 +53,10 @@ const TargetSection = ({
   
   const handleOpenCalculator = () => {
     openCalculatorChat(calculationType);
+  };
+
+  const handleOpenRequestForm = () => {
+    openContactForm("request");
   };
   
   return (
@@ -110,7 +117,7 @@ const TargetSection = ({
               
               <Button 
                 className={`${secondaryButtonClass} px-8 py-3 text-lg font-medium`}
-                onClick={() => openCalculatorChat('заявка')}
+                onClick={handleOpenRequestForm}
               >
                 <Send className="mr-2 h-5 w-5" />
                 ОСТАВИТЬ ЗАЯВКУ

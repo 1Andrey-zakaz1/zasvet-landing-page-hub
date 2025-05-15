@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Dialog,
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Fixture } from "@/pages/CatalogPage";
 import { products } from "@/components/ProductSlider";
 import { Package } from "lucide-react";
+import { useContactForm } from "@/hooks/use-contact-form";
 
 interface ProductDetailsModalProps {
   fixture: Fixture;
@@ -24,6 +26,17 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
   // Find matching product from slider by series name
   const seriesName = fixture.name.split(" ")[0];
   const matchingProduct = products.find(p => p.name.includes(seriesName));
+  const { openContactForm } = useContactForm();
+
+  const handleOrderClick = () => {
+    onOpenChange(false); // Закрываем текущее модальное окно
+    openContactForm("request"); // Открываем форму заявки
+  };
+
+  const handleConsultationClick = () => {
+    onOpenChange(false); // Закрываем текущее модальное окно
+    openContactForm("contact"); // Открываем форму контакта
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -77,6 +90,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
             variant="gold" 
             size="lg" 
             className="font-medium"
+            onClick={handleOrderClick}
           >
             <Package className="mr-1" /> Заказать надежный светильник
           </Button>
@@ -84,6 +98,7 @@ const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
             variant="gold" 
             size="lg" 
             className="font-medium shadow-lg transform transition-transform active:translate-y-1 hover:-translate-y-1"
+            onClick={handleConsultationClick}
           >
             👨‍💼 Получить консультацию
           </Button>

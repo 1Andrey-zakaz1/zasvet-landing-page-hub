@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useContactForm } from "@/hooks/use-contact-form";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openContactForm } = useContactForm();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,6 +44,13 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleContactClick = () => {
+    openContactForm("contact");
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -70,6 +79,7 @@ const Header = () => {
 
         <Button 
           className="hidden md:flex bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all"
+          onClick={handleContactClick}
         >
           Связаться
         </Button>
@@ -124,6 +134,7 @@ const Header = () => {
             </a>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
+              onClick={handleContactClick}
             >
               Связаться
             </Button>
