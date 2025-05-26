@@ -28,14 +28,20 @@ const ChatWidget = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [messages, isTyping]);
 
   const handleSendMessage = async (message?: string) => {
     const messageText = message || inputValue.trim();
@@ -112,8 +118,8 @@ const ChatWidget = () => {
             </div>
           </DialogHeader>
 
-          <div className="flex-1 flex flex-col min-h-[500px]">
-            <ScrollArea className="flex-1 p-4">
+          <div className="flex-1 flex flex-col min-h-[500px] max-h-[60vh]">
+            <ScrollArea ref={scrollAreaRef} className="flex-1 p-4 overflow-y-auto">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <ChatMessage key={message.id} message={message} />
@@ -129,12 +135,12 @@ const ChatWidget = () => {
             </ScrollArea>
 
             {messages.length === 1 && (
-              <div className="px-4 pb-2">
+              <div className="px-4 pb-2 flex-shrink-0">
                 <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
               </div>
             )}
 
-            <div className="p-4 border-t bg-gray-50">
+            <div className="p-4 border-t bg-gray-50 flex-shrink-0">
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
