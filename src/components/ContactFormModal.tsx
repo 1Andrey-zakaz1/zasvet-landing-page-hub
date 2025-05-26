@@ -68,24 +68,29 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     console.log("🔐 Используем API Secret:", apiSecret.substring(0, 5) + "...");
     
     try {
-      // Упрощенная структура данных для ERPNext Lead
+      // Исправленная структура данных для ERPNext Lead
       const leadData = {
-        doctype: "Lead",
         lead_name: data.name,
         mobile_no: data.phone,
-        email_id: data.email || undefined,
-        notes: data.message || undefined,
-        source: "Website"
+        email_id: data.email || "",
+        notes: data.message || "",
+        source: "Website",
+        status: "Lead",
+        company_name: "",
+        // Добавляем базовые поля для лида
+        territory: "All Territories",
+        lead_owner: "",
+        title: "Потенциальный клиент"
       };
 
-      // Удаляем undefined поля
+      // Удаляем пустые поля
       Object.keys(leadData).forEach(key => {
-        if (leadData[key] === undefined) {
+        if (leadData[key] === "" && key !== "email_id" && key !== "company_name" && key !== "lead_owner") {
           delete leadData[key];
         }
       });
 
-      console.log("📋 Подготовленные данные для ERPNext:", leadData);
+      console.log("📋 Подготовленные данные для ERPNext Lead:", leadData);
       console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
       const response = await fetch(`${erpUrl}/api/resource/Lead`, {
@@ -113,7 +118,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
           if (errorJson.message) {
             errorMessage = errorJson.message;
           } else if (errorJson.exc) {
-            errorMessage = "Ошибка валидации данных";
+            errorMessage = "Ошибка валидации данных на сервере ERPNext";
+            console.error("❌ Полная трассировка ошибки:", errorJson.exc);
           }
         } catch (e) {
           console.error("❌ Не удалось распарсить ответ как JSON");
@@ -127,6 +133,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       try {
         result = JSON.parse(responseText);
         console.log("✅ Успешно создан лид в ERPNext:", result);
+        console.log("🆔 ID созданного лида:", result.data?.name);
+        console.log("👤 Ответственный:", result.data?.lead_owner || "Не назначен");
+        console.log("📍 Территория:", result.data?.territory || "All Territories");
+        console.log("📊 Статус:", result.data?.status || "Lead");
       } catch (e) {
         console.log("✅ Запрос выполнен успешно, но ответ не JSON:", responseText);
         result = { success: true, response: responseText };
@@ -157,13 +167,14 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
     try {
       // Пытаемся отправить в ERPNext
-      await submitToERPNext(data);
+      const result = await submitToERPNext(data);
       
       console.log("🎉 Форма успешно отправлена в ERPNext!");
+      console.log("📋 Результат создания лида:", result);
       
       toast({
-        title: "Заявка отправлена",
-        description: "Ваша заявка успешно создана в системе. Мы свяжемся с вами в ближайшее время.",
+        title: "Лид успешно создан в ERPNext",
+        description: `Заявка от ${data.name} создана в системе. ID лида: ${result.data?.name || 'неизвестен'}`,
       });
       
       form.reset();
@@ -179,7 +190,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         
         toast({
           title: "Заявка принята",
-          description: "Ваша заявка принята и будет обработана. Мы свяжемся с вами в ближайшее время.",
+          description: "Заявка принята и будет обработана. Мы свяжемся с вами в ближайшее время. (резервный режим)",
         });
         
         form.reset();
