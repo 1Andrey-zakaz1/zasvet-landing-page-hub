@@ -77,7 +77,7 @@ const isCatalogSearchQuery = (message: string): boolean => {
   const catalogKeywords = [
     'найти', 'найди', 'поиск', 'ищу', 'покажи', 'есть ли',
     'минивольт', 'сокол', 'гармония', 'бутик', 'простор',
-    'ватт', 'вт', 'люмен', 'лм', 'светильник'
+    'ватт', 'вт', 'люмен', 'лм', 'светильник', 'мощность', 'мощностью'
   ];
   
   const lowerMessage = message.toLowerCase();
@@ -88,10 +88,11 @@ const isCatalogSearchQuery = (message: string): boolean => {
   // Проверяем наличие чисел в запросе - это может быть поиск по техническим характеристикам
   const hasNumbers = /\d+/.test(message);
   
-  // Если есть числа и короткий запрос (вероятно поиск по параметрам), считаем это поиском по каталогу
-  const isNumericSearch = hasNumbers && message.trim().split(' ').length <= 3;
+  // Если есть числа и ключевые слова поиска, или просто числа с "вт"/"ватт"
+  const hasWattPattern = /\d+\s*(вт|ватт)/i.test(message);
+  const hasLumenPattern = /\d+\s*(лм|люмен)/i.test(message);
   
-  return hasKeywords || isNumericSearch;
+  return hasKeywords || hasWattPattern || hasLumenPattern;
 };
 
 // Функция для поиска ответа в базе знаний
@@ -116,9 +117,14 @@ const findBestMatch = (userMessage: string): KnowledgeItem | null => {
 
 // Функция обработки сообщения пользователя
 export const processUserMessage = async (message: string): Promise<ChatResponse> => {
+  console.log('Processing user message:', message);
+  console.log('Is catalog search query:', isCatalogSearchQuery(message));
+  
   // Сначала проверяем, является ли это поиском по каталогу
   if (isCatalogSearchQuery(message)) {
+    console.log('Performing catalog search for:', message);
     const searchResult = searchCatalog(message, 5);
+    console.log('Search result:', searchResult);
     const response = formatCatalogResponse(searchResult);
     
     return {

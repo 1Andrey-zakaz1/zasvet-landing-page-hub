@@ -15,17 +15,21 @@ const extractNumbers = (text: string): number[] => {
   return numbers ? numbers.map(Number) : [];
 };
 
-// Функция для проверки, попадает ли значение в диапазон 5%
-const isWithinRange = (value: number, target: number, tolerance: number = 0.05): boolean => {
+// Функция для проверки, попадает ли значение в диапазон 10%
+const isWithinRange = (value: number, target: number, tolerance: number = 0.1): boolean => {
   const lowerBound = target * (1 - tolerance);
   const upperBound = target * (1 + tolerance);
   return value >= lowerBound && value <= upperBound;
 };
 
-// Функция для поиска приближенных совпадений
-const findApproximateMatches = (query: string, limit: number): CatalogSearchResult => {
+// Функция для поиска точных и приближенных совпадений
+const findMatches = (query: string, limit: number, exactOnly: boolean = false): CatalogSearchResult => {
   const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 1);
   const queryNumbers = extractNumbers(query);
+  
+  console.log('Search terms:', searchTerms);
+  console.log('Query numbers:', queryNumbers);
+  console.log('Catalog size:', catalogData.length);
   
   const results = catalogData.filter(fixture => {
     let hasTextMatch = false;
@@ -33,7 +37,7 @@ const findApproximateMatches = (query: string, limit: number): CatalogSearchResu
     
     // Проверяем текстовые совпадения
     const searchText = `${fixture.name} ${fixture.category} ${fixture.material} ${fixture.ip_rating}`.toLowerCase();
-    const textTerms = searchTerms.filter(term => isNaN(Number(term)));
+    const textTerms = searchTerms.filter(term => isNaN(Number(term)) && !term.includes('вт') && !term.includes('ватт'));
     
     if (textTerms.length > 0) {
       hasTextMatch = textTerms.some(term => searchText.includes(term));
@@ -41,28 +45,39 @@ const findApproximateMatches = (query: string, limit: number): CatalogSearchResu
       hasTextMatch = true; // Если нет текстовых терминов, считаем что текст подходит
     }
     
-    // Проверяем числовые совпадения с допуском 5%
+    // Проверяем числовые совпадения
     if (queryNumbers.length > 0) {
       const fixtureNumbers = [
         fixture.power,
         fixture.luminous_flux,
-        fixture.price,
         fixture.color_temperature,
         ...extractNumbers(fixture.dimensions),
         ...extractNumbers(fixture.ip_rating)
       ];
       
-      hasNumberMatch = queryNumbers.some(queryNum => 
-        fixtureNumbers.some(fixtureNum => 
-          isWithinRange(fixtureNum, queryNum)
-        )
-      );
+      if (exactOnly) {
+        // Точное совпадение
+        hasNumberMatch = queryNumbers.some(queryNum => 
+          fixtureNumbers.some(fixtureNum => fixtureNum === queryNum)
+        );
+      } else {
+        // Приближенное совпадение с допуском 10%
+        hasNumberMatch = queryNumbers.some(queryNum => 
+          fixtureNumbers.some(fixtureNum => 
+            isWithinRange(fixtureNum, queryNum)
+          )
+        );
+      }
     } else {
       hasNumberMatch = true; // Если нет чисел в запросе, считаем что числа подходят
     }
     
+    console.log(`Fixture: ${fixture.name}, Power: ${fixture.power}, Text match: ${hasTextMatch}, Number match: ${hasNumberMatch}`);
+    
     return hasTextMatch && hasNumberMatch;
   });
+
+  console.log('Filtered results count:', results.length);
 
   // Сортируем по релевантности
   const sortedResults = results.sort((a, b) => {
@@ -81,18 +96,18 @@ const findApproximateMatches = (query: string, limit: number): CatalogSearchResu
     // Затем по точности числовых совпадений
     if (queryNumbers.length > 0) {
       const aNumberScore = queryNumbers.reduce((score, queryNum) => {
-        const aNumbers = [a.power, a.luminous_flux, a.price];
+        const aNumbers = [a.power, a.luminous_flux];
         const closestMatch = aNumbers.reduce((closest, num) => {
-          const diff = Math.abs(num - queryNum) / queryNum;
+          const diff = Math.abs(num - queryNum) / Math.max(queryNum, 1);
           return diff < closest ? diff : closest;
         }, Infinity);
         return score + (1 - Math.min(closestMatch, 1));
       }, 0);
       
       const bNumberScore = queryNumbers.reduce((score, queryNum) => {
-        const bNumbers = [b.power, b.luminous_flux, b.price];
+        const bNumbers = [b.power, b.luminous_flux];
         const closestMatch = bNumbers.reduce((closest, num) => {
-          const diff = Math.abs(num - queryNum) / queryNum;
+          const diff = Math.abs(num - queryNum) / Math.max(queryNum, 1);
           return diff < closest ? diff : closest;
         }, Infinity);
         return score + (1 - Math.min(closestMatch, 1));
@@ -111,7 +126,7 @@ const findApproximateMatches = (query: string, limit: number): CatalogSearchResu
     fixtures: sortedResults.slice(0, limit),
     total: sortedResults.length,
     searchQuery: query,
-    isApproximate: true
+    isApproximate: !exactOnly
   };
 };
 
@@ -127,34 +142,21 @@ export const searchCatalog = (query: string, limit: number = 5): CatalogSearchRe
   }
 
   // Сначала ищем точные совпадения
-  const exactResults = catalogData.filter(fixture => {
-    const searchText = `${fixture.name} ${fixture.category} ${fixture.material} ${fixture.ip_rating}`.toLowerCase();
-    return searchTerms.every(term => searchText.includes(term));
-  });
+  const exactResults = findMatches(query, limit, true);
+
+  console.log('Exact matches found:', exactResults.total);
 
   // Если есть точные совпадения, возвращаем их
-  if (exactResults.length > 0) {
-    const sortedExactResults = exactResults.sort((a, b) => {
-      const aMatches = searchTerms.filter(term => a.name.toLowerCase().includes(term)).length;
-      const bMatches = searchTerms.filter(term => b.name.toLowerCase().includes(term)).length;
-      
-      if (aMatches !== bMatches) {
-        return bMatches - aMatches;
-      }
-      
-      return b.luminous_flux - a.luminous_flux;
-    });
-
+  if (exactResults.total > 0) {
     return {
-      fixtures: sortedExactResults.slice(0, limit),
-      total: sortedExactResults.length,
-      searchQuery: query,
+      ...exactResults,
       isApproximate: false
     };
   }
 
   // Если точных совпадений нет, ищем приближенные
-  return findApproximateMatches(query, limit);
+  console.log('No exact matches, searching for approximate matches');
+  return findMatches(query, limit, false);
 };
 
 export const formatCatalogResponse = (searchResult: CatalogSearchResult): string => {
@@ -167,7 +169,7 @@ export const formatCatalogResponse = (searchResult: CatalogSearchResult): string
   let response = '';
   
   if (isApproximate) {
-    response = `По запросу "${searchQuery}" точных совпадений не найдено. Показываю ${fixtures.length} ближайших вариантов (в пределах 5% отклонения):\n\n`;
+    response = `По запросу "${searchQuery}" точных совпадений не найдено. Показываю ${fixtures.length} ближайших вариантов (в пределах 10% отклонения):\n\n`;
   } else {
     response = `По запросу "${searchQuery}" найдено ${total} светильников. Показываю топ-${fixtures.length}:\n\n`;
   }
