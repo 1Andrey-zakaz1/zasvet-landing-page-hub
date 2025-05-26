@@ -2,6 +2,27 @@
 import React from 'react';
 
 const Footer = () => {
+  const handleProductsClick = () => {
+    const productsSection = document.querySelector('#products');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleCalculatorsClick = () => {
+    const calculatorSection = document.querySelector('#calculator');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleCatalogClick = () => {
+    const catalogSection = document.querySelector('#catalog');
+    if (catalogSection) {
+      catalogSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-zasvet-black py-12 text-zasvet-white/80 border-t border-zasvet-gold/20">
       <div className="container mx-auto px-4">
@@ -33,7 +54,30 @@ const Footer = () => {
               <li><a href="#buyers" className="hover:text-zasvet-gold transition-colors">Закупщикам</a></li>
               <li><a href="#designers" className="hover:text-zasvet-gold transition-colors">Проектировщикам</a></li>
               <li><a href="#installers" className="hover:text-zasvet-gold transition-colors">Монтажникам</a></li>
-              <li><a href="#products" className="hover:text-zasvet-gold transition-colors">Продукция</a></li>
+              <li>
+                <button 
+                  onClick={handleProductsClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Продукция
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={handleCalculatorsClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Калькуляторы
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={handleCatalogClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Каталог
+                </button>
+              </li>
             </ul>
           </div>
           
