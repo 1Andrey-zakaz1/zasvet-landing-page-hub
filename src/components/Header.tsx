@@ -45,7 +45,7 @@ const Header = () => {
   };
 
   const handleContactClick = () => {
-    openContactForm("contact");
+    openContactForm("request"); // Изменено с "contact" на "request"
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
