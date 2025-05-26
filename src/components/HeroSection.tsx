@@ -12,6 +12,20 @@ const HeroSection = () => {
     openContactForm("request");
   };
 
+  const handleProductsClick = () => {
+    console.log('Клик по кнопке "Наша продукция" в HeroSection');
+    // Скроллим к секции продукции
+    const productsSection = document.querySelector('#products');
+    console.log('Найден элемент #products:', productsSection);
+    
+    if (productsSection) {
+      console.log('Прокручиваем к секции продукции из HeroSection');
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.log('Элемент #products не найден!');
+    }
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Background with AspectRatio */}
@@ -37,7 +51,10 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black font-semibold px-8 py-6 text-lg">
+            <Button 
+              className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black font-semibold px-8 py-6 text-lg"
+              onClick={handleProductsClick}
+            >
               Наша продукция
             </Button>
             <Button 
