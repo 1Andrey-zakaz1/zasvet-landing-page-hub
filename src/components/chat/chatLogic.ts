@@ -1,5 +1,6 @@
 
 import type { ChatResponse, KnowledgeItem } from './types';
+import { searchCatalog, formatCatalogResponse } from './catalogSearch';
 
 // База знаний компании
 const knowledgeBase: KnowledgeItem[] = [
@@ -29,7 +30,7 @@ const knowledgeBase: KnowledgeItem[] = [
   // Продукты и каталог
   {
     keywords: ['светильники', 'продукты', 'каталог', 'выбрать', 'подойдут', 'рекомендации'],
-    response: 'В нашем каталоге представлены качественные LED-светильники для различных задач:\n\n• Промышленные светильники - для складов и производств\n• Офисные светильники - для комфортной работы\n• Уличные светильники - для наружного освещения\n• Специальные серии с разными характеристиками\n\nПосмотрите каталог или опишите ваши требования подробнее.',
+    response: 'В нашем каталоге представлены качественные LED-светильники для различных задач:\n\n• Промышленные светильники - для складов и производств\n• Офисные светильники - для комфортной работы\n• Уличные светильники - для наружного освещения\n• Специальные серии с разными характеристиками\n\nВы можете искать светильники прямо здесь или посмотреть каталог.',
     actions: [
       {
         type: 'navigate',
@@ -72,6 +73,18 @@ const knowledgeBase: KnowledgeItem[] = [
   }
 ];
 
+// Функция для определения, является ли запрос поиском по каталогу
+const isCatalogSearchQuery = (message: string): boolean => {
+  const catalogKeywords = [
+    'найти', 'найди', 'поиск', 'ищу', 'покажи', 'есть ли',
+    'минивольт', 'сокол', 'гармония', 'бутик', 'простор',
+    'ватт', 'вт', 'люмен', 'лм', 'светильник'
+  ];
+  
+  const lowerMessage = message.toLowerCase();
+  return catalogKeywords.some(keyword => lowerMessage.includes(keyword));
+};
+
 // Функция для поиска ответа в базе знаний
 const findBestMatch = (userMessage: string): KnowledgeItem | null => {
   const message = userMessage.toLowerCase();
@@ -94,6 +107,28 @@ const findBestMatch = (userMessage: string): KnowledgeItem | null => {
 
 // Функция обработки сообщения пользователя
 export const processUserMessage = async (message: string): Promise<ChatResponse> => {
+  // Сначала проверяем, является ли это поиском по каталогу
+  if (isCatalogSearchQuery(message)) {
+    const searchResult = searchCatalog(message, 5);
+    const response = formatCatalogResponse(searchResult);
+    
+    return {
+      content: response,
+      actions: [
+        {
+          type: 'navigate',
+          label: 'Открыть каталог',
+          data: { sectionId: 'catalog' }
+        },
+        {
+          type: 'navigate',
+          label: 'LED калькулятор',
+          data: { sectionId: 'led-calculator' }
+        }
+      ]
+    };
+  }
+  
   // Ищем совпадения в базе знаний
   const match = findBestMatch(message);
   
@@ -104,9 +139,9 @@ export const processUserMessage = async (message: string): Promise<ChatResponse>
     };
   }
   
-  // Если точного совпадения нет, даем общий ответ
+  // Если точного совпадения нет, даем общий ответ с возможностью поиска
   return {
-    content: 'Спасибо за ваш вопрос! Я могу помочь с:\n\n• Расчетами освещения\n• Выбором светильников\n• Техническими характеристиками\n• Консультацией по продуктам\n\nМожете переформулировать вопрос или выбрать один из калькуляторов ниже:',
+    content: 'Спасибо за ваш вопрос! Я могу помочь с:\n\n• Поиском светильников в каталоге\n• Расчетами освещения\n• Выбором подходящих решений\n• Техническими характеристиками\n• Консультацией по продуктам\n\nВы можете описать, что ищете (например, "светильник 100 ватт") или выбрать один из разделов ниже:',
     actions: [
       {
         type: 'navigate',

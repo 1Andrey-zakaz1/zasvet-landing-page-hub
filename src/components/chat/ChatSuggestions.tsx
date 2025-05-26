@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calculator, Lightbulb, HelpCircle, MessageSquare } from 'lucide-react';
+import { Calculator, Lightbulb, HelpCircle, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ChatSuggestionsProps {
@@ -10,24 +10,24 @@ interface ChatSuggestionsProps {
 export const ChatSuggestions: React.FC<ChatSuggestionsProps> = ({ onSuggestionClick }) => {
   const suggestions = [
     {
+      icon: Search,
+      text: 'Найти светильник 100 ватт',
+      category: 'Поиск'
+    },
+    {
       icon: Calculator,
       text: 'Как рассчитать освещение для склада?',
       category: 'Расчеты'
     },
     {
       icon: Lightbulb,
-      text: 'Какие светильники подойдут для офиса?',
-      category: 'Продукты'
+      text: 'Покажи светильники Сокол',
+      category: 'Каталог'
     },
     {
       icon: HelpCircle,
       text: 'Что означает IP-рейтинг?',
       category: 'Вопросы'
-    },
-    {
-      icon: MessageSquare,
-      text: 'Нужна консультация специалиста',
-      category: 'Консультация'
     }
   ];
 
