@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,10 +60,12 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
   const submitToERPNext = async (data: FormValues) => {
     const erpUrl = "https://erp.pkzasvet.ru";
-    const apiKey = "5d588b33828a713";
-    const apiSecret = "2b2f4dde726aa50";
+    const apiKey = "10fe15d4ec5f1cf";
+    const apiSecret = "6a6dd351e2c6421";
     
-    console.log("🚀 Начинаем отправку данных в ERPNext:", data);
+    console.log("🚀 Начинаем отправку данных в ERPNext с новыми ключами:", data);
+    console.log("🔑 Используем API Key:", apiKey);
+    console.log("🔐 Используем API Secret:", apiSecret.substring(0, 5) + "...");
     
     try {
       // Формируем данные для создания лида в ERPNext
@@ -77,6 +80,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
       console.log("📋 Подготовленные данные для ERPNext:", leadData);
       console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
+      console.log("🎫 Используем формат аутентификации: token");
 
       const response = await fetch(`${erpUrl}/api/resource/Lead`, {
         method: "POST",
