@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Brain, X, Send, MessageSquare, Calculator, Lightbulb, HelpCircle } from 'lucide-react';
+import { HelpCircle, X, Send, MessageSquare, Calculator, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -95,7 +95,7 @@ const ChatWidget = () => {
           className="bg-zasvet-black text-zasvet-gold px-4 py-2 rounded-lg shadow-xl border border-zasvet-gold cursor-pointer hover:bg-zasvet-gray transition-all duration-300 hover:scale-105"
         >
           <div className="flex items-center gap-2">
-            <Brain className="h-4 w-4 text-zasvet-gold" />
+            <HelpCircle className="h-4 w-4 text-zasvet-gold" />
             <div>
               <div className="font-bold text-center text-sm">AI-Консультант</div>
               <div className="text-xs text-center text-zasvet-gold/80">Навигация и консультации</div>
@@ -108,7 +108,7 @@ const ChatWidget = () => {
         <DialogContent className="sm:max-w-[500px] md:max-w-[600px] max-h-[85vh] p-0 flex flex-col bg-white">
           <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between border-b">
             <div className="flex items-center gap-3">
-              <Brain className="h-6 w-6 text-zasvet-gold" />
+              <HelpCircle className="h-6 w-6 text-zasvet-gold" />
               <div>
                 <DialogTitle className="text-lg">AI-Консультант</DialogTitle>
                 <p className="text-zasvet-white/70 text-sm">
@@ -126,7 +126,7 @@ const ChatWidget = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center gap-2 text-zasvet-black/60">
-                    <Brain className="h-4 w-4 animate-pulse" />
+                    <HelpCircle className="h-4 w-4 animate-pulse" />
                     <span className="text-sm">Консультант печатает...</span>
                   </div>
                 )}
