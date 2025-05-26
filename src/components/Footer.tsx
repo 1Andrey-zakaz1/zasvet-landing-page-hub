@@ -1,5 +1,6 @@
 
 import React from 'react';
+import SubscriptionForm from './SubscriptionForm';
 
 const Footer = () => {
   const handleProductsClick = () => {
@@ -82,18 +83,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-zasvet-gold font-semibold text-lg mb-4">Подписка</h3>
-            <p className="mb-4">Подпишитесь на наши новости</p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Ваш email" 
-                className="bg-zasvet-gray/30 border border-zasvet-gray/50 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-zasvet-gold rounded-l"
-              />
-              <button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black px-4 py-2 rounded-r transition-colors">
-                Отправить
-              </button>
-            </div>
+            <SubscriptionForm />
           </div>
         </div>
         
