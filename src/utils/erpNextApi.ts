@@ -97,6 +97,11 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
         const errorJson = JSON.parse(responseText);
         console.error("❌ Детали ошибки ERPNext:", errorJson);
         
+        // Обрабатываем специфическую ошибку дублирования email
+        if (errorJson.exc_type === "DuplicateEntryError" && errorJson.exception?.includes("Email Address must be unique")) {
+          throw new Error("DUPLICATE_EMAIL");
+        }
+        
         if (errorJson.message) {
           errorMessage = errorJson.message;
         } else if (errorJson.exc) {
@@ -110,6 +115,9 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
           }
         }
       } catch (e) {
+        if (e instanceof Error && e.message === "DUPLICATE_EMAIL") {
+          throw e;
+        }
         console.error("❌ Не удалось распарсить ответ как JSON");
         errorMessage = `${errorMessage} - ${responseText.substring(0, 200)}`;
       }
