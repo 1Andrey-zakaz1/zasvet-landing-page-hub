@@ -116,19 +116,19 @@ const TelegramBotWidget = () => {
           
           <Button
             onClick={() => setIsOpen(true)}
-            className="rounded-full w-20 h-20 shadow-2xl bg-gradient-to-br from-zasvet-gold to-zasvet-darkgold hover:from-zasvet-darkgold hover:to-zasvet-gold text-zasvet-black border-3 border-zasvet-black flex items-center justify-center transition-all duration-300 hover:scale-110 animate-pulse"
+            className="rounded-lg w-24 h-24 shadow-2xl bg-gradient-to-br from-zasvet-gold to-zasvet-darkgold hover:from-zasvet-darkgold hover:to-zasvet-gold text-zasvet-black border-3 border-zasvet-black flex items-center justify-center transition-all duration-300 hover:scale-105"
             size="icon"
             aria-label="Открыть AI-консультанта"
           >
-            <Brain className="h-10 w-10" />
+            <Brain className="h-12 w-12" />
           </Button>
           
-          {/* AI-Консультант label */}
-          <div className="absolute -top-12 right-0 bg-zasvet-black text-zasvet-gold px-4 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 shadow-lg border border-zasvet-gold">
-            <div className="font-bold text-center">AI-Консультант</div>
-            <div className="text-xs text-center text-zasvet-gold/80">Расчеты и консультации</div>
+          {/* AI-Консультант label with expansion effect */}
+          <div className="absolute -top-16 right-0 bg-zasvet-black text-zasvet-gold px-4 py-3 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 shadow-xl border border-zasvet-gold min-w-[200px]">
+            <div className="font-bold text-center text-base">AI-Консультант</div>
+            <div className="text-xs text-center text-zasvet-gold/80 mt-1">Расчеты и консультации</div>
             {/* Arrow pointing down */}
-            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-zasvet-gold"></div>
+            <div className="absolute top-full right-6 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-zasvet-gold"></div>
           </div>
         </div>
       </div>
