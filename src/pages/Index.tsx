@@ -55,7 +55,7 @@ const Index = () => {
         </div>
         
         {/* Каталог светильников добавлен после калькуляторов */}
-        <div className="container mx-auto px-4 mt-20">
+        <div id="catalog" className="container mx-auto px-4 mt-20">
           <CatalogSection />
         </div>
 

@@ -55,6 +55,28 @@ const Header = () => {
     }
   };
 
+  const handleCalculatorsClick = () => {
+    // Скроллим к секции калькуляторов
+    const calculatorSection = document.querySelector('#calculator');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const handleCatalogClick = () => {
+    // Скроллим к секции каталога
+    const catalogSection = document.querySelector('#catalog');
+    if (catalogSection) {
+      catalogSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -79,6 +101,18 @@ const Header = () => {
           <a href="#designers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Проектировщикам</a>
           <a href="#installers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Монтажникам</a>
           <a href="#products" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Продукция</a>
+          <button 
+            onClick={handleCalculatorsClick}
+            className="text-zasvet-white hover:text-zasvet-gold transition-colors"
+          >
+            Инструменты расчетов
+          </button>
+          <button 
+            onClick={handleCatalogClick}
+            className="text-zasvet-white hover:text-zasvet-gold transition-colors"
+          >
+            Фильтр-каталог
+          </button>
         </nav>
 
         <Button 
@@ -136,6 +170,18 @@ const Header = () => {
             >
               Продукция
             </a>
+            <button 
+              onClick={handleCalculatorsClick}
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
+            >
+              Инструменты расчетов
+            </button>
+            <button 
+              onClick={handleCatalogClick}
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
+            >
+              Фильтр-каталог
+            </button>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
               onClick={handleContactClick}
