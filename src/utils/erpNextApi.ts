@@ -1,4 +1,3 @@
-
 export interface LeadData {
   name: string;
   phone: string;
@@ -8,12 +7,12 @@ export interface LeadData {
 
 export interface ERPNextLeadRequest {
   lead_name: string;
-  mobile_no: string;
+  mobile_no?: string;
+  phone?: string;
   email_id?: string;
   notes?: string;
-  source: string;
-  status: string;
-  territory: string;
+  source?: string;
+  status?: string;
 }
 
 export interface ERPNextResponse {
@@ -34,13 +33,11 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
   
   try {
-    // Минимальная структура данных для создания лида
+    // Используем максимально простую структуру данных
     const leadData: ERPNextLeadRequest = {
       lead_name: data.name,
-      mobile_no: data.phone,
-      source: "Website",
-      status: "Lead",
-      territory: "All Territories"
+      phone: data.phone, // Используем phone вместо mobile_no
+      source: "Website"
     };
 
     // Добавляем опциональные поля только если они есть
@@ -52,7 +49,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       leadData.notes = data.message.trim();
     }
 
-    console.log("📋 Подготовленные данные для ERPNext Lead:", leadData);
+    console.log("📋 Упрощенные данные для ERPNext Lead:", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
     const response = await fetch(`${erpUrl}/api/resource/Lead`, {
@@ -96,9 +93,6 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       result = JSON.parse(responseText);
       console.log("✅ Успешно создан лид в ERPNext:", result);
       console.log("🆔 ID созданного лида:", result.data?.name);
-      console.log("👤 Ответственный:", result.data?.lead_owner || "Не назначен");
-      console.log("📍 Территория:", result.data?.territory || "All Territories");
-      console.log("📊 Статус:", result.data?.status || "Lead");
     } catch (e) {
       console.log("✅ Запрос выполнен успешно, но ответ не JSON:", responseText);
       result = { message: "success" };
