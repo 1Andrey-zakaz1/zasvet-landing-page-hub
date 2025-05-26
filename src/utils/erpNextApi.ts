@@ -53,11 +53,13 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       console.log("📋 Структура существующих лидов:", metaText);
     }
 
-    // Создаем максимально простую структуру с только обязательными полями
+    // Создаем максимально простую структуру с обязательными полями
     const leadData: ERPNextLeadRequest = {
       lead_name: data.name,
-      // Используем mobile_no как основное поле для телефона
-      mobile_no: data.phone
+      mobile_no: data.phone,
+      // Автоматически заполняем обязательные поля
+      source: "Website",
+      status: "Lead" // Устанавливаем статус по умолчанию как "Lead"
     };
 
     // Добавляем опциональные поля осторожно
@@ -65,15 +67,12 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       leadData.email_id = data.email.trim();
     }
     
-    // Используем title вместо notes для сообщения
+    // Используем title для сообщения
     if (data.message && data.message.trim()) {
       leadData.title = data.message.trim();
     }
 
-    // Добавляем только базовые системные поля
-    leadData.source = "Website";
-
-    console.log("📋 Финальные данные для создания лида (используем title):", leadData);
+    console.log("📋 Финальные данные для создания лида (с обязательным статусом):", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
     const response = await fetch(`${erpUrl}/api/resource/Lead`, {
@@ -123,6 +122,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       result = JSON.parse(responseText);
       console.log("✅ Успешно создан лид в ERPNext:", result);
       console.log("🆔 ID созданного лида:", result.data?.name);
+      console.log("📊 Статус лида:", result.data?.status);
     } catch (e) {
       console.log("✅ Запрос выполнен успешно, но ответ не JSON:", responseText);
       result = { message: "success" };
