@@ -38,7 +38,7 @@ type FormValues = z.infer<typeof formSchema>;
 interface ContactFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  formType?: "contact" | "request"; // Тип формы для настройки заголовка
+  formType?: "contact" | "request";
 }
 
 const ContactFormModal: React.FC<ContactFormModalProps> = ({
@@ -58,29 +58,73 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     },
   });
 
+  const submitToERPNext = async (data: FormValues) => {
+    const erpUrl = "https://erp.pkzasvet.ru";
+    const apiKey = "5d588b33828a713";
+    const apiSecret = "2b2f4dde726aa50";
+    
+    console.log("Отправка данных в ERPNext:", data);
+    
+    try {
+      // Формируем данные для создания лида в ERPNext
+      const leadData = {
+        doctype: "Лид",
+        lead_name: data.name,
+        mobile_no: data.phone,
+        email_id: data.email || "",
+        notes: data.message || "",
+        source: "Сайт",
+        status: "Лид",
+        naming_series: "CRM-LEAD-.YYYY.-"
+      };
+
+      console.log("Данные для ERPNext:", leadData);
+
+      const response = await fetch(`${erpUrl}/api/resource/Lead`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `token ${apiKey}:${apiSecret}`,
+        },
+        body: JSON.stringify(leadData),
+      });
+
+      console.log("Ответ ERPNext:", response.status, response.statusText);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Ошибка ERPNext:", errorText);
+        throw new Error(`Ошибка сервера: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Успешно создан лид:", result);
+      
+      return result;
+    } catch (error) {
+      console.error("Ошибка при отправке в ERPNext:", error);
+      throw error;
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Здесь должен быть код для отправки данных в CRM
-      console.log("Form data to be sent to CRM:", data);
-      
-      // Имитация отправки данных с задержкой
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await submitToERPNext(data);
       
       toast({
-        title: "Форма отправлена",
-        description: "Мы свяжемся с вами в ближайшее время",
+        title: "Заявка отправлена",
+        description: "Ваша заявка успешно создана в системе. Мы свяжемся с вами в ближайшее время.",
       });
       
-      // Сбросить форму и закрыть модальное окно
       form.reset();
       onOpenChange(false);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
-        title: "Ошибка",
-        description: "Не удалось отправить форму. Пожалуйста, попробуйте позже.",
+        title: "Ошибка отправки",
+        description: "Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.",
         variant: "destructive",
       });
     } finally {
@@ -194,7 +238,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                    Отправка...
+                    Отправка в ERPNext...
                   </>
                 ) : (
                   <>
