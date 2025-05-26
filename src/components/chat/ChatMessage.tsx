@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Brain, User, Calculator, ExternalLink, ArrowRight } from 'lucide-react';
+import { HelpCircle, User, Calculator, ExternalLink, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Message } from './types';
 
@@ -46,7 +46,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         {message.type === 'user' ? (
           <User className="h-4 w-4" />
         ) : (
-          <Brain className="h-4 w-4" />
+          <HelpCircle className="h-4 w-4" />
         )}
       </div>
       

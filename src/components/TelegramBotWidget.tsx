@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { Brain, X, ExternalLink, MessageSquare, HelpCircle } from 'lucide-react';
+import { HelpCircle, X, ExternalLink, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -126,7 +127,7 @@ const TelegramBotWidget = () => {
         <DialogContent className="sm:max-w-[500px] md:max-w-[700px] max-h-[90vh] p-0 overflow-hidden bg-white">
           <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between">
             <div className="flex items-center gap-3">
-              <Brain className="h-6 w-6 text-zasvet-gold" />
+              <HelpCircle className="h-6 w-6 text-zasvet-gold" />
               <div>
                 <DialogTitle className="text-lg">AI-Консультант</DialogTitle>
                 <DialogDescription className="text-zasvet-white/70">
