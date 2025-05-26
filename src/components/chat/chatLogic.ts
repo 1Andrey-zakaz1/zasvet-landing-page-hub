@@ -1,4 +1,3 @@
-
 import type { ChatResponse, KnowledgeItem } from './types';
 import { searchCatalog, formatCatalogResponse } from './catalogSearch';
 
@@ -82,7 +81,17 @@ const isCatalogSearchQuery = (message: string): boolean => {
   ];
   
   const lowerMessage = message.toLowerCase();
-  return catalogKeywords.some(keyword => lowerMessage.includes(keyword));
+  
+  // Проверяем текстовые ключевые слова
+  const hasKeywords = catalogKeywords.some(keyword => lowerMessage.includes(keyword));
+  
+  // Проверяем наличие чисел в запросе - это может быть поиск по техническим характеристикам
+  const hasNumbers = /\d+/.test(message);
+  
+  // Если есть числа и короткий запрос (вероятно поиск по параметрам), считаем это поиском по каталогу
+  const isNumericSearch = hasNumbers && message.trim().split(' ').length <= 3;
+  
+  return hasKeywords || isNumericSearch;
 };
 
 // Функция для поиска ответа в базе знаний
