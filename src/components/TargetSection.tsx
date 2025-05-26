@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Calculator, ZapOff, Building, Wrench, Award, Package, Truck, Coins, Send } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { openCalculatorChat } from "@/components/TelegramBotWidget";
 import { useContactForm } from "@/hooks/use-contact-form";
 
 type ServiceItem = {
@@ -51,8 +50,11 @@ const TargetSection = ({
     ? "bg-transparent hover:bg-zasvet-gold/10 text-zasvet-gold border-2 border-zasvet-gold"
     : "bg-transparent hover:bg-zasvet-black/10 text-zasvet-black border-2 border-zasvet-black";
   
-  const handleOpenCalculator = () => {
-    openCalculatorChat(calculationType);
+  const handleCalculatorClick = () => {
+    const calculatorSection = document.querySelector('#calculator');
+    if (calculatorSection) {
+      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleOpenRequestForm = () => {
@@ -110,7 +112,7 @@ const TargetSection = ({
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 className={`${primaryButtonClass} px-8 py-3 text-lg font-medium`}
-                onClick={handleOpenCalculator}
+                onClick={handleCalculatorClick}
               >
                 {buttonText}
               </Button>
