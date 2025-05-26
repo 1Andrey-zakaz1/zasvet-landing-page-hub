@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal, Loader2 } from "lucide-react";
 import { useContactFormSubmit } from "@/hooks/useContactFormSubmit";
+import { LeadData } from "@/utils/erpNextApi";
 
 // Define form schema with validation
 const formSchema = z.object({
@@ -59,7 +60,15 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   });
 
   const onSubmit = async (data: FormValues) => {
-    await submitForm(data, () => {
+    // Convert form data to LeadData format
+    const leadData: LeadData = {
+      name: data.name,
+      phone: data.phone,
+      email: data.email || undefined,
+      message: data.message || undefined,
+    };
+
+    await submitForm(leadData, () => {
       form.reset();
       onOpenChange(false);
     });
