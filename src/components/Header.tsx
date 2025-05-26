@@ -77,6 +77,17 @@ const Header = () => {
     }
   };
 
+  const handleProductsClick = () => {
+    // Скроллим к секции продукции
+    const productsSection = document.querySelector('#products');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -100,7 +111,12 @@ const Header = () => {
           <a href="#buyers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Закупщикам</a>
           <a href="#designers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Проектировщикам</a>
           <a href="#installers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Монтажникам</a>
-          <a href="#products" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Продукция</a>
+          <button 
+            onClick={handleProductsClick}
+            className="text-zasvet-white hover:text-zasvet-gold transition-colors"
+          >
+            Продукция
+          </button>
           <button 
             onClick={handleCalculatorsClick}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
@@ -163,13 +179,12 @@ const Header = () => {
             >
               Монтажникам
             </a>
-            <a 
-              href="#products" 
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
+            <button 
+              onClick={handleProductsClick}
+              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
               Продукция
-            </a>
+            </button>
             <button 
               onClick={handleCalculatorsClick}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
