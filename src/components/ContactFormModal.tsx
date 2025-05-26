@@ -3,7 +3,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal, Loader2 } from "lucide-react";
+import { useContactFormSubmit } from "@/hooks/useContactFormSubmit";
 
 // Define form schema with validation
 const formSchema = z.object({
@@ -46,7 +46,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   onOpenChange,
   formType = "contact",
 }) => {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { isSubmitting, submitForm } = useContactFormSubmit();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,171 +58,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     },
   });
 
-  const submitToERPNext = async (data: FormValues) => {
-    const erpUrl = "https://erp.pkzasvet.ru";
-    const apiKey = "10fe15d4ec5f1cf";
-    const apiSecret = "6a6dd351e2c6421";
-    
-    console.log("🚀 Начинаем отправку данных в ERPNext:", data);
-    console.log("🔑 Используем API Key:", apiKey);
-    console.log("🔐 Используем API Secret:", apiSecret.substring(0, 5) + "...");
-    
-    try {
-      // Исправленная структура данных для ERPNext Lead
-      const leadData = {
-        lead_name: data.name,
-        mobile_no: data.phone,
-        email_id: data.email || "",
-        notes: data.message || "",
-        source: "Website",
-        status: "Lead",
-        company_name: "",
-        // Добавляем базовые поля для лида
-        territory: "All Territories",
-        lead_owner: "",
-        title: "Потенциальный клиент"
-      };
-
-      // Удаляем пустые поля
-      Object.keys(leadData).forEach(key => {
-        if (leadData[key] === "" && key !== "email_id" && key !== "company_name" && key !== "lead_owner") {
-          delete leadData[key];
-        }
-      });
-
-      console.log("📋 Подготовленные данные для ERPNext Lead:", leadData);
-      console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
-
-      const response = await fetch(`${erpUrl}/api/resource/Lead`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `token ${apiKey}:${apiSecret}`,
-        },
-        body: JSON.stringify(leadData),
-      });
-
-      console.log("📡 Ответ сервера - статус:", response.status);
-      console.log("📡 Ответ сервера - статус текст:", response.statusText);
-
-      const responseText = await response.text();
-      console.log("📡 Полный ответ сервера:", responseText);
-
-      if (!response.ok) {
-        let errorMessage = `Ошибка сервера: ${response.status}`;
-        
-        try {
-          const errorJson = JSON.parse(responseText);
-          console.error("❌ Детали ошибки ERPNext:", errorJson);
-          
-          if (errorJson.message) {
-            errorMessage = errorJson.message;
-          } else if (errorJson.exc) {
-            errorMessage = "Ошибка валидации данных на сервере ERPNext";
-            console.error("❌ Полная трассировка ошибки:", errorJson.exc);
-          }
-        } catch (e) {
-          console.error("❌ Не удалось распарсить ответ как JSON");
-          errorMessage = `${errorMessage} - ${responseText.substring(0, 100)}`;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      let result;
-      try {
-        result = JSON.parse(responseText);
-        console.log("✅ Успешно создан лид в ERPNext:", result);
-        console.log("🆔 ID созданного лида:", result.data?.name);
-        console.log("👤 Ответственный:", result.data?.lead_owner || "Не назначен");
-        console.log("📍 Территория:", result.data?.territory || "All Territories");
-        console.log("📊 Статус:", result.data?.status || "Lead");
-      } catch (e) {
-        console.log("✅ Запрос выполнен успешно, но ответ не JSON:", responseText);
-        result = { success: true, response: responseText };
-      }
-      
-      return result;
-    } catch (error) {
-      console.error("💥 Критическая ошибка при отправке в ERPNext:", error);
-      throw error;
-    }
-  };
-
-  const submitFallback = async (data: FormValues) => {
-    console.log("📧 Используем резервный метод отправки");
-    
-    // Имитация успешной отправки как резервный вариант
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log("📧 Данные сохранены локально для последующей обработки:", data);
-        resolve({ success: true, method: "fallback" });
-      }, 1000);
-    });
-  };
-
   const onSubmit = async (data: FormValues) => {
-    console.log("🎯 Начало обработки формы с данными:", data);
-    setIsSubmitting(true);
-
-    try {
-      // Пытаемся отправить в ERPNext
-      const result = await submitToERPNext(data);
-      
-      console.log("🎉 Форма успешно отправлена в ERPNext!");
-      console.log("📋 Результат создания лида:", result);
-      
-      toast({
-        title: "Лид успешно создан в ERPNext",
-        description: `Заявка от ${data.name} создана в системе. ID лида: ${result.data?.name || 'неизвестен'}`,
-      });
-      
+    await submitForm(data, () => {
       form.reset();
       onOpenChange(false);
-    } catch (error) {
-      console.error("💥 Ошибка при отправке в ERPNext:", error);
-      
-      try {
-        // Используем резервный метод
-        await submitFallback(data);
-        
-        console.log("🎉 Форма отправлена через резервный метод!");
-        
-        toast({
-          title: "Заявка принята",
-          description: "Заявка принята и будет обработана. Мы свяжемся с вами в ближайшее время. (резервный режим)",
-        });
-        
-        form.reset();
-        onOpenChange(false);
-      } catch (fallbackError) {
-        console.error("💥 Ошибка и в резервном методе:", fallbackError);
-        
-        let errorMessage = "Не удалось отправить заявку. ";
-        
-        if (error instanceof Error) {
-          if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            errorMessage += "Проблема с подключением к интернету. ";
-          } else if (error.message.includes('401') || error.message.includes('403')) {
-            errorMessage += "Ошибка авторизации на сервере. ";
-          } else if (error.message.includes('500')) {
-            errorMessage += "Внутренняя ошибка сервера. ";
-          } else {
-            errorMessage += `Ошибка: ${error.message}. `;
-          }
-        }
-        
-        errorMessage += "Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.";
-        
-        toast({
-          title: "Ошибка отправки",
-          description: errorMessage,
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+    });
   };
 
   const title = formType === "contact" 
