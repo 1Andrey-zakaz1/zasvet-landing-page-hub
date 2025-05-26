@@ -1,3 +1,4 @@
+
 export interface LeadData {
   name: string;
   phone: string;
@@ -8,11 +9,12 @@ export interface LeadData {
 export interface ERPNextLeadRequest {
   lead_name: string;
   mobile_no?: string;
-  phone?: string;
   email_id?: string;
   notes?: string;
   source?: string;
   status?: string;
+  territory?: string;
+  company?: string;
 }
 
 export interface ERPNextResponse {
@@ -33,14 +35,32 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
   
   try {
-    // Используем максимально простую структуру данных
+    // Сначала получим информацию о структуре Lead doctype
+    console.log("🔍 Получаем метаданные Lead doctype...");
+    
+    const metaResponse = await fetch(`${erpUrl}/api/resource/Lead?fields=["*"]&limit_page_length=1`, {
+      method: "GET",
+      headers: {
+        "Authorization": `token ${apiKey}:${apiSecret}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("📋 Метаданные - статус ответа:", metaResponse.status);
+    
+    if (metaResponse.ok) {
+      const metaText = await metaResponse.text();
+      console.log("📋 Структура существующих лидов:", metaText);
+    }
+
+    // Создаем максимально простую структуру с только обязательными полями
     const leadData: ERPNextLeadRequest = {
       lead_name: data.name,
-      phone: data.phone, // Используем phone вместо mobile_no
-      source: "Website"
+      // Используем mobile_no как основное поле для телефона
+      mobile_no: data.phone
     };
 
-    // Добавляем опциональные поля только если они есть
+    // Добавляем опциональные поля осторожно
     if (data.email && data.email.trim()) {
       leadData.email_id = data.email.trim();
     }
@@ -49,7 +69,10 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       leadData.notes = data.message.trim();
     }
 
-    console.log("📋 Упрощенные данные для ERPNext Lead:", leadData);
+    // Добавляем только базовые системные поля
+    leadData.source = "Website";
+
+    console.log("📋 Финальные данные для создания лида:", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
     const response = await fetch(`${erpUrl}/api/resource/Lead`, {
@@ -79,10 +102,16 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
         } else if (errorJson.exc) {
           errorMessage = "Ошибка валидации данных на сервере ERPNext";
           console.error("❌ Полная трассировка ошибки:", errorJson.exc);
+          
+          // Анализируем конкретную ошибку
+          if (errorJson.exc_type === "TypeError" && errorJson.exception.includes("'str' object does not support item assignment")) {
+            console.error("🔍 Проблема с типами данных - ERPNext ожидает объект, а получает строку");
+            errorMessage = "Ошибка типов данных: сервер ожидает другую структуру данных";
+          }
         }
       } catch (e) {
         console.error("❌ Не удалось распарсить ответ как JSON");
-        errorMessage = `${errorMessage} - ${responseText.substring(0, 100)}`;
+        errorMessage = `${errorMessage} - ${responseText.substring(0, 200)}`;
       }
       
       throw new Error(errorMessage);
