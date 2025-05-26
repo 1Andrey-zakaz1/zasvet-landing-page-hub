@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -63,22 +62,21 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     const apiKey = "5d588b33828a713";
     const apiSecret = "2b2f4dde726aa50";
     
-    console.log("Отправка данных в ERPNext:", data);
+    console.log("🚀 Начинаем отправку данных в ERPNext:", data);
     
     try {
       // Формируем данные для создания лида в ERPNext
       const leadData = {
-        doctype: "Лид",
         lead_name: data.name,
         mobile_no: data.phone,
         email_id: data.email || "",
         notes: data.message || "",
         source: "Сайт",
-        status: "Лид",
-        naming_series: "CRM-LEAD-.YYYY.-"
+        status: "Lead"
       };
 
-      console.log("Данные для ERPNext:", leadData);
+      console.log("📋 Подготовленные данные для ERPNext:", leadData);
+      console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
       const response = await fetch(`${erpUrl}/api/resource/Lead`, {
         method: "POST",
@@ -89,29 +87,49 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         body: JSON.stringify(leadData),
       });
 
-      console.log("Ответ ERPNext:", response.status, response.statusText);
+      console.log("📡 Ответ сервера - статус:", response.status);
+      console.log("📡 Ответ сервера - статус текст:", response.statusText);
+      console.log("📡 Заголовки ответа:", Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Ошибка ERPNext:", errorText);
-        throw new Error(`Ошибка сервера: ${response.status}`);
+        console.error("❌ Ошибка ERPNext - полный текст ответа:", errorText);
+        
+        // Попробуем распарсить JSON если возможно
+        try {
+          const errorJson = JSON.parse(errorText);
+          console.error("❌ Ошибка ERPNext - JSON:", errorJson);
+        } catch (e) {
+          console.error("❌ Не удалось распарсить ответ как JSON");
+        }
+        
+        throw new Error(`Ошибка сервера: ${response.status} - ${response.statusText}`);
       }
 
       const result = await response.json();
-      console.log("Успешно создан лид:", result);
+      console.log("✅ Успешно создан лид в ERPNext:", result);
       
       return result;
     } catch (error) {
-      console.error("Ошибка при отправке в ERPNext:", error);
+      console.error("💥 Критическая ошибка при отправке в ERPNext:", error);
+      
+      // Дополнительная информация об ошибке
+      if (error instanceof TypeError) {
+        console.error("🌐 Возможно проблема с сетью или CORS:", error.message);
+      }
+      
       throw error;
     }
   };
 
   const onSubmit = async (data: FormValues) => {
+    console.log("🎯 Начало обработки формы с данными:", data);
     setIsSubmitting(true);
 
     try {
       await submitToERPNext(data);
+      
+      console.log("🎉 Форма успешно отправлена!");
       
       toast({
         title: "Заявка отправлена",
@@ -121,10 +139,21 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       form.reset();
       onOpenChange(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("💥 Ошибка при обработке формы:", error);
+      
+      let errorMessage = "Не удалось отправить заявку. ";
+      
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        errorMessage += "Проблема с подключением к серверу. ";
+      } else if (error instanceof Error) {
+        errorMessage += `Детали: ${error.message}`;
+      }
+      
+      errorMessage += " Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.";
+      
       toast({
         title: "Ошибка отправки",
-        description: "Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
