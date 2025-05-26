@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -78,11 +77,18 @@ const Header = () => {
   };
 
   const handleProductsClick = () => {
+    console.log('Клик по кнопке "Продукция"');
     // Скроллим к секции продукции
     const productsSection = document.querySelector('#products');
+    console.log('Найден элемент #products:', productsSection);
+    
     if (productsSection) {
+      console.log('Прокручиваем к секции продукции');
       productsSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.log('Элемент #products не найден!');
     }
+    
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
