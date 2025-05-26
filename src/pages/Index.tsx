@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -16,6 +15,7 @@ import CableCalculator from '@/components/calculator/CableCalculator';
 import IlluminationCalculator from '@/components/calculator/IlluminationCalculator';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
+import ChatWidget from '@/components/ChatWidget';
 import CatalogSection from '@/components/catalog/CatalogSection';
 
 const Index = () => {
@@ -63,7 +63,7 @@ const Index = () => {
         <ProductSlider />
       </main>
       <Footer />
-      <TelegramBotWidget />
+      <ChatWidget />
     </div>
   );
 };
