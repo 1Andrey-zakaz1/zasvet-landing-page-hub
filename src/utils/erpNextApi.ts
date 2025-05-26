@@ -10,7 +10,7 @@ export interface ERPNextLeadRequest {
   lead_name: string;
   mobile_no?: string;
   email_id?: string;
-  notes?: string;
+  title?: string;
   source?: string;
   status?: string;
   territory?: string;
@@ -65,14 +65,15 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       leadData.email_id = data.email.trim();
     }
     
+    // Используем title вместо notes для сообщения
     if (data.message && data.message.trim()) {
-      leadData.notes = data.message.trim();
+      leadData.title = data.message.trim();
     }
 
     // Добавляем только базовые системные поля
     leadData.source = "Website";
 
-    console.log("📋 Финальные данные для создания лида:", leadData);
+    console.log("📋 Финальные данные для создания лида (используем title):", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
     const response = await fetch(`${erpUrl}/api/resource/Lead`, {
