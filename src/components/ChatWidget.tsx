@@ -145,7 +145,7 @@ const ChatWidget = () => {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Задайте вопрос о освещении или расчетах..."
-                  className="flex-1"
+                  className="flex-1 text-zasvet-black placeholder:text-gray-500"
                   disabled={isTyping}
                 />
                 <Button
