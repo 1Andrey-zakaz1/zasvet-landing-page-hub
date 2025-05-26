@@ -15,6 +15,7 @@ export interface ERPNextLeadRequest {
   status?: string;
   territory?: string;
   company?: string;
+  blog_subscriber?: number;
 }
 
 export interface ERPNextResponse {
@@ -70,9 +71,15 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     // Используем title для сообщения
     if (data.message && data.message.trim()) {
       leadData.title = data.message.trim();
+      
+      // Если сообщение содержит "Подписка", отмечаем как подписчика блога
+      if (data.message.includes("Подписка")) {
+        leadData.blog_subscriber = 1;
+        console.log("📧 Отмечаем пользователя как подписчика блога");
+      }
     }
 
-    console.log("📋 Финальные данные для создания лида (с обязательным статусом):", leadData);
+    console.log("📋 Финальные данные для создания лида:", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
 
     const response = await fetch(`${erpUrl}/api/resource/Lead`, {
