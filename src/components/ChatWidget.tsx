@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -100,7 +99,7 @@ const ChatWidget = () => {
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[500px] md:max-w-[600px] max-h-[80vh] p-0 flex flex-col bg-white">
+        <DialogContent className="sm:max-w-[500px] md:max-w-[600px] max-h-[85vh] p-0 flex flex-col bg-white">
           <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between border-b">
             <div className="flex items-center gap-3">
               <Brain className="h-6 w-6 text-zasvet-gold" />
@@ -111,12 +110,9 @@ const ChatWidget = () => {
                 </p>
               </div>
             </div>
-            <DialogClose className="text-zasvet-white hover:text-zasvet-gold">
-              <X className="h-5 w-5" />
-            </DialogClose>
           </DialogHeader>
 
-          <div className="flex-1 flex flex-col min-h-[400px]">
+          <div className="flex-1 flex flex-col min-h-[500px]">
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
                 {messages.map((message) => (
