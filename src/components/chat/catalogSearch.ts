@@ -56,14 +56,21 @@ export const formatCatalogResponse = (searchResult: CatalogSearchResult): string
   let response = `По запросу "${searchQuery}" найдено ${total} светильников. Показываю топ-${fixtures.length}:\n\n`;
   
   fixtures.forEach((fixture, index) => {
+    // Получаем серию (первое слово из названия)
+    const series = fixture.name.split(' ')[0];
+    
     response += `${index + 1}. **${fixture.name}**\n`;
+    response += `   • Серия: ${series}\n`;
     response += `   • Мощность: ${fixture.power}Вт\n`;
     response += `   • Световой поток: ${fixture.luminous_flux.toLocaleString()}лм\n`;
     response += `   • IP: ${fixture.ip_rating}\n`;
-    response += `   • Цена: ${fixture.price.toLocaleString()}₽\n`;
+    
     if (fixture.beam_angle) {
       response += `   • КСС: ${fixture.beam_angle}\n`;
     }
+    
+    response += `   • Габариты: ${fixture.dimensions}\n`;
+    response += `   • Цена: ${fixture.price.toLocaleString()}₽\n`;
     response += `   • ${fixture.availability ? '✅ В наличии' : '❌ Под заказ'}\n\n`;
   });
 
