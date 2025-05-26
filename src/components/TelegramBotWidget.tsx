@@ -107,21 +107,18 @@ const TelegramBotWidget = () => {
   return (
     <>
       <div className="fixed bottom-6 right-6 z-50">
-        <div className="flex flex-col items-end gap-2">
-          {/* Постоянно видимая надпись */}
-          <div className="bg-zasvet-black text-zasvet-gold px-4 py-2 rounded-lg shadow-xl border border-zasvet-gold">
-            <div className="font-bold text-center text-sm">AI-Консультант</div>
-            <div className="text-xs text-center text-zasvet-gold/80">Расчеты и консультации</div>
+        {/* Кликабельный прямоугольник с надписью и иконкой */}
+        <div 
+          onClick={() => setIsOpen(true)}
+          className="bg-zasvet-black text-zasvet-gold px-4 py-2 rounded-lg shadow-xl border border-zasvet-gold cursor-pointer hover:bg-zasvet-gray transition-all duration-300 hover:scale-105"
+        >
+          <div className="flex items-center gap-2">
+            <HelpCircle className="h-4 w-4 text-zasvet-gold" />
+            <div>
+              <div className="font-bold text-center text-sm">AI-Консультант</div>
+              <div className="text-xs text-center text-zasvet-gold/80">Расчеты и консультации</div>
+            </div>
           </div>
-          
-          <Button
-            onClick={() => setIsOpen(true)}
-            className="rounded-lg w-16 h-16 shadow-2xl bg-gradient-to-br from-zasvet-gold to-zasvet-darkgold hover:from-zasvet-darkgold hover:to-zasvet-gold text-zasvet-black border-3 border-zasvet-black flex items-center justify-center transition-all duration-300 hover:scale-105"
-            size="icon"
-            aria-label="Открыть AI-консультанта"
-          >
-            <Brain className="h-8 w-8" />
-          </Button>
         </div>
       </div>
 
