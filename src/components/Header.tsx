@@ -45,7 +45,11 @@ const Header = () => {
   };
 
   const handleContactClick = () => {
-    openContactForm("request"); // Изменено с "contact" на "request"
+    // Скроллим к секции контактов (футер)
+    const footer = document.querySelector('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
+    }
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
@@ -81,7 +85,7 @@ const Header = () => {
           className="hidden md:flex bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all"
           onClick={handleContactClick}
         >
-          Связаться
+          Контакты
         </Button>
 
         {/* Mobile Menu Button */}
@@ -136,7 +140,7 @@ const Header = () => {
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
               onClick={handleContactClick}
             >
-              Связаться
+              Контакты
             </Button>
           </nav>
         </div>

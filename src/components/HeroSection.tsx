@@ -3,8 +3,15 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useContactForm } from "@/hooks/use-contact-form";
 
 const HeroSection = () => {
+  const { openContactForm } = useContactForm();
+
+  const handleRequestClick = () => {
+    openContactForm("request");
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Background with AspectRatio */}
@@ -33,8 +40,11 @@ const HeroSection = () => {
             <Button className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black font-semibold px-8 py-6 text-lg">
               Наша продукция
             </Button>
-            <Button className="bg-transparent border-2 border-zasvet-white hover:bg-zasvet-white/10 text-zasvet-white font-semibold px-8 py-6 text-lg">
-              Связаться с нами <ArrowRight className="ml-2 h-5 w-5" />
+            <Button 
+              className="bg-transparent border-2 border-zasvet-white hover:bg-zasvet-white/10 text-zasvet-white font-semibold px-8 py-6 text-lg"
+              onClick={handleRequestClick}
+            >
+              Отправить запрос <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
