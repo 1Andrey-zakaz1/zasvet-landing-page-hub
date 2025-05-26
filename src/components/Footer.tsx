@@ -41,9 +41,9 @@ const Footer = () => {
           <div>
             <h3 className="text-zasvet-gold font-semibold text-lg mb-4">Контакты</h3>
             <ul className="space-y-2">
-              <li>Телефон: +7 (XXX) XXX-XX-XX</li>
-              <li>Email: info@zasvet.ru</li>
-              <li>Адрес: г. Москва, ул. Примерная, д. 123</li>
+              <li>Телефон: +7 383 312-00-91</li>
+              <li>Email: zakaz@pkzasvet.ru</li>
+              <li>Адрес: г. Новосибирск, ул. Станционная 32 к 40 оф 405</li>
             </ul>
           </div>
           
