@@ -105,13 +105,13 @@ const Header = () => {
             onClick={handleCalculatorsClick}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
-            Инструменты расчетов
+            Калькуляторы
           </button>
           <button 
             onClick={handleCatalogClick}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
-            Фильтр-каталог
+            Каталог
           </button>
         </nav>
 
@@ -174,13 +174,13 @@ const Header = () => {
               onClick={handleCalculatorsClick}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
-              Инструменты расчетов
+              Калькуляторы
             </button>
             <button 
               onClick={handleCatalogClick}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
-              Фильтр-каталог
+              Каталог
             </button>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
