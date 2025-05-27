@@ -129,8 +129,8 @@ const ChatWidget = () => {
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[500px] md:max-w-[600px] max-h-[85vh] p-0 flex flex-col bg-white">
-          <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between border-b">
+        <DialogContent className="sm:max-w-[500px] md:max-w-[600px] h-[85vh] p-0 flex flex-col bg-white">
+          <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between border-b flex-shrink-0">
             <div className="flex items-center gap-3">
               <HelpCircle className="h-6 w-6 text-zasvet-gold" />
               <div>
@@ -153,8 +153,8 @@ const ChatWidget = () => {
             )}
           </DialogHeader>
 
-          <div className="flex-1 flex flex-col min-h-[500px] max-h-[60vh]">
-            <ScrollArea ref={scrollAreaRef} className="flex-1 p-4 overflow-y-auto">
+          <div className="flex-1 flex flex-col min-h-0">
+            <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <ChatMessage 
@@ -174,8 +174,10 @@ const ChatWidget = () => {
             </ScrollArea>
 
             {showMainMenu && (
-              <div className="px-4 pb-2 flex-shrink-0">
-                <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
+              <div className="px-4 pb-2 flex-shrink-0 border-t bg-gray-50">
+                <div className="py-3">
+                  <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
+                </div>
               </div>
             )}
 
