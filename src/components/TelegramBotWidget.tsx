@@ -116,7 +116,7 @@ const TelegramBotWidget = () => {
           <div className="flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-zasvet-gold" />
             <div>
-              <div className="font-bold text-center text-sm">AI-Консультант</div>
+              <div className="font-bold text-center text-sm">Консультант</div>
               <div className="text-xs text-center text-zasvet-gold/80">Расчеты и консультации</div>
             </div>
           </div>
@@ -129,7 +129,7 @@ const TelegramBotWidget = () => {
             <div className="flex items-center gap-3">
               <HelpCircle className="h-6 w-6 text-zasvet-gold" />
               <div>
-                <DialogTitle className="text-lg">AI-Консультант</DialogTitle>
+                <DialogTitle className="text-lg">Консультант</DialogTitle>
                 <DialogDescription className="text-zasvet-white/70">
                   Общение с Telegram-ботом для расчетов
                 </DialogDescription>

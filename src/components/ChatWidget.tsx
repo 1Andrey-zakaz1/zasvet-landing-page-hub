@@ -22,7 +22,7 @@ const ChatWidget = () => {
     {
       id: '1',
       type: 'bot',
-      content: 'Привет! Я AI-консультант компании "Zасвет". Помогу вам с расчетами освещения, выбором светильников и ответлю на вопросы о наших продуктах. Что вас интересует?',
+      content: 'Привет! Я консультант компании "Zасвет". Помогу вам с расчетами освещения, выбором светильников и ответлю на вопросы о наших продуктах. Что вас интересует?',
       timestamp: new Date()
     }
   ]);
@@ -121,7 +121,7 @@ const ChatWidget = () => {
           <div className="flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-zasvet-gold" />
             <div>
-              <div className="font-bold text-center text-sm">AI-Консультант</div>
+              <div className="font-bold text-center text-sm">Консультант</div>
               <div className="text-xs text-center text-zasvet-gold/80">Навигация и консультации</div>
             </div>
           </div>
@@ -134,7 +134,7 @@ const ChatWidget = () => {
             <div className="flex items-center gap-3">
               <HelpCircle className="h-6 w-6 text-zasvet-gold" />
               <div>
-                <DialogTitle className="text-lg">AI-Консультант</DialogTitle>
+                <DialogTitle className="text-lg">Консультант</DialogTitle>
                 <p className="text-zasvet-white/70 text-sm">
                   Помощник по освещению и расчетам
                 </p>
