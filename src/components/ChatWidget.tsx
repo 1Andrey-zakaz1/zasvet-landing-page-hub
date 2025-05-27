@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { HelpCircle, X, Send, MessageSquare, Calculator, Lightbulb } from 'lucide-react';
+import { HelpCircle, X, Send, MessageSquare, Calculator, Lightbulb, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,6 +17,7 @@ import type { Message } from './chat/types';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showMainMenu, setShowMainMenu] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -43,9 +44,25 @@ const ChatWidget = () => {
     return () => clearTimeout(timer);
   }, [messages, isTyping]);
 
+  const handleBackToMenu = () => {
+    setShowMainMenu(true);
+    const backToMenuMessage: Message = {
+      id: Date.now().toString(),
+      type: 'bot',
+      content: 'Возвращаемся к главному меню. Выберите интересующий вас вопрос:',
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, backToMenuMessage]);
+  };
+
   const handleSendMessage = async (message?: string) => {
     const messageText = message || inputValue.trim();
     if (!messageText) return;
+
+    // Скрываем главное меню после первого вопроса
+    if (showMainMenu) {
+      setShowMainMenu(false);
+    }
 
     // Добавляем сообщение пользователя
     const userMessage: Message = {
@@ -68,7 +85,14 @@ const ChatWidget = () => {
         type: 'bot',
         content: botResponse.content,
         timestamp: new Date(),
-        actions: botResponse.actions
+        actions: [
+          ...(botResponse.actions || []),
+          {
+            type: 'menu',
+            label: 'Назад к меню',
+            data: { action: 'backToMenu' }
+          }
+        ]
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -116,13 +140,28 @@ const ChatWidget = () => {
                 </p>
               </div>
             </div>
+            {!showMainMenu && (
+              <Button
+                onClick={handleBackToMenu}
+                variant="outline"
+                size="sm"
+                className="bg-transparent border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Меню
+              </Button>
+            )}
           </DialogHeader>
 
           <div className="flex-1 flex flex-col min-h-[500px] max-h-[60vh]">
             <ScrollArea ref={scrollAreaRef} className="flex-1 p-4 overflow-y-auto">
               <div className="space-y-4">
                 {messages.map((message) => (
-                  <ChatMessage key={message.id} message={message} />
+                  <ChatMessage 
+                    key={message.id} 
+                    message={message} 
+                    onBackToMenu={handleBackToMenu}
+                  />
                 ))}
                 {isTyping && (
                   <div className="flex items-center gap-2 text-zasvet-black/60">
@@ -134,7 +173,7 @@ const ChatWidget = () => {
               </div>
             </ScrollArea>
 
-            {messages.length === 1 && (
+            {showMainMenu && (
               <div className="px-4 pb-2 flex-shrink-0">
                 <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
               </div>

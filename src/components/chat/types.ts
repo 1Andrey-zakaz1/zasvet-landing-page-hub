@@ -8,7 +8,7 @@ export interface Message {
 }
 
 export interface MessageAction {
-  type: 'navigate' | 'calculate' | 'external';
+  type: 'navigate' | 'calculate' | 'external' | 'menu';
   label: string;
   data: any;
 }

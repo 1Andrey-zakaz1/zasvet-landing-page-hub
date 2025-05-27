@@ -1,14 +1,15 @@
 
 import React from 'react';
-import { HelpCircle, User, Calculator, ExternalLink, ArrowRight } from 'lucide-react';
+import { HelpCircle, User, Calculator, ExternalLink, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Message } from './types';
 
 interface ChatMessageProps {
   message: Message;
+  onBackToMenu?: () => void;
 }
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
+export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onBackToMenu }) => {
   const handleActionClick = (action: any) => {
     switch (action.type) {
       case 'navigate':
@@ -32,6 +33,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         break;
       case 'external':
         window.open(action.data.url, '_blank');
+        break;
+      case 'menu':
+        if (onBackToMenu) {
+          onBackToMenu();
+        }
         break;
     }
   };
@@ -67,11 +73,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
                 onClick={() => handleActionClick(action)}
                 variant="outline"
                 size="sm"
-                className="mr-2 mb-2 text-xs bg-white hover:bg-zasvet-gold hover:text-zasvet-black border-zasvet-gold text-zasvet-black"
+                className={`mr-2 mb-2 text-xs border-zasvet-gold text-zasvet-black ${
+                  action.type === 'menu' 
+                    ? 'bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black' 
+                    : 'bg-white hover:bg-zasvet-gold hover:text-zasvet-black'
+                }`}
               >
                 {action.type === 'navigate' && <ArrowRight className="h-3 w-3 mr-1" />}
                 {action.type === 'calculate' && <Calculator className="h-3 w-3 mr-1" />}
                 {action.type === 'external' && <ExternalLink className="h-3 w-3 mr-1" />}
+                {action.type === 'menu' && <ArrowLeft className="h-3 w-3 mr-1" />}
                 {action.label}
               </Button>
             ))}
