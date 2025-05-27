@@ -8,12 +8,14 @@ import { getDefaultResponse } from './defaultResponses';
 export const processUserMessage = async (message: string): Promise<ChatResponse> => {
   console.log('Processing user message:', message);
   console.log('Knowledge base entries:', knowledgeBase.length);
+  console.log('First knowledge item response preview:', knowledgeBase[0]?.response?.substring(0, 150));
   
   // Ищем совпадения в базе знаний
   const match = findBestMatch(message, knowledgeBase);
   
   if (match) {
     console.log('Found match for:', message);
+    console.log('Match response preview:', match.response.substring(0, 150));
     return {
       content: match.response,
       actions: match.actions

@@ -1,6 +1,7 @@
 
-
 import type { KnowledgeItem } from '../types';
+
+console.log('technicalKnowledge.ts loaded - checking content');
 
 export const technicalKnowledge: KnowledgeItem[] = [
   // Собственникам зданий и объектов
@@ -106,3 +107,4 @@ export const technicalKnowledge: KnowledgeItem[] = [
   }
 ];
 
+console.log('First item response:', technicalKnowledge[0].response.substring(0, 200));
