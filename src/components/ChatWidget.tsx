@@ -1,17 +1,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { HelpCircle, X, Send, MessageSquare, Calculator, Lightbulb, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { ChatMessage } from './chat/ChatMessage';
-import { ChatSuggestions } from './chat/ChatSuggestions';
+import { Dialog } from '@/components/ui/dialog';
+import { ChatWidgetButton } from './chat/ChatWidgetButton';
+import { ChatDialog } from './chat/ChatDialog';
 import { processUserMessage } from './chat/chatLogic';
 import type { Message } from './chat/types';
 
@@ -113,95 +104,22 @@ const ChatWidget = () => {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50">
-        <div 
-          onClick={() => setIsOpen(true)}
-          className="bg-zasvet-black text-zasvet-gold px-4 py-2 rounded-lg shadow-xl border border-zasvet-gold cursor-pointer hover:bg-zasvet-gray transition-all duration-300 hover:scale-105"
-        >
-          <div className="flex items-center gap-2">
-            <HelpCircle className="h-4 w-4 text-zasvet-gold" />
-            <div>
-              <div className="font-bold text-center text-sm">Консультант</div>
-              <div className="text-xs text-center text-zasvet-gold/80">Навигация и консультации</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ChatWidgetButton onClick={() => setIsOpen(true)} />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[500px] md:max-w-[600px] h-[85vh] p-0 flex flex-col bg-white">
-          <DialogHeader className="p-4 bg-gradient-to-r from-zasvet-black to-zasvet-gray text-zasvet-white flex flex-row items-center justify-between border-b flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <HelpCircle className="h-6 w-6 text-zasvet-gold" />
-              <div>
-                <DialogTitle className="text-lg">Консультант</DialogTitle>
-                <p className="text-zasvet-white/70 text-sm">
-                  Помощник по освещению и расчетам
-                </p>
-              </div>
-            </div>
-            {!showMainMenu && (
-              <Button
-                onClick={handleBackToMenu}
-                variant="outline"
-                size="sm"
-                className="bg-transparent border-zasvet-gold text-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black"
-              >
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                Меню
-              </Button>
-            )}
-          </DialogHeader>
-
-          <div className="flex-1 flex flex-col min-h-0">
-            <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
-              <div className="space-y-4">
-                {messages.map((message) => (
-                  <ChatMessage 
-                    key={message.id} 
-                    message={message} 
-                    onBackToMenu={handleBackToMenu}
-                  />
-                ))}
-                {isTyping && (
-                  <div className="flex items-center gap-2 text-zasvet-black/60">
-                    <HelpCircle className="h-4 w-4 animate-pulse" />
-                    <span className="text-sm">Консультант печатает...</span>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-            </ScrollArea>
-
-            {showMainMenu && (
-              <div className="px-4 pb-2 flex-shrink-0 border-t bg-gray-50">
-                <div className="py-3">
-                  <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
-                </div>
-              </div>
-            )}
-
-            <div className="p-4 border-t bg-gray-50 flex-shrink-0">
-              <div className="flex gap-2">
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Задайте вопрос о освещении или расчетах..."
-                  className="flex-1 text-zasvet-black placeholder:text-gray-500"
-                  disabled={isTyping}
-                />
-                <Button
-                  onClick={() => handleSendMessage()}
-                  disabled={!inputValue.trim() || isTyping}
-                  className="bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
+        <ChatDialog
+          showMainMenu={showMainMenu}
+          messages={messages}
+          isTyping={isTyping}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          onSendMessage={handleSendMessage}
+          onKeyPress={handleKeyPress}
+          onBackToMenu={handleBackToMenu}
+          onSuggestionClick={handleSuggestionClick}
+          messagesEndRef={messagesEndRef}
+          scrollAreaRef={scrollAreaRef}
+        />
       </Dialog>
     </>
   );
