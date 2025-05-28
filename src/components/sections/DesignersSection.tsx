@@ -23,7 +23,7 @@ const DesignersSection = () => {
         {
           icon: <FileSpreadsheet className="h-6 w-6 text-zasvet-gold" />,
           title: "Другие калькуляторы:",
-          description: "Подбор сечения кабеля, подбор УЗО, энергопотребление объекта, подбор аналога светильника."
+          description: "Подбор сечения кабеля, подбор УЗО, энергопотребление объекта."
         },
         {
           icon: <PlusCircle className="h-6 w-6 text-zasvet-gold" />,
