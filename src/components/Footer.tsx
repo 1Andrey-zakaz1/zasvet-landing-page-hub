@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Download } from 'lucide-react';
 import SubscriptionForm from './SubscriptionForm';
@@ -39,8 +38,8 @@ const Footer = () => {
 
   const handleDownloadQuestionnaire = () => {
     const link = document.createElement('a');
-    link.href = '/supplier-questionnaire.md';
-    link.download = 'anketa-postavshika.md';
+    link.href = '/supplier-questionnaire.txt';
+    link.download = 'anketa-postavshika.txt';
     link.click();
   };
 
