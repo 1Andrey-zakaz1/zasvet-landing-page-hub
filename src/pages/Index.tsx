@@ -17,6 +17,7 @@ import IlluminationCalculator from '@/components/calculator/IlluminationCalculat
 import PaymentSection from '@/components/PaymentSection';
 import DeliverySection from '@/components/DeliverySection';
 import ServiceSection from '@/components/ServiceSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
 import ChatWidget from '@/components/ChatWidget';
@@ -74,6 +75,9 @@ const Index = () => {
         
         {/* Блок сервисного обслуживания добавлен после доставки */}
         <ServiceSection />
+        
+        {/* Блок отзывов клиентов добавлен после сервисного обслуживания */}
+        <TestimonialsSection />
       </main>
       <Footer />
       <ChatWidget />
