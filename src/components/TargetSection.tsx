@@ -42,6 +42,9 @@ const TargetSection = ({
   const oppositeColor = bgColor === "bg-zasvet-black" ? "bg-zasvet-gold" : "bg-zasvet-black";
   const iconColor = bgColor === "bg-zasvet-black" ? "text-zasvet-gold" : "text-zasvet-black";
   
+  // Цвет рамки в зависимости от фона
+  const frameColor = bgColor === "bg-zasvet-black" ? "border-zasvet-gold" : "border-zasvet-black";
+  
   const primaryButtonClass = bgColor === "bg-zasvet-black" 
     ? "bg-zasvet-gold hover:bg-zasvet-darkgold text-zasvet-black border-2 border-zasvet-gold" 
     : "bg-zasvet-black hover:bg-zasvet-gray text-zasvet-gold border-2 border-zasvet-black";
@@ -80,7 +83,8 @@ const TargetSection = ({
                   />
                 </AspectRatio>
               </div>
-              <div className="absolute -bottom-3 -right-3 w-2/3 h-2/3 border-4 border-zasvet-gold rounded-lg -z-10"></div>
+              {/* Увеличенная декоративная рамка с цветом в зависимости от фона */}
+              <div className={`absolute -bottom-6 -right-6 w-3/4 h-3/4 border-4 ${frameColor} rounded-lg -z-10`}></div>
             </div>
           </div>
           
