@@ -37,7 +37,7 @@ const DeliverySection = () => {
               Транспортные компании
             </h3>
             <p className="text-zasvet-white/80">
-              Сотрудничаем с ведущими ТК для надежной доставки промышленных светильников
+              Сотрудничаем с ведущими ТК для надежной доставки светильников
             </p>
           </div>
           
@@ -66,7 +66,7 @@ const DeliverySection = () => {
               <strong className="text-zasvet-gold">• Транспортные компании:</strong> СДЭК, ПЭК, Деловые линии, КИТ и другие
             </div>
             <div>
-              <strong className="text-zasvet-gold">• Упаковка:</strong> Надежная заводская упаковка для промышленных светильников
+              <strong className="text-zasvet-gold">• Упаковка:</strong> Надежная заводская упаковка для светильников
             </div>
             <div>
               <strong className="text-zasvet-gold">• Документы:</strong> Полный пакет документов для юридических лиц
