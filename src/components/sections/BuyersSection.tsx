@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { ShoppingCart, Truck, BarChart3 } from "lucide-react";
+import { Calculator, ShoppingCart, Truck, BarChart3 } from "lucide-react";
 
 const BuyersSection = () => {
   return (
@@ -10,6 +10,11 @@ const BuyersSection = () => {
       title="Закупщику"
       subtitle="Мы предлагаем прозрачные условия сотрудничества, гибкую ценовую политику и полный комплект документации для закупщиков и снабженцев. Насколько Вам удобно закрывать заявки с большим количеством позиций в одной компании?"
       services={[
+        {
+          icon: <Calculator className="h-6 w-6 text-zasvet-black" />,
+          title: "Подбор аналога светильника:",
+          description: "В нашем интерактивном каталоге Вы легко подберете аналоги к нужным светильникам."
+        },
         {
           icon: <ShoppingCart className="h-6 w-6 text-zasvet-black" />,
           title: "Комплексная поставка:",
