@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
 import { Calculator, ShoppingCart, Truck, BarChart3 } from "lucide-react";
@@ -13,7 +12,7 @@ const BuyersSection = () => {
         {
           icon: <Calculator className="h-6 w-6 text-zasvet-black" />,
           title: "Подбор аналогов:",
-          description: "Наш калькулятор подберет в онлайн режиме аналог нужного Вам светильника."
+          description: "В нашем интерактивном каталоге Вы легко подберете аналоги к нужным светильникам."
         },
         {
           icon: <ShoppingCart className="h-6 w-6 text-zasvet-black" />,
