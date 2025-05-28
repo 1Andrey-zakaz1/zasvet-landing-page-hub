@@ -25,11 +25,15 @@ const Footer = () => {
   };
 
   const handlePaymentClick = () => {
-    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 800, behavior: 'smooth' });
+    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 1000, behavior: 'smooth' });
   };
 
   const handleDeliveryClick = () => {
-    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 500, behavior: 'smooth' });
+    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 700, behavior: 'smooth' });
+  };
+
+  const handleServiceClick = () => {
+    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 400, behavior: 'smooth' });
   };
 
   return (
@@ -102,6 +106,14 @@ const Footer = () => {
                   className="hover:text-zasvet-gold transition-colors text-left"
                 >
                   Доставка
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={handleServiceClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Сервис
                 </button>
               </li>
             </ul>

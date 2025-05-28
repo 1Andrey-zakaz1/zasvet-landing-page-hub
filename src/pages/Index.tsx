@@ -16,6 +16,7 @@ import CableCalculator from '@/components/calculator/CableCalculator';
 import IlluminationCalculator from '@/components/calculator/IlluminationCalculator';
 import PaymentSection from '@/components/PaymentSection';
 import DeliverySection from '@/components/DeliverySection';
+import ServiceSection from '@/components/ServiceSection';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
 import ChatWidget from '@/components/ChatWidget';
@@ -68,8 +69,11 @@ const Index = () => {
         {/* Блок оплаты добавлен перед доставкой */}
         <PaymentSection />
         
-        {/* Блок доставки добавлен перед футером */}
+        {/* Блок доставки добавлен перед сервисным обслуживанием */}
         <DeliverySection />
+        
+        {/* Блок сервисного обслуживания добавлен после доставки */}
+        <ServiceSection />
       </main>
       <Footer />
       <ChatWidget />
