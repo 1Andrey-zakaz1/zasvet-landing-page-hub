@@ -24,6 +24,10 @@ const Footer = () => {
     }
   };
 
+  const handleDeliveryClick = () => {
+    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 500, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-zasvet-black py-12 text-zasvet-white/80 border-t border-zasvet-gold/20">
       <div className="container mx-auto px-4">
@@ -35,7 +39,7 @@ const Footer = () => {
               className="h-16 mb-4"
             />
             <p className="max-w-xs">
-              Производственная компания Zасвет - инновационные решения в области освещения
+              Производственная компания Zасвет - инновационные решения в области освещения с доставкой по России
             </p>
           </div>
           
@@ -45,6 +49,7 @@ const Footer = () => {
               <li>Телефон: +7 383 312-00-91</li>
               <li>Email: zakaz@pkzasvet.ru</li>
               <li>Адрес: г. Новосибирск, ул. Станционная 32 к 40 оф 405</li>
+              <li className="text-zasvet-gold">Доставка по всей РФ из Новосибирска</li>
             </ul>
           </div>
           
@@ -77,6 +82,14 @@ const Footer = () => {
                   className="hover:text-zasvet-gold transition-colors text-left"
                 >
                   Каталог
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={handleDeliveryClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Доставка
                 </button>
               </li>
             </ul>
