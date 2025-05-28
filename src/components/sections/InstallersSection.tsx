@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Zap, Cable, LightbulbIcon, Package } from "lucide-react";
+import { Calculator, Cable, LightbulbIcon, Package } from "lucide-react";
 
 const InstallersSection = () => {
   return (
@@ -16,9 +16,9 @@ const InstallersSection = () => {
           description: "Учитывает длину кабеля, мощность оборудования, тип проводки."
         },
         {
-          icon: <Zap className="h-6 w-6 text-zasvet-black" />,
-          title: "Расчет УЗО:",
-          description: "По мощности оборудования"
+          icon: <Calculator className="h-6 w-6 text-zasvet-black" />,
+          title: "Расчет освещения для помещения:",
+          description: "Наш калькулятор поможет определить тип и рассчитать количество светильников на объект без специальных знаний."
         },
         {
           icon: <LightbulbIcon className="h-6 w-6 text-zasvet-black" />,
