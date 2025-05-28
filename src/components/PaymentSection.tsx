@@ -60,7 +60,7 @@ const PaymentSection = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-zasvet-white/80">
             <div>
-              <strong className="text-zasvet-gold">• Для юридических лиц:</strong> Договор поставки и счет на оплату светильников
+              <strong className="text-zasvet-gold">• Для юридических лиц:</strong> Договор поставки и счет на оплату светильников с НДС
             </div>
             <div>
               <strong className="text-zasvet-gold">• Для физических лиц:</strong> Счет на оплату без НДС
@@ -69,7 +69,7 @@ const PaymentSection = () => {
               <strong className="text-zasvet-gold">• Способ оплаты:</strong> Безналичный расчет по выставленному счету
             </div>
             <div>
-              <strong className="text-zasvet-gold">• Документооборот:</strong> Полный пакет документов из Новосибирска
+              <strong className="text-zasvet-gold">• Документооборот:</strong> Полный пакет документов
             </div>
           </div>
         </div>
