@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Download } from 'lucide-react';
 import SubscriptionForm from './SubscriptionForm';
 
 const Footer = () => {
@@ -36,10 +37,17 @@ const Footer = () => {
     window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 400, behavior: 'smooth' });
   };
 
+  const handleDownloadQuestionnaire = () => {
+    const link = document.createElement('a');
+    link.href = '/supplier-questionnaire.md';
+    link.download = 'anketa-postavshika.md';
+    link.click();
+  };
+
   return (
     <footer className="bg-zasvet-black py-12 text-zasvet-white/80 border-t border-zasvet-gold/20">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div>
             <img 
               src="/lovable-uploads/4569d5b4-87f4-40ae-aba3-b6fd8fcedf96.png" 
@@ -59,6 +67,32 @@ const Footer = () => {
               <li>Адрес: г. Новосибирск, ул. Станционная 32 к 40 оф 405</li>
               <li className="text-zasvet-gold">Доставка по всей РФ из Новосибирска</li>
             </ul>
+          </div>
+
+          <div>
+            <h3 className="text-zasvet-gold font-semibold text-lg mb-4">Поставщикам</h3>
+            <div className="space-y-3">
+              <p className="text-sm text-zasvet-white/90">
+                Рассмотрение коммерческих предложений происходит только после заполнения анкеты поставщика
+              </p>
+              <button 
+                onClick={handleDownloadQuestionnaire}
+                className="flex items-center gap-2 text-zasvet-gold hover:text-zasvet-white transition-colors text-sm"
+              >
+                <Download className="h-4 w-4" />
+                Скачать анкету поставщика
+              </button>
+              <div className="text-sm">
+                <span className="text-zasvet-white/70">Отправка анкеты:</span>
+                <br />
+                <a 
+                  href="mailto:snab@pkzasvet.ru" 
+                  className="text-zasvet-gold hover:text-zasvet-white transition-colors"
+                >
+                  snab@pkzasvet.ru
+                </a>
+              </div>
+            </div>
           </div>
           
           <div>
