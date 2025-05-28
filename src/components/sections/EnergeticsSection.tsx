@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TargetSection from '@/components/TargetSection';
-import { Calculator, ZapOff, Cable, Package } from "lucide-react";
+import { Calculator, ZapOff, Package } from "lucide-react";
 
 const EnergeticsSection = () => {
   return (
@@ -14,11 +14,6 @@ const EnergeticsSection = () => {
           icon: <Calculator className="h-6 w-6" />,
           title: "Расчет освещения для помещения:",
           description: "Зная размер и назначение помещения"
-        },
-        {
-          icon: <Cable className="h-6 w-6" />,
-          title: "Расчет сечения кабеля:",
-          description: "Учитывает длину кабеля, мощность оборудования, тип прокладки."
         },
         {
           icon: <ZapOff className="h-6 w-6" />,
