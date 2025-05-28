@@ -83,8 +83,8 @@ const TargetSection = ({
                   />
                 </AspectRatio>
               </div>
-              {/* Увеличенная декоративная рамка с цветом в зависимости от фона */}
-              <div className={`absolute -bottom-6 -right-6 w-3/4 h-3/4 border-4 ${frameColor} rounded-lg -z-10`}></div>
+              {/* Декоративная рамка того же размера что и изображение */}
+              <div className={`absolute -bottom-4 -right-4 w-full h-full border-4 ${frameColor} rounded-lg -z-10`}></div>
             </div>
           </div>
           
