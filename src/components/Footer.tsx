@@ -24,6 +24,10 @@ const Footer = () => {
     }
   };
 
+  const handlePaymentClick = () => {
+    window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 800, behavior: 'smooth' });
+  };
+
   const handleDeliveryClick = () => {
     window.scrollTo({ top: document.body.scrollHeight - window.innerHeight - 500, behavior: 'smooth' });
   };
@@ -82,6 +86,14 @@ const Footer = () => {
                   className="hover:text-zasvet-gold transition-colors text-left"
                 >
                   Каталог
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={handlePaymentClick}
+                  className="hover:text-zasvet-gold transition-colors text-left"
+                >
+                  Оплата
                 </button>
               </li>
               <li>

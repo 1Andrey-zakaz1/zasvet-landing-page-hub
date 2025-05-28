@@ -14,6 +14,7 @@ import ProductSlider from '@/components/ProductSlider';
 import LedCalculator from '@/components/LedCalculator';
 import CableCalculator from '@/components/calculator/CableCalculator';
 import IlluminationCalculator from '@/components/calculator/IlluminationCalculator';
+import PaymentSection from '@/components/PaymentSection';
 import DeliverySection from '@/components/DeliverySection';
 import Footer from '@/components/Footer';
 import TelegramBotWidget from '@/components/TelegramBotWidget';
@@ -63,6 +64,9 @@ const Index = () => {
 
         <VideoSlider />
         <ProductSlider />
+        
+        {/* Блок оплаты добавлен перед доставкой */}
+        <PaymentSection />
         
         {/* Блок доставки добавлен перед футером */}
         <DeliverySection />
