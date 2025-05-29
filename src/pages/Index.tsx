@@ -64,7 +64,11 @@ const Index = () => {
           <CatalogSection />
         </div>
 
-        <VideoSlider />
+        {/* Блок с видео скрыт */}
+        <div className="hidden">
+          <VideoSlider />
+        </div>
+        
         <ProductSlider />
         
         {/* Блок оплаты добавлен перед доставкой */}
