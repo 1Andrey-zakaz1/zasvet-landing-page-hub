@@ -30,8 +30,8 @@ export interface ERPNextResponse {
 
 export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> => {
   const erpUrl = "https://erp.pkzasvet.ru";
-  const apiKey = "10fe15d4ec5f1cf";
-  const apiSecret = "6a6dd351e2c6421";
+  const apiKey = "a2880258cc82ef9";
+  const apiSecret = "dd6c5048c9befb7";
   
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
   
