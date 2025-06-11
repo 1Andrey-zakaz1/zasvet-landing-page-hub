@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Download } from 'lucide-react';
 import SubscriptionForm from './SubscriptionForm';
@@ -63,7 +64,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>Телефон: +7 383 312-00-91</li>
               <li>Email: zakaz@pkzasvet.ru</li>
-              <li>Адрес: г. Новосибирск, ул. Станционная 32 к 40 оф 405</li>
+              <li>Адрес: г. Новосибирск, ул. Станционная 32 к 40 оф 419</li>
               <li className="text-zasvet-gold">Доставка по всей РФ из Новосибирска</li>
             </ul>
           </div>

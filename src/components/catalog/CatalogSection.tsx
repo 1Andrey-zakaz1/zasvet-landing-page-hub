@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import CatalogFilterPanel, { FilterValues } from "@/components/catalog/CatalogFilterPanel";
 import CatalogList from "@/components/catalog/CatalogList";
@@ -134,55 +135,58 @@ const CatalogSection: React.FC = () => {
   return (
     <div className="bg-zasvet-black py-10">
       <div className="max-w-7xl">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="section-title text-zasvet-white flex items-center gap-2">
-            <Search className="h-6 w-6 text-zasvet-gold" />
-            Каталог светильников
-          </h1>
-          <Button
-            variant="gold"
-            className="transition-all duration-300 flex items-center gap-1"
-            onClick={() => setIsExpanded(prev => !prev)}
-          >
-            {isExpanded ? (
-              <>
-                <span className="mr-1">&#9650;</span> Свернуть
-              </>
-            ) : (
-              <>
-                <span className="mr-1">&#9660;</span> Развернуть
-              </>
-            )}
-          </Button>
-        </div>
-        {isExpanded && (
-          <>
-            <CatalogFilterPanel
-              filters={filters}
-              setFilters={setFilters}
-              allSeries={allSeries}
-              allIpRatings={allIpRatings}
-              allKssTypes={allKssTypes}
-            />
-            <CatalogList fixtures={sorted.slice(0, 8)} />
-            {sorted.length > 8 && (
-              <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
-                Найдено подходящих светильников: {sorted.length}. Показаны только первые 8. <br />
-                Уточните параметры поиска, чтобы увидеть остальные результаты.
-              </div>
-            )}
-            {sorted.length === 0 && (
-              <div className="mt-8 text-center text-zasvet-gold text-lg">
-                Светильники не найдены. Попробуйте скорректировать параметры поиска.
-              </div>
-            )}
-          </>
-        )}
-        {!isExpanded && (
-          <div className="text-zasvet-gray/60 text-center py-10 animate-fade-in">
-            Каталог скрыт. Нажмите «Развернуть», чтобы отобразить список.
+        {/* Добавляем рамку как у секции калькуляторов */}
+        <div className="border border-zasvet-gold/30 rounded-lg p-6 bg-zasvet-black/50">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="section-title text-zasvet-white flex items-center gap-2">
+              <Search className="h-6 w-6 text-zasvet-gold" />
+              Каталог светильников
+            </h1>
+            <Button
+              variant="gold"
+              className="transition-all duration-300 flex items-center gap-1"
+              onClick={() => setIsExpanded(prev => !prev)}
+            >
+              {isExpanded ? (
+                <>
+                  <span className="mr-1">&#9650;</span> Свернуть
+                </>
+              ) : (
+                <>
+                  <span className="mr-1">&#9660;</span> Развернуть
+                </>
+              )}
+            </Button>
           </div>
-        )}
+          {isExpanded && (
+            <>
+              <CatalogFilterPanel
+                filters={filters}
+                setFilters={setFilters}
+                allSeries={allSeries}
+                allIpRatings={allIpRatings}
+                allKssTypes={allKssTypes}
+              />
+              <CatalogList fixtures={sorted.slice(0, 8)} />
+              {sorted.length > 8 && (
+                <div className="mt-4 text-center text-zasvet-gold/90 font-medium animate-fade-in">
+                  Найдено подходящих светильников: {sorted.length}. Показаны только первые 8. <br />
+                  Уточните параметры поиска, чтобы увидеть остальные результаты.
+                </div>
+              )}
+              {sorted.length === 0 && (
+                <div className="mt-8 text-center text-zasvet-gold text-lg">
+                  Светильники не найдены. Попробуйте скорректировать параметры поиска.
+                </div>
+              )}
+            </>
+          )}
+          {!isExpanded && (
+            <div className="text-zasvet-gold/80 text-center py-10 animate-fade-in font-medium">
+              Каталог скрыт. Нажмите «Развернуть», чтобы отобразить список.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
