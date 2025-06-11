@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -36,8 +35,7 @@ const HeroSection = () => {
             style={{
               backgroundImage: `url('/lovable-uploads/fba28b49-c1d0-410a-b376-68d38bab8660.png')`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              filter: 'brightness(0.7)'
+              backgroundPosition: 'center'
             }}
           />
         </AspectRatio>
