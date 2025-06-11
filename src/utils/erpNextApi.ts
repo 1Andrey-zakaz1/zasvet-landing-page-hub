@@ -35,45 +35,40 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
   
+  // Очищаем и валидируем данные
+  const cleanData = {
+    name: String(data.name || '').trim(),
+    phone: String(data.phone || '').trim(),
+    email: data.email ? String(data.email).trim() : undefined,
+    message: data.message ? String(data.message).trim() : undefined
+  };
+  
+  console.log("🧹 Очищенные данные:", cleanData);
+  
+  // Проверяем обязательные поля
+  if (!cleanData.name || !cleanData.phone) {
+    throw new Error("Имя и телефон обязательны для заполнения");
+  }
+  
   try {
-    // Сначала получим информацию о структуре Lead doctype
-    console.log("🔍 Получаем метаданные Lead doctype...");
-    
-    const metaResponse = await fetch(`${erpUrl}/api/resource/Lead?fields=["*"]&limit_page_length=1`, {
-      method: "GET",
-      headers: {
-        "Authorization": `token ${apiKey}:${apiSecret}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log("📋 Метаданные - статус ответа:", metaResponse.status);
-    
-    if (metaResponse.ok) {
-      const metaText = await metaResponse.text();
-      console.log("📋 Структура существующих лидов:", metaText);
-    }
-
     // Создаем максимально простую структуру с обязательными полями
     const leadData: ERPNextLeadRequest = {
-      lead_name: data.name,
-      mobile_no: data.phone,
-      // Автоматически заполняем обязательные поля
+      lead_name: cleanData.name,
+      mobile_no: cleanData.phone,
       source: "Website",
-      status: "Lead" // Устанавливаем статус по умолчанию как "Lead"
+      status: "Lead"
     };
 
-    // Добавляем опциональные поля осторожно
-    if (data.email && data.email.trim()) {
-      leadData.email_id = data.email.trim();
+    // Добавляем опциональные поля только если они есть
+    if (cleanData.email) {
+      leadData.email_id = cleanData.email;
     }
     
-    // Используем title для сообщения
-    if (data.message && data.message.trim()) {
-      leadData.title = data.message.trim();
+    if (cleanData.message) {
+      leadData.title = cleanData.message;
       
       // Если сообщение содержит "Подписка", отмечаем как подписчика блога
-      if (data.message.includes("Подписка")) {
+      if (cleanData.message.includes("Подписка")) {
         leadData.blog_subscriber = 1;
         console.log("📧 Отмечаем пользователя как подписчика блога");
       }
@@ -87,6 +82,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       headers: {
         "Content-Type": "application/json",
         "Authorization": `token ${apiKey}:${apiSecret}`,
+        "Accept": "application/json"
       },
       body: JSON.stringify(leadData),
     });
@@ -100,6 +96,11 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     if (!response.ok) {
       let errorMessage = `Ошибка сервера: ${response.status}`;
       
+      // Специальная обработка CORS ошибок
+      if (response.status === 0 || response.type === 'opaque') {
+        errorMessage = "CORS_ERROR";
+      }
+      
       try {
         const errorJson = JSON.parse(responseText);
         console.error("❌ Детали ошибки ERPNext:", errorJson);
@@ -111,22 +112,12 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
         
         if (errorJson.message) {
           errorMessage = errorJson.message;
-        } else if (errorJson.exc) {
-          errorMessage = "Ошибка валидации данных на сервере ERPNext";
-          console.error("❌ Полная трассировка ошибки:", errorJson.exc);
-          
-          // Анализируем конкретную ошибку
-          if (errorJson.exc_type === "TypeError" && errorJson.exception.includes("'str' object does not support item assignment")) {
-            console.error("🔍 Проблема с типами данных - ERPNext ожидает объект, а получает строку");
-            errorMessage = "Ошибка типов данных: сервер ожидает другую структуру данных";
-          }
         }
       } catch (e) {
         if (e instanceof Error && e.message === "DUPLICATE_EMAIL") {
           throw e;
         }
         console.error("❌ Не удалось распарсить ответ как JSON");
-        errorMessage = `${errorMessage} - ${responseText.substring(0, 200)}`;
       }
       
       throw new Error(errorMessage);
@@ -137,7 +128,6 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       result = JSON.parse(responseText);
       console.log("✅ Успешно создан лид в ERPNext:", result);
       console.log("🆔 ID созданного лида:", result.data?.name);
-      console.log("📊 Статус лида:", result.data?.status);
     } catch (e) {
       console.log("✅ Запрос выполнен успешно, но ответ не JSON:", responseText);
       result = { message: "success" };
@@ -146,6 +136,17 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     return result;
   } catch (error) {
     console.error("💥 Критическая ошибка при отправке в ERPNext:", error);
+    
+    // Если это сетевая ошибка (CORS или недоступность сервера)
+    if (error instanceof Error && (
+      error.message.includes('Failed to fetch') ||
+      error.message.includes('NetworkError') ||
+      error.message === 'CORS_ERROR'
+    )) {
+      console.log("🌐 Обнаружена сетевая ошибка - возможно CORS или недоступность сервера");
+      throw new Error("NETWORK_ERROR");
+    }
+    
     throw error;
   }
 };
