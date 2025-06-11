@@ -28,13 +28,17 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Background with AspectRatio */}
+      {/* Background with optimized image */}
       <div className="absolute inset-0">
         <AspectRatio ratio={16 / 9} className="h-full">
-          <img 
-            src="/lovable-uploads/fba28b49-c1d0-410a-b376-68d38bab8660.png"
-            alt="Фоновое изображение"
-            className="w-full h-full object-cover"
+          <div 
+            className="w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('/lovable-uploads/fba28b49-c1d0-410a-b376-68d38bab8660.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              filter: 'brightness(0.7)'
+            }}
           />
         </AspectRatio>
       </div>
