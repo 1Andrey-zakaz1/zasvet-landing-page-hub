@@ -182,7 +182,7 @@ const CatalogSection: React.FC = () => {
             </>
           )}
           {!isExpanded && (
-            <div className="text-zasvet-gold/80 text-center py-10 animate-fade-in font-medium">
+            <div className="text-zasvet-white/80 text-center py-10 animate-fade-in font-medium">
               Каталог скрыт. Нажмите «Развернуть», чтобы отобразить список.
             </div>
           )}
