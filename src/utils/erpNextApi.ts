@@ -76,30 +76,38 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
 
     console.log("📋 Финальные данные для создания лида:", leadData);
     console.log("🔗 URL для запроса:", `${erpUrl}/api/resource/Lead`);
+    
+    // Добавляем детальное логирование заголовков
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `token ${apiKey}:${apiSecret}`,
+      "Accept": "application/json"
+    };
+    console.log("📤 Заголовки запроса:", headers);
 
-    const response = await fetch(`${erpUrl}/api/resource/Lead`, {
+    // Пробуем альтернативный подход с более явными настройками
+    const requestOptions: RequestInit = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `token ${apiKey}:${apiSecret}`,
-        "Accept": "application/json"
-      },
+      headers: headers,
       body: JSON.stringify(leadData),
-    });
+      mode: 'cors',
+      credentials: 'omit',
+      cache: 'no-cache'
+    };
+    
+    console.log("⚙️ Настройки запроса:", requestOptions);
+
+    const response = await fetch(`${erpUrl}/api/resource/Lead`, requestOptions);
 
     console.log("📡 Ответ сервера - статус:", response.status);
     console.log("📡 Ответ сервера - статус текст:", response.statusText);
+    console.log("📡 Ответ сервера - headers:", Object.fromEntries(response.headers.entries()));
 
     const responseText = await response.text();
     console.log("📡 Полный ответ сервера:", responseText);
 
     if (!response.ok) {
-      let errorMessage = `Ошибка сервера: ${response.status}`;
-      
-      // Специальная обработка CORS ошибок
-      if (response.status === 0 || response.type === 'opaque') {
-        errorMessage = "CORS_ERROR";
-      }
+      let errorMessage = `Ошибка сервера: ${response.status} - ${response.statusText}`;
       
       try {
         const errorJson = JSON.parse(responseText);
@@ -113,6 +121,13 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
         if (errorJson.message) {
           errorMessage = errorJson.message;
         }
+        
+        // Добавляем больше информации об ошибке
+        if (errorJson.exception) {
+          console.error("❌ Подробности исключения:", errorJson.exception);
+          errorMessage += ` | Exception: ${errorJson.exception}`;
+        }
+        
       } catch (e) {
         if (e instanceof Error && e.message === "DUPLICATE_EMAIL") {
           throw e;
@@ -137,14 +152,20 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   } catch (error) {
     console.error("💥 Критическая ошибка при отправке в ERPNext:", error);
     
-    // Если это сетевая ошибка (CORS или недоступность сервера)
-    if (error instanceof Error && (
-      error.message.includes('Failed to fetch') ||
-      error.message.includes('NetworkError') ||
-      error.message === 'CORS_ERROR'
-    )) {
-      console.log("🌐 Обнаружена сетевая ошибка - возможно CORS или недоступность сервера");
-      throw new Error("NETWORK_ERROR");
+    // Более детальная диагностика ошибок
+    if (error instanceof Error) {
+      console.error("💥 Тип ошибки:", error.name);
+      console.error("💥 Сообщение ошибки:", error.message);
+      console.error("💥 Stack trace:", error.stack);
+      
+      // Если это сетевая ошибка (CORS или недоступность сервера)
+      if (error.message.includes('Failed to fetch') ||
+          error.message.includes('NetworkError') ||
+          error.message.includes('CORS') ||
+          error.name === 'TypeError') {
+        console.log("🌐 Обнаружена сетевая ошибка - возможно CORS или недоступность сервера");
+        throw new Error("NETWORK_ERROR");
+      }
     }
     
     throw error;
@@ -153,7 +174,10 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
 
 export const submitFallback = async (data: LeadData): Promise<{ success: boolean; method: string }> => {
   console.log("📧 Используем резервный метод отправки");
+  console.log("📧 Данные для резервного сохранения:", data);
   
+  // Можем добавить отправку на альтернативный сервер или email
+  // Пока просто симулируем успешное сохранение
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log("📧 Данные сохранены локально для последующей обработки:", data);

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { submitToERPNext, submitFallback, LeadData } from "@/utils/erpNextApi";
+import { testERPConnection } from "@/utils/testERPConnection";
 
 export const useContactFormSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,6 +12,15 @@ export const useContactFormSubmit = () => {
     setIsSubmitting(true);
 
     try {
+      // Сначала тестируем подключение
+      console.log("🧪 Проверяем подключение к ERPNext перед отправкой...");
+      const connectionTest = await testERPConnection();
+      console.log("🧪 Результат проверки подключения:", connectionTest);
+      
+      if (!connectionTest) {
+        console.log("⚠️ Тест подключения не прошел, но продолжаем попытку отправки...");
+      }
+
       // Пытаемся отправить в ERPNext
       const result = await submitToERPNext(data);
       
