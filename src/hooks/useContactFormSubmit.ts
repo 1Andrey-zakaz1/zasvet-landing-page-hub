@@ -2,44 +2,39 @@
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { submitToERPNext, submitFallback, LeadData } from "@/utils/erpNextApi";
-import { testERPConnection } from "@/utils/testERPConnection";
 
 export const useContactFormSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = async (data: LeadData, onSuccess: () => void) => {
-    console.log("🎯 Начало обработки формы с данными:", data);
+    console.log("🎯 ДИАГНОСТИКА: Хук начинает обработку формы");
+    console.log("🎯 ДИАГНОСТИКА: Входные данные:", data);
+    
     setIsSubmitting(true);
 
     try {
-      // Сначала тестируем подключение
-      console.log("🧪 Проверяем подключение к ERPNext перед отправкой...");
-      const connectionTest = await testERPConnection();
-      console.log("🧪 Результат проверки подключения:", connectionTest);
-      
-      if (!connectionTest) {
-        console.log("⚠️ Тест подключения не прошел, но продолжаем попытку отправки...");
-      }
-
-      // Пытаемся отправить в ERPNext
+      console.log("🎯 ДИАГНОСТИКА: Вызываем submitToERPNext...");
       const result = await submitToERPNext(data);
       
-      console.log("🎉 Форма успешно отправлена в ERPNext!");
-      console.log("📋 Результат создания лида:", result);
+      console.log("🎉 ДИАГНОСТИКА: Форма успешно отправлена!");
+      console.log("📋 ДИАГНОСТИКА: Результат:", result);
       
       toast({
         title: "Лид успешно создан",
         description: `Заявка от ${data.name} отправлена в ERPNext. ID лида: ${result.data?.name || 'неизвестен'}`,
       });
       
+      console.log("🎯 ДИАГНОСТИКА: Вызываем onSuccess callback");
       onSuccess();
-    } catch (error) {
-      console.error("💥 Ошибка при отправке в ERPNext:", error);
       
-      // Обрабатываем специальные случаи
+    } catch (error) {
+      console.log("💥 ДИАГНОСТИКА: Поймана ошибка в хуке:", error);
+      
       if (error instanceof Error) {
+        console.log("💥 ДИАГНОСТИКА: Анализируем тип ошибки:", error.message);
+        
         if (error.message === "DUPLICATE_EMAIL") {
-          console.log("📧 Обнаружено дублирование email");
+          console.log("📧 ДИАГНОСТИКА: Обработка дублирования email");
           
           toast({
             title: "Заявка уже существует",
@@ -51,7 +46,7 @@ export const useContactFormSubmit = () => {
         }
         
         if (error.message === "NETWORK_ERROR") {
-          console.log("🌐 Сетевая ошибка - используем резервный метод");
+          console.log("🌐 ДИАГНОСТИКА: Обработка сетевой ошибки - переходим к резервному методу");
           
           try {
             await submitFallback(data);
@@ -64,16 +59,17 @@ export const useContactFormSubmit = () => {
             onSuccess();
             return;
           } catch (fallbackError) {
-            console.error("💥 Ошибка и в резервном методе:", fallbackError);
+            console.log("💥 ДИАГНОСТИКА: Ошибка и в резервном методе:", fallbackError);
           }
         }
       }
       
-      // Используем резервный метод для всех остальных ошибок
+      // Для всех остальных ошибок пытаемся резервный метод
+      console.log("🔄 ДИАГНОСТИКА: Пробуем резервный метод для прочих ошибок");
       try {
         await submitFallback(data);
         
-        console.log("🎉 Форма отправлена через резервный метод!");
+        console.log("🎉 ДИАГНОСТИКА: Резервный метод сработал!");
         
         toast({
           title: "Заявка принята",
@@ -82,7 +78,7 @@ export const useContactFormSubmit = () => {
         
         onSuccess();
       } catch (fallbackError) {
-        console.error("💥 Ошибка и в резервном методе:", fallbackError);
+        console.log("💥 ДИАГНОСТИКА: Критическая ошибка - даже резервный метод не работает:", fallbackError);
         
         toast({
           title: "Ошибка отправки",
@@ -91,6 +87,7 @@ export const useContactFormSubmit = () => {
         });
       }
     } finally {
+      console.log("🎯 ДИАГНОСТИКА: Завершение обработки формы");
       setIsSubmitting(false);
     }
   };
