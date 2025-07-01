@@ -1,3 +1,4 @@
+
 export interface LeadData {
   name: string;
   phone: string;
@@ -33,6 +34,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   const apiSecret = "2ec04bab1aec805";
   
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
+  console.log("🔑 Используемые учетные данные:", { apiKey, apiSecret: apiSecret.substring(0, 5) + "..." });
   
   // Очищаем и валидируем данные
   const cleanData = {
@@ -71,6 +73,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   }
 
   console.log("📋 Финальные данные для лида:", leadData);
+  console.log("📋 JSON данные для отправки:", JSON.stringify(leadData, null, 2));
 
   const requestUrl = `${erpUrl}/api/resource/Lead`;
   console.log("🔗 URL запроса:", requestUrl);
@@ -81,6 +84,11 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     "Accept": "application/json"
   };
 
+  console.log("📡 Заголовки запроса:", {
+    ...headers,
+    Authorization: `token ${apiKey}:${apiSecret.substring(0, 5)}...`
+  });
+
   const requestOptions: RequestInit = {
     method: "POST",
     headers: headers,
@@ -89,42 +97,83 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     credentials: 'omit'
   };
   
+  console.log("⚙️ Полные параметры запроса:", {
+    ...requestOptions,
+    body: "см. выше",
+    headers: "см. выше"
+  });
+  
   console.log("⚙️ Отправляем запрос...");
+  console.log("⏰ Время отправки:", new Date().toISOString());
 
   try {
     const response = await fetch(requestUrl, requestOptions);
     
     console.log("📡 Получен ответ");
     console.log("📡 Статус:", response.status);
+    console.log("📡 Статус текст:", response.statusText);
     console.log("📡 OK статус:", response.ok);
+    console.log("📡 Заголовки ответа:", Object.fromEntries(response.headers.entries()));
     
     const responseText = await response.text();
-    console.log("📡 Тело ответа:", responseText);
+    console.log("📡 Тело ответа (RAW):", responseText);
+    console.log("📡 Длина ответа:", responseText.length);
 
     if (!response.ok) {
       console.log("❌ Ответ сервера не OK");
+      console.log("❌ Детальный анализ ошибки начинается...");
       
       let errorDetails = "Неизвестная ошибка";
+      let errorType = "UNKNOWN";
       
       try {
         const errorJson = JSON.parse(responseText);
         console.log("❌ Ошибка как JSON:", errorJson);
+        console.log("❌ Структура ошибки:", Object.keys(errorJson));
         
-        if (errorJson.exc_type === "DuplicateEntryError") {
+        // Проверяем различные типы ошибок ERPNext
+        if (errorJson.exc_type === "DuplicateEntryError" || 
+            (errorJson.message && errorJson.message.includes("Duplicate entry"))) {
           console.log("❌ Обнаружено дублирование email");
-          throw new Error("DUPLICATE_EMAIL");
+          errorType = "DUPLICATE_EMAIL";
+        } else if (errorJson.message && errorJson.message.includes("Permission")) {
+          console.log("❌ Ошибка прав доступа");
+          errorType = "PERMISSION_ERROR";
+        } else if (errorJson.message && errorJson.message.includes("Authentication")) {
+          console.log("❌ Ошибка аутентификации");
+          errorType = "AUTH_ERROR";
         }
         
         if (errorJson.message) {
           errorDetails = errorJson.message;
+        } else if (errorJson.exc) {
+          errorDetails = errorJson.exc;
         }
         
       } catch (parseError) {
         console.log("❌ Не удалось парсить ответ как JSON:", parseError);
-        errorDetails = responseText || response.statusText;
+        console.log("❌ Возможно, это HTML или другой формат");
+        
+        // Проверяем, не HTML ли это (часто при CORS ошибках)
+        if (responseText.includes("<html") || responseText.includes("<!DOCTYPE")) {
+          console.log("❌ Ответ содержит HTML - возможно CORS проблема");
+          errorType = "CORS_ERROR";
+          errorDetails = "Получен HTML вместо JSON - проблема с CORS";
+        } else {
+          errorDetails = responseText || response.statusText;
+        }
       }
       
-      const finalError = `Ошибка сервера ERPNext: ${response.status} - ${errorDetails}`;
+      console.log("❌ Тип ошибки:", errorType);
+      console.log("❌ Детали ошибки:", errorDetails);
+      
+      if (errorType === "DUPLICATE_EMAIL") {
+        throw new Error("DUPLICATE_EMAIL");
+      } else if (errorType === "CORS_ERROR") {
+        throw new Error("NETWORK_ERROR");
+      }
+      
+      const finalError = `Ошибка сервера ERPNext (${response.status}): ${errorDetails}`;
       console.log("❌ Финальная ошибка:", finalError);
       throw new Error(finalError);
     }
@@ -137,6 +186,9 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
       result = JSON.parse(responseText);
       console.log("✅ Успешно создан лид:", result);
       console.log("🆔 ID созданного лида:", result.data?.name);
+      console.log("👤 Владелец лида:", result.data?.lead_owner);
+      console.log("🏢 Территория:", result.data?.territory);
+      console.log("📊 Статус:", result.data?.status);
     } catch (parseError) {
       console.log("⚠️ Ответ не JSON, но запрос успешен:", responseText);
       result = { message: "success" };
@@ -146,13 +198,24 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
     
   } catch (fetchError) {
     console.log("💥 Критическая ошибка при выполнении fetch:", fetchError);
+    console.log("💥 Тип ошибки:", typeof fetchError);
+    console.log("💥 Название ошибки:", fetchError instanceof Error ? fetchError.name : "неизвестно");
+    console.log("💥 Сообщение ошибки:", fetchError instanceof Error ? fetchError.message : String(fetchError));
     
     if (fetchError instanceof Error) {
-      if (fetchError.message.includes('Failed to fetch') ||
-          fetchError.message.includes('NetworkError') ||
-          fetchError.message.includes('CORS') ||
-          fetchError.message.includes('network') ||
-          fetchError.name === 'TypeError') {
+      const errorMessage = fetchError.message.toLowerCase();
+      const errorName = fetchError.name.toLowerCase();
+      
+      console.log("🔍 Анализ типа ошибки...");
+      console.log("🔍 Сообщение (нижний регистр):", errorMessage);
+      console.log("🔍 Имя (нижний регистр):", errorName);
+      
+      if (errorMessage.includes('failed to fetch') ||
+          errorMessage.includes('networkerror') ||
+          errorMessage.includes('cors') ||
+          errorMessage.includes('network') ||
+          errorName === 'typeerror' ||
+          errorMessage.includes('connection')) {
         console.log("🌐 Обнаружена сетевая/CORS ошибка");
         throw new Error("NETWORK_ERROR");
       }

@@ -9,6 +9,9 @@ export const useContactFormSubmit = () => {
   const submitForm = async (data: LeadData, onSuccess: () => void) => {
     console.log("🎯 ДИАГНОСТИКА: Хук начинает обработку формы");
     console.log("🎯 ДИАГНОСТИКА: Входные данные:", data);
+    console.log("⏰ ДИАГНОСТИКА: Время начала:", new Date().toISOString());
+    console.log("🌐 ДИАГНОСТИКА: User Agent:", navigator.userAgent);
+    console.log("🌐 ДИАГНОСТИКА: URL страницы:", window.location.href);
     
     setIsSubmitting(true);
 
@@ -18,6 +21,7 @@ export const useContactFormSubmit = () => {
       
       console.log("🎉 ДИАГНОСТИКА: Форма успешно отправлена!");
       console.log("📋 ДИАГНОСТИКА: Результат:", result);
+      console.log("⏰ ДИАГНОСТИКА: Время успеха:", new Date().toISOString());
       
       toast({
         title: "Лид успешно создан",
@@ -29,9 +33,11 @@ export const useContactFormSubmit = () => {
       
     } catch (error) {
       console.log("💥 ДИАГНОСТИКА: Поймана ошибка в хуке:", error);
+      console.log("⏰ ДИАГНОСТИКА: Время ошибки:", new Date().toISOString());
       
       if (error instanceof Error) {
         console.log("💥 ДИАГНОСТИКА: Анализируем тип ошибки:", error.message);
+        console.log("💥 ДИАГНОСТИКА: Stack trace:", error.stack);
         
         if (error.message === "DUPLICATE_EMAIL") {
           console.log("📧 ДИАГНОСТИКА: Обработка дублирования email");
@@ -49,7 +55,10 @@ export const useContactFormSubmit = () => {
           console.log("🌐 ДИАГНОСТИКА: Обработка сетевой ошибки - переходим к резервному методу");
           
           try {
+            console.log("🔄 ДИАГНОСТИКА: Запускаем резервный метод...");
             await submitFallback(data);
+            
+            console.log("✅ ДИАГНОСТИКА: Резервный метод выполнен успешно");
             
             toast({
               title: "Заявка принята",
@@ -66,6 +75,8 @@ export const useContactFormSubmit = () => {
       
       // Для всех остальных ошибок пытаемся резервный метод
       console.log("🔄 ДИАГНОСТИКА: Пробуем резервный метод для прочих ошибок");
+      console.log("🔄 ДИАГНОСТИКА: Тип прочей ошибки:", typeof error);
+      
       try {
         await submitFallback(data);
         
@@ -88,6 +99,7 @@ export const useContactFormSubmit = () => {
       }
     } finally {
       console.log("🎯 ДИАГНОСТИКА: Завершение обработки формы");
+      console.log("⏰ ДИАГНОСТИКА: Время завершения:", new Date().toISOString());
       setIsSubmitting(false);
     }
   };
