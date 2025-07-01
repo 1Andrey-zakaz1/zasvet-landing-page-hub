@@ -1,4 +1,3 @@
-
 export interface LeadData {
   name: string;
   phone: string;
@@ -7,7 +6,7 @@ export interface LeadData {
 }
 
 export interface ERPNextLeadRequest {
-  lead_name: string;
+  first_name: string;
   mobile_no?: string;
   email_id?: string;
   title?: string;
@@ -52,7 +51,7 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   
   // Создаем правильную структуру данных для ERPNext
   const leadData: ERPNextLeadRequest = {
-    lead_name: cleanData.name,
+    first_name: cleanData.name,
     mobile_no: cleanData.phone,
     source: "Website",
     status: "Lead"
