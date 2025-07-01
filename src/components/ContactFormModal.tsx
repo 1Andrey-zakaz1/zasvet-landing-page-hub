@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,9 +21,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal, Loader2 } from "lucide-react";
+import { SendHorizontal, Loader2, TestTube } from "lucide-react";
 import { useContactFormSubmit } from "@/hooks/useContactFormSubmit";
-import { LeadData } from "@/utils/erpNextApi";
+import { LeadData, testERPNextConnection } from "@/utils/erpNextApi";
+import { toast } from "@/hooks/use-toast";
 
 // Define form schema with validation
 const formSchema = z.object({
@@ -48,6 +48,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   formType = "contact",
 }) => {
   const { isSubmitting, submitForm } = useContactFormSubmit();
+  const [isTestingAPI, setIsTestingAPI] = React.useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,6 +59,37 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       message: "",
     },
   });
+
+  const testAPIConnection = async () => {
+    setIsTestingAPI(true);
+    console.log("🧪 Запускаем тест API подключения...");
+    
+    try {
+      const result = await testERPNextConnection();
+      
+      if (result.success) {
+        toast({
+          title: "✅ API подключение работает!",
+          description: result.details,
+        });
+      } else {
+        toast({
+          title: "❌ Проблема с API подключением",
+          description: result.details,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log("💥 Ошибка при тестировании API:", error);
+      toast({
+        title: "❌ Ошибка тестирования API",
+        description: error instanceof Error ? error.message : "Неизвестная ошибка",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTestingAPI(false);
+    }
+  };
 
   const onSubmit = async (data: FormValues) => {
     // Convert form data to LeadData format
@@ -86,7 +118,29 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zasvet-black border-zasvet-gold/30 text-zasvet-white sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-zasvet-gold">{title}</DialogTitle>
+          <DialogTitle className="text-2xl text-zasvet-gold flex items-center justify-between">
+            {title}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={testAPIConnection}
+              disabled={isTestingAPI}
+              className="ml-4"
+            >
+              {isTestingAPI ? (
+                <>
+                  <Loader2 className="mr-2 h-3 w-3 animate-spin" /> 
+                  Тест...
+                </>
+              ) : (
+                <>
+                  <TestTube className="mr-2 h-3 w-3" /> 
+                  Тест API
+                </>
+              )}
+            </Button>
+          </DialogTitle>
           <DialogDescription className="text-zasvet-white/80">
             {description}
           </DialogDescription>

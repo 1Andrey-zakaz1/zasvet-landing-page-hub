@@ -1,4 +1,3 @@
-
 export interface LeadData {
   name: string;
   phone: string;
@@ -27,6 +26,114 @@ export interface ERPNextResponse {
   };
   message?: string;
 }
+
+// Новая функция для тестирования API подключения
+export const testERPNextConnection = async (): Promise<{ success: boolean; details: string }> => {
+  const erpUrl = "https://erp.pkzasvet.ru";
+  const apiKey = "a2880258cc82ef9";
+  const apiSecret = "2ec04bab1aec805";
+  
+  console.log("🧪 Тестируем подключение к ERPNext API...");
+  console.log("🔗 URL:", erpUrl);
+  console.log("🔑 API Key:", apiKey);
+  console.log("🔑 API Secret:", apiSecret.substring(0, 5) + "...");
+
+  try {
+    // Сначала пробуем простой ping к серверу
+    console.log("1️⃣ Проверяем доступность сервера...");
+    const pingResponse = await fetch(`${erpUrl}/api/method/ping`, {
+      method: "GET",
+      mode: 'cors',
+      credentials: 'omit'
+    });
+    
+    console.log("📡 Ping статус:", pingResponse.status);
+    console.log("📡 Ping OK:", pingResponse.ok);
+    
+    if (!pingResponse.ok) {
+      return {
+        success: false,
+        details: `Сервер недоступен. Статус: ${pingResponse.status}`
+      };
+    }
+
+    // Проверяем аутентификацию
+    console.log("2️⃣ Проверяем аутентификацию...");
+    const authResponse = await fetch(`${erpUrl}/api/method/frappe.auth.get_logged_user`, {
+      method: "GET",
+      headers: {
+        "Authorization": `token ${apiKey}:${apiSecret}`,
+        "Accept": "application/json"
+      },
+      mode: 'cors',
+      credentials: 'omit'
+    });
+    
+    console.log("🔐 Auth статус:", authResponse.status);
+    console.log("🔐 Auth OK:", authResponse.ok);
+    
+    const authText = await authResponse.text();
+    console.log("🔐 Auth ответ:", authText);
+    
+    if (!authResponse.ok) {
+      return {
+        success: false,
+        details: `Ошибка аутентификации. Статус: ${authResponse.status}. Ответ: ${authText}`
+      };
+    }
+
+    // Проверяем доступ к Lead API
+    console.log("3️⃣ Проверяем доступ к Lead API...");
+    const leadTestResponse = await fetch(`${erpUrl}/api/resource/Lead?limit_page_length=1`, {
+      method: "GET",
+      headers: {
+        "Authorization": `token ${apiKey}:${apiSecret}`,
+        "Accept": "application/json"
+      },
+      mode: 'cors',
+      credentials: 'omit'
+    });
+    
+    console.log("📋 Lead API статус:", leadTestResponse.status);
+    console.log("📋 Lead API OK:", leadTestResponse.ok);
+    
+    const leadTestText = await leadTestResponse.text();
+    console.log("📋 Lead API ответ:", leadTestText);
+    
+    if (!leadTestResponse.ok) {
+      return {
+        success: false,
+        details: `Нет доступа к Lead API. Статус: ${leadTestResponse.status}. Ответ: ${leadTestText}`
+      };
+    }
+
+    return {
+      success: true,
+      details: "Все проверки пройдены успешно. API готов к использованию."
+    };
+
+  } catch (error) {
+    console.log("💥 Ошибка при тестировании:", error);
+    
+    if (error instanceof Error) {
+      const errorMessage = error.message.toLowerCase();
+      
+      if (errorMessage.includes('failed to fetch') ||
+          errorMessage.includes('networkerror') ||
+          errorMessage.includes('cors')) {
+        return {
+          success: false,
+          details: `CORS/Network ошибка: ${error.message}. Возможно, сервер не настроен для приема запросов с этого домена.`
+        };
+      }
+    }
+    
+    return {
+      success: false,
+      details: `Неизвестная ошибка: ${error instanceof Error ? error.message : String(error)}`
+    };
+  }
+};
 
 export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> => {
   const erpUrl = "https://erp.pkzasvet.ru";
