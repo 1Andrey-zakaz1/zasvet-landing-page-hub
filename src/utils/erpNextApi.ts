@@ -1,3 +1,4 @@
+
 export interface LeadData {
   name: string;
   phone: string;
@@ -27,44 +28,96 @@ export interface ERPNextResponse {
   message?: string;
 }
 
-// Новая функция для тестирования API подключения
+// Улучшенная функция для тестирования API подключения
 export const testERPNextConnection = async (): Promise<{ success: boolean; details: string }> => {
   const erpUrl = "https://erp.pkzasvet.ru";
   const apiKey = "a2880258cc82ef9";
   const apiSecret = "2ec04bab1aec805";
   
-  console.log("🧪 Тестируем подключение к ERPNext API...");
-  console.log("🔗 URL:", erpUrl);
+  console.log("🔍 ДЕТАЛЬНАЯ ДИАГНОСТИКА API ПОДКЛЮЧЕНИЯ");
+  console.log("=" .repeat(50));
+  console.log("🔗 Целевой URL:", erpUrl);
+  console.log("🌐 Текущий домен:", window.location.origin);
+  console.log("🌐 User Agent:", navigator.userAgent);
+  console.log("🕐 Время запуска:", new Date().toISOString());
   console.log("🔑 API Key:", apiKey);
   console.log("🔑 API Secret:", apiSecret.substring(0, 5) + "...");
-
+  
   try {
-    // Сначала пробуем простой ping к серверу
-    console.log("1️⃣ Проверяем доступность сервера...");
-    const pingResponse = await fetch(`${erpUrl}/api/method/ping`, {
+    // Шаг 1: Простейший запрос без авторизации
+    console.log("\n1️⃣ ЭТАП 1: Проверка базовой доступности сервера");
+    console.log("📡 Выполняем простой GET запрос к /api/method/ping");
+    
+    const requestOptions: RequestInit = {
       method: "GET",
       mode: 'cors',
-      credentials: 'omit'
+      credentials: 'omit',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    console.log("📋 Параметры запроса:", {
+      method: requestOptions.method,
+      mode: requestOptions.mode,
+      credentials: requestOptions.credentials,
+      headers: requestOptions.headers
     });
     
-    console.log("📡 Ping статус:", pingResponse.status);
-    console.log("📡 Ping OK:", pingResponse.ok);
+    const pingStartTime = Date.now();
+    console.log("⏰ Начало запроса:", new Date().toISOString());
+    
+    const pingResponse = await fetch(`${erpUrl}/api/method/ping`, requestOptions);
+    
+    const pingEndTime = Date.now();
+    const pingDuration = pingEndTime - pingStartTime;
+    
+    console.log("⏰ Завершение запроса:", new Date().toISOString());
+    console.log("⏱️ Длительность запроса:", pingDuration + "мс");
+    console.log("📡 Статус ответа:", pingResponse.status);
+    console.log("📡 Статус текст:", pingResponse.statusText);
+    console.log("📡 OK:", pingResponse.ok);
+    console.log("📡 Тип ответа:", pingResponse.type);
+    console.log("📡 URL ответа:", pingResponse.url);
+    console.log("📡 Перенаправлен:", pingResponse.redirected);
+    
+    // Логируем все заголовки ответа
+    console.log("📡 Заголовки ответа:");
+    for (const [key, value] of pingResponse.headers.entries()) {
+      console.log(`    ${key}: ${value}`);
+    }
     
     if (!pingResponse.ok) {
+      const errorText = await pingResponse.text();
+      console.log("❌ Тело ошибки:", errorText);
       return {
         success: false,
-        details: `Сервер недоступен. Статус: ${pingResponse.status}`
+        details: `Сервер недоступен. Статус: ${pingResponse.status}, Текст: ${pingResponse.statusText}, Тело: ${errorText.substring(0, 200)}`
       };
     }
+    
+    const pingText = await pingResponse.text();
+    console.log("✅ Тело успешного ответа:", pingText);
 
-    // Проверяем аутентификацию
-    console.log("2️⃣ Проверяем аутентификацию...");
+    // Шаг 2: Проверка с авторизацией
+    console.log("\n2️⃣ ЭТАП 2: Проверка авторизации");
+    console.log("🔐 Тестируем авторизационные заголовки");
+    
+    const authHeaders = {
+      "Authorization": `token ${apiKey}:${apiSecret}`,
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    };
+    
+    console.log("🔐 Заголовки авторизации:", {
+      ...authHeaders,
+      Authorization: `token ${apiKey}:${apiSecret.substring(0, 5)}...`
+    });
+    
     const authResponse = await fetch(`${erpUrl}/api/method/frappe.auth.get_logged_user`, {
       method: "GET",
-      headers: {
-        "Authorization": `token ${apiKey}:${apiSecret}`,
-        "Accept": "application/json"
-      },
+      headers: authHeaders,
       mode: 'cors',
       credentials: 'omit'
     });
@@ -78,18 +131,16 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
     if (!authResponse.ok) {
       return {
         success: false,
-        details: `Ошибка аутентификации. Статус: ${authResponse.status}. Ответ: ${authText}`
+        details: `Ошибка авторизации. Статус: ${authResponse.status}. Проверьте API ключи. Ответ: ${authText.substring(0, 200)}`
       };
     }
 
-    // Проверяем доступ к Lead API
-    console.log("3️⃣ Проверяем доступ к Lead API...");
+    // Шаг 3: Проверка доступа к Lead API
+    console.log("\n3️⃣ ЭТАП 3: Проверка доступа к Lead API");
+    
     const leadTestResponse = await fetch(`${erpUrl}/api/resource/Lead?limit_page_length=1`, {
       method: "GET",
-      headers: {
-        "Authorization": `token ${apiKey}:${apiSecret}`,
-        "Accept": "application/json"
-      },
+      headers: authHeaders,
       mode: 'cors',
       credentials: 'omit'
     });
@@ -103,27 +154,40 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
     if (!leadTestResponse.ok) {
       return {
         success: false,
-        details: `Нет доступа к Lead API. Статус: ${leadTestResponse.status}. Ответ: ${leadTestText}`
+        details: `Нет доступа к Lead API. Статус: ${leadTestResponse.status}. Ответ: ${leadTestText.substring(0, 200)}`
       };
     }
 
+    console.log("🎉 ВСЕ ЭТАПЫ ПРОЙДЕНЫ УСПЕШНО!");
     return {
       success: true,
-      details: "Все проверки пройдены успешно. API готов к использованию."
+      details: `Подключение успешно! Ping: OK, Auth: OK, Lead API: OK. Время выполнения: ${pingDuration}мс`
     };
 
   } catch (error) {
-    console.log("💥 Ошибка при тестировании:", error);
+    console.log("💥 КРИТИЧЕСКАЯ ОШИБКА В ТЕСТИРОВАНИИ");
+    console.log("💥 Тип ошибки:", typeof error);
+    console.log("💥 Конструктор ошибки:", error?.constructor?.name);
     
     if (error instanceof Error) {
-      const errorMessage = error.message.toLowerCase();
+      console.log("💥 Имя ошибки:", error.name);
+      console.log("💥 Сообщение ошибки:", error.message);
+      console.log("💥 Stack trace:", error.stack);
       
-      if (errorMessage.includes('failed to fetch') ||
-          errorMessage.includes('networkerror') ||
-          errorMessage.includes('cors')) {
+      // Детальный анализ типов ошибок
+      const errorMessage = error.message.toLowerCase();
+      const errorName = error.name.toLowerCase();
+      
+      console.log("🔍 Анализ ошибки:");
+      console.log("    - Содержит 'failed to fetch':", errorMessage.includes('failed to fetch'));
+      console.log("    - Содержит 'network':", errorMessage.includes('network'));
+      console.log("    - Содержит 'cors':", errorMessage.includes('cors'));
+      console.log("    - Тип TypeError:", errorName === 'typeerror');
+      
+      if (errorMessage.includes('failed to fetch') || errorName === 'typeerror') {
         return {
           success: false,
-          details: `CORS/Network ошибка: ${error.message}. Возможно, сервер не настроен для приема запросов с этого домена.`
+          details: `CORS/Network ошибка: Не удается подключиться к серверу. Возможные причины:\n1. CORS настройки не применились (требуется перезапуск сервера)\n2. Неправильный формат домена в CORS\n3. Блокировка файрволлом\n4. Сервер не отвечает\n\nТехническая ошибка: ${error.message}`
         };
       }
     }
