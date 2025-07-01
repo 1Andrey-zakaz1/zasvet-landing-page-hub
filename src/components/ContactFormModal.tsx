@@ -21,10 +21,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal, Loader2, TestTube, Zap } from "lucide-react";
+import { SendHorizontal, Loader2, TestTube, Zap, Settings } from "lucide-react";
 import { useContactFormSubmit } from "@/hooks/useContactFormSubmit";
 import { LeadData, testERPNextConnection } from "@/utils/erpNextApi";
 import { runIndependentAPITest } from "@/utils/independentApiTest";
+import { testCorsAfterNginxFix } from "@/utils/corsPostFixTest";
 import { toast } from "@/hooks/use-toast";
 
 // Define form schema with validation
@@ -51,6 +52,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const { isSubmitting, submitForm } = useContactFormSubmit();
   const [isTestingAPI, setIsTestingAPI] = React.useState(false);
   const [isRunningIndependentTest, setIsRunningIndependentTest] = React.useState(false);
+  const [isTestingCorsPostFix, setIsTestingCorsPostFix] = React.useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -124,6 +126,37 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     }
   };
 
+  const testCorsAfterFix = async () => {
+    setIsTestingCorsPostFix(true);
+    console.log("🔧 Запускаем тест CORS после настройки nginx...");
+    
+    try {
+      const result = await testCorsAfterNginxFix();
+      
+      if (result.corsWorking) {
+        toast({
+          title: "🎉 CORS работает после настройки nginx!",
+          description: `${result.passed}/${result.total} тестов пройдено. Настройки nginx сработали!`,
+        });
+      } else {
+        toast({
+          title: "⚠️ CORS все еще не работает",
+          description: `${result.passed}/${result.total} тестов пройдено. Возможно, нужно перезапустить nginx.`,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log("💥 Ошибка при тестировании CORS после настройки:", error);
+      toast({
+        title: "❌ Ошибка теста CORS",
+        description: error instanceof Error ? error.message : "Неизвестная ошибка",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTestingCorsPostFix(false);
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
     // Convert form data to LeadData format
     const leadData: LeadData = {
@@ -190,6 +223,26 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
                   <>
                     <Zap className="mr-2 h-3 w-3" /> 
                     Независимый
+                  </>
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={testCorsAfterFix}
+                disabled={isTestingCorsPostFix}
+                className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+              >
+                {isTestingCorsPostFix ? (
+                  <>
+                    <Loader2 className="mr-2 h-3 w-3 animate-spin" /> 
+                    Тест...
+                  </>
+                ) : (
+                  <>
+                    <Settings className="mr-2 h-3 w-3" /> 
+                    После nginx
                   </>
                 )}
               </Button>
