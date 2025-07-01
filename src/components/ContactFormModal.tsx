@@ -21,9 +21,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal, Loader2, TestTube } from "lucide-react";
+import { SendHorizontal, Loader2, TestTube, Zap } from "lucide-react";
 import { useContactFormSubmit } from "@/hooks/useContactFormSubmit";
 import { LeadData, testERPNextConnection } from "@/utils/erpNextApi";
+import { runIndependentAPITest } from "@/utils/independentApiTest";
 import { toast } from "@/hooks/use-toast";
 
 // Define form schema with validation
@@ -49,6 +50,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 }) => {
   const { isSubmitting, submitForm } = useContactFormSubmit();
   const [isTestingAPI, setIsTestingAPI] = React.useState(false);
+  const [isRunningIndependentTest, setIsRunningIndependentTest] = React.useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -91,6 +93,37 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     }
   };
 
+  const runIndependentTest = async () => {
+    setIsRunningIndependentTest(true);
+    console.log("⚡ Запускаем независимый тест API...");
+    
+    try {
+      const result = await runIndependentAPITest();
+      
+      if (result.success) {
+        toast({
+          title: "🎉 Независимый тест пройден!",
+          description: `${result.passed}/${result.total} тестов успешно. Проверьте консоль для деталей.`,
+        });
+      } else {
+        toast({
+          title: "⚠️ Независимый тест показал проблемы",
+          description: `${result.passed}/${result.total} тестов прошли. Смотрите консоль для подробностей.`,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log("💥 Ошибка в независимом тесте:", error);
+      toast({
+        title: "❌ Ошибка независимого теста",
+        description: error instanceof Error ? error.message : "Неизвестная ошибка",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRunningIndependentTest(false);
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
     // Convert form data to LeadData format
     const leadData: LeadData = {
@@ -120,26 +153,47 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         <DialogHeader>
           <DialogTitle className="text-2xl text-zasvet-gold flex items-center justify-between">
             {title}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={testAPIConnection}
-              disabled={isTestingAPI}
-              className="ml-4"
-            >
-              {isTestingAPI ? (
-                <>
-                  <Loader2 className="mr-2 h-3 w-3 animate-spin" /> 
-                  Тест...
-                </>
-              ) : (
-                <>
-                  <TestTube className="mr-2 h-3 w-3" /> 
-                  Тест API
-                </>
-              )}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={testAPIConnection}
+                disabled={isTestingAPI}
+              >
+                {isTestingAPI ? (
+                  <>
+                    <Loader2 className="mr-2 h-3 w-3 animate-spin" /> 
+                    Тест...
+                  </>
+                ) : (
+                  <>
+                    <TestTube className="mr-2 h-3 w-3" /> 
+                    Старый
+                  </>
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={runIndependentTest}
+                disabled={isRunningIndependentTest}
+                className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+              >
+                {isRunningIndependentTest ? (
+                  <>
+                    <Loader2 className="mr-2 h-3 w-3 animate-spin" /> 
+                    Тест...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="mr-2 h-3 w-3" /> 
+                    Независимый
+                  </>
+                )}
+              </Button>
+            </div>
           </DialogTitle>
           <DialogDescription className="text-zasvet-white/80">
             {description}
