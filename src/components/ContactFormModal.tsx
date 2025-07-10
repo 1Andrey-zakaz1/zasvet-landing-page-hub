@@ -32,7 +32,7 @@ import { toast } from "@/hooks/use-toast";
 const formSchema = z.object({
   name: z.string().min(2, { message: "Имя должно быть не менее 2 символов" }),
   phone: z.string().min(10, { message: "Введите корректный номер телефона" }),
-  email: z.string().email({ message: "Введите корректный email" }).optional().or(z.literal("")),
+  email: z.string().email({ message: "Введите корректный email" }).or(z.literal("")).optional(),
   message: z.string().optional(),
 });
 
