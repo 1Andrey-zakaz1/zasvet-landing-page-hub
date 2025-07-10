@@ -229,7 +229,8 @@ export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> 
   const headers = {
     "Content-Type": "application/json",
     "Authorization": `token ${apiKey}:${apiSecret}`,
-    "Accept": "application/json"
+    "Accept": "application/json",
+    "X-Frappe-User": "Administrator"
   };
 
   console.log("📡 Заголовки запроса:", {
