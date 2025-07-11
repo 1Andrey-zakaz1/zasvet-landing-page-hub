@@ -230,15 +230,12 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     console.log("📤 ДИАГНОСТИКА EmailJS: Отправляем через EmailJS...");
     console.log("📤 ДИАГНОСТИКА EmailJS: URL запроса будет:", `https://api.emailjs.com/api/v1.0/email/send`);
     
-    // Попробуем сначала инициализировать EmailJS
-    emailjs.init(publicKey);
-    console.log("📤 ДИАГНОСТИКА EmailJS: Инициализация завершена");
-    
-    // Отправляем письмо через EmailJS
+    // Отправляем письмо через EmailJS (передаем publicKey напрямую в send)
     const result = await emailjs.send(
       serviceId,
       templateId,
-      templateParams
+      templateParams,
+      publicKey  // Передаем publicKey здесь, а не через init
     );
     
     console.log("✅ ДИАГНОСТИКА EmailJS: Письмо отправлено успешно!");
