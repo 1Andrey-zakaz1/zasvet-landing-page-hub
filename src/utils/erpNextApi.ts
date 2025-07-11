@@ -203,8 +203,8 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     throw new Error("Имя и телефон обязательны для заполнения");
   }
   
-  // Учетные данные EmailJS - проверьте эти значения в вашем EmailJS dashboard
-  const serviceId = 'service_yandex';  // Попробуем оригинальный service ID
+  // Учетные данные EmailJS - исправленные данные от пользователя
+  const serviceId = 'service_qw65yii';  // Исправленный service ID
   const templateId = 'template_yb1rrki';
   const publicKey = 'EKSgYUwgXasi-p-UW';
   
