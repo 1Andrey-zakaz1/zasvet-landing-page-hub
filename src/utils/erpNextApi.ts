@@ -30,8 +30,8 @@ export interface ERPNextResponse {
 // Улучшенная функция для тестирования API подключения
 export const testERPNextConnection = async (): Promise<{ success: boolean; details: string }> => {
   const erpUrl = "https://erp.pkzasvet.ru";
-  const apiKey = "a2880258cc82ef9";
-  const apiSecret = "2ecd4babbaec895";
+  const apiKey = "21c69324f115682";
+  const apiSecret = "f60fe9bdacf6644";
   
   console.log("🔍 РАСШИРЕННАЯ ДИАГНОСТИКА API ПОДКЛЮЧЕНИЯ");
   console.log("=" .repeat(50));
@@ -178,8 +178,8 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
 
 export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> => {
   const erpUrl = "https://erp.pkzasvet.ru";
-  const apiKey = "a2880258cc82ef9";
-  const apiSecret = "2ecd4babbaec895";
+  const apiKey = "21c69324f115682";
+  const apiSecret = "f60fe9bdacf6644";
   
   console.log("🚀 Начинаем отправку данных в ERPNext:", data);
   console.log("🔑 Используемые учетные данные:", { apiKey, apiSecret: apiSecret.substring(0, 5) + "..." });
