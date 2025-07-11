@@ -182,7 +182,10 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
 };
 
 export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
-  console.log("📧 Отправляем заявку на email:", data);
+  console.log("📧 Отправляем заявку через EmailJS:", data);
+  
+  // Динамический импорт EmailJS
+  const emailjs = await import('@emailjs/browser');
   
   // Очищаем и валидируем данные
   const cleanData = {
@@ -196,44 +199,49 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     throw new Error("Имя и телефон обязательны для заполнения");
   }
   
-  // Формируем письмо
-  const emailSubject = `Новая заявка с сайта от ${cleanData.name}`;
-  const emailBody = `
-Новая заявка с сайта:
-
-Имя: ${cleanData.name}
-Телефон: ${cleanData.phone}
-Email: ${cleanData.email || 'Не указан'}
-Сообщение: ${cleanData.message || 'Не указано'}
-
-Время подачи заявки: ${new Date().toLocaleString('ru-RU')}
-`;
-
-  // Используем mailto для открытия почтовой программы
-  const mailtoLink = `mailto:zakaz@pkzasvet.ru?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  // Параметры для EmailJS шаблона
+  const templateParams = {
+    from_name: cleanData.name,
+    from_phone: cleanData.phone,
+    from_email: cleanData.email || 'Не указан',
+    message: cleanData.message || 'Не указано',
+    to_email: 'zakaz@pkzasvet.ru',
+    reply_to: cleanData.email || 'noreply@pkzasvet.ru',
+    submission_time: new Date().toLocaleString('ru-RU')
+  };
   
   try {
-    // Открываем почтовую программу
-    window.open(mailtoLink, '_blank');
+    console.log("📤 Отправляем через EmailJS...");
     
-    console.log("✅ Почтовая программа открыта для отправки заявки");
+    // Отправляем письмо через EmailJS
+    const result = await emailjs.send(
+      'service_pkzasvet', // Service ID (нужно настроить)
+      'template_contact', // Template ID (нужно настроить)
+      templateParams,
+      'user_pkzasvet' // Public Key (нужно настроить)
+    );
+    
+    console.log("✅ Письмо отправлено успешно:", result);
     
     return {
       success: true,
-      message: "Почтовая программа открыта. Отправьте письмо для завершения заявки."
+      message: "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
     };
+    
   } catch (error) {
-    console.error("❌ Ошибка при открытии почтовой программы:", error);
+    console.error("❌ Ошибка отправки через EmailJS:", error);
     
-    // В качестве fallback показываем данные для ручного копирования
-    alert(`Не удалось открыть почтовую программу. Пожалуйста, отправьте письмо вручную на zakaz@pkzasvet.ru со следующими данными:
-
-${emailBody}`);
+    // Проверяем тип ошибки для более точной обработки
+    if (error instanceof Error) {
+      if (error.message.includes('fetch')) {
+        throw new Error("NETWORK_ERROR");
+      }
+      if (error.message.includes('forbidden') || error.message.includes('unauthorized')) {
+        throw new Error("AUTH_ERROR");
+      }
+    }
     
-    return {
-      success: true,
-      message: "Данные для отправки показаны в уведомлении."
-    };
+    throw new Error("EMAIL_SEND_ERROR");
   }
 };
 
