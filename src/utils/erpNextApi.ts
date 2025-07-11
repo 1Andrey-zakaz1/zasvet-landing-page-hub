@@ -210,7 +210,7 @@ Email: ${cleanData.email || 'Не указан'}
 `;
 
   // Используем mailto для открытия почтовой программы
-  const mailtoLink = `mailto:info@pkzasvet.ru?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  const mailtoLink = `mailto:zakaz@pkzasvet.ru?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
   
   try {
     // Открываем почтовую программу
@@ -226,7 +226,7 @@ Email: ${cleanData.email || 'Не указан'}
     console.error("❌ Ошибка при открытии почтовой программы:", error);
     
     // В качестве fallback показываем данные для ручного копирования
-    alert(`Не удалось открыть почтовую программу. Пожалуйста, отправьте письмо вручную на info@pkzasvet.ru со следующими данными:
+    alert(`Не удалось открыть почтовую программу. Пожалуйста, отправьте письмо вручную на zakaz@pkzasvet.ru со следующими данными:
 
 ${emailBody}`);
     
@@ -253,13 +253,13 @@ Email: ${data.email || 'Не указан'}
   // Копируем в буфер обмена
   try {
     await navigator.clipboard.writeText(formattedData);
-    alert(`Данные заявки скопированы в буфер обмена. Отправьте их на info@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
+    alert(`Данные заявки скопированы в буфер обмена. Отправьте их на zakaz@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
   } catch (error) {
     alert(`Данные заявки:
 
 ${formattedData}
 
-Отправьте их на info@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
+Отправьте их на zakaz@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
   }
   
   return { success: true, method: "clipboard" };
