@@ -39,6 +39,61 @@ export const useContactFormSubmit = () => {
         console.log("💥 ДИАГНОСТИКА: Анализируем тип ошибки:", error.message);
         console.log("💥 ДИАГНОСТИКА: Stack trace:", error.stack);
         
+        // Специальная обработка EmailJS ошибок
+        if (error.message === "EMAILJS_ACCOUNT_NOT_FOUND") {
+          console.log("❌ ДИАГНОСТИКА EmailJS: Аккаунт не найден");
+          
+          toast({
+            title: "Ошибка настройки EmailJS",
+            description: "Аккаунт EmailJS не найден. Проверьте Service ID и учетные данные. Используем резервный метод.",
+            variant: "destructive",
+          });
+          
+          try {
+            await submitFallback(data);
+            onSuccess();
+            return;
+          } catch (fallbackError) {
+            console.log("💥 ДИАГНОСТИКА: Ошибка и в резервном методе:", fallbackError);
+          }
+        }
+        
+        if (error.message === "EMAILJS_FORBIDDEN") {
+          console.log("❌ ДИАГНОСТИКА EmailJS: Доступ запрещен");
+          
+          toast({
+            title: "Ошибка авторизации EmailJS",
+            description: "Неверный Public Key EmailJS. Используем резервный метод.",
+            variant: "destructive",
+          });
+          
+          try {
+            await submitFallback(data);
+            onSuccess();
+            return;
+          } catch (fallbackError) {
+            console.log("💥 ДИАГНОСТИКА: Ошибка и в резервном методе:", fallbackError);
+          }
+        }
+        
+        if (error.message === "EMAILJS_INVALID_TEMPLATE") {
+          console.log("❌ ДИАГНОСТИКА EmailJS: Неверный шаблон");
+          
+          toast({
+            title: "Ошибка шаблона EmailJS",
+            description: "Неверный Template ID или параметры шаблона. Используем резервный метод.",
+            variant: "destructive",
+          });
+          
+          try {
+            await submitFallback(data);
+            onSuccess();
+            return;
+          } catch (fallbackError) {
+            console.log("💥 ДИАГНОСТИКА: Ошибка и в резервном методе:", fallbackError);
+          }
+        }
+        
         if (error.message === "DUPLICATE_EMAIL") {
           console.log("📧 ДИАГНОСТИКА: Обработка дублирования email");
           

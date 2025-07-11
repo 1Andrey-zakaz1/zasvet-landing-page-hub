@@ -182,10 +182,12 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
 };
 
 export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
-  console.log("📧 Отправляем заявку через EmailJS:", data);
+  console.log("📧 ДИАГНОСТИКА EmailJS: Начинаем отправку");
+  console.log("📧 ДИАГНОСТИКА EmailJS: Входные данные:", data);
   
   // Динамический импорт EmailJS
   const emailjs = await import('@emailjs/browser');
+  console.log("📧 ДИАГНОСТИКА EmailJS: Библиотека загружена:", emailjs);
   
   // Очищаем и валидируем данные
   const cleanData = {
@@ -195,9 +197,21 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     message: data.message ? String(data.message).trim() : ''
   };
   
+  console.log("📧 ДИАГНОСТИКА EmailJS: Очищенные данные:", cleanData);
+  
   if (!cleanData.name || !cleanData.phone) {
     throw new Error("Имя и телефон обязательны для заполнения");
   }
+  
+  // Учетные данные EmailJS
+  const serviceId = 'service_mne7c78';
+  const templateId = 'template_yb1rrki';
+  const publicKey = 'EKSgYUwgXasi-p-UW';
+  
+  console.log("📧 ДИАГНОСТИКА EmailJS: Учетные данные:");
+  console.log("  Service ID:", serviceId);
+  console.log("  Template ID:", templateId);
+  console.log("  Public Key:", publicKey);
   
   // Параметры для EmailJS шаблона
   const templateParams = {
@@ -210,18 +224,25 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     submission_time: new Date().toLocaleString('ru-RU')
   };
   
+  console.log("📧 ДИАГНОСТИКА EmailJS: Параметры шаблона:", templateParams);
+  
   try {
-    console.log("📤 Отправляем через EmailJS...");
+    console.log("📤 ДИАГНОСТИКА EmailJS: Отправляем через EmailJS...");
+    console.log("📤 ДИАГНОСТИКА EmailJS: URL запроса будет:", `https://api.emailjs.com/api/v1.0/email/send`);
+    
+    // Попробуем сначала инициализировать EmailJS
+    emailjs.init(publicKey);
+    console.log("📤 ДИАГНОСТИКА EmailJS: Инициализация завершена");
     
     // Отправляем письмо через EmailJS
     const result = await emailjs.send(
-      'service_mne7c78', // Service ID из EmailJS
-      'template_yb1rrki', // Template ID из EmailJS
-      templateParams,
-      'EKSgYUwgXasi-p-UW' // Public Key из EmailJS
+      serviceId,
+      templateId,
+      templateParams
     );
     
-    console.log("✅ Письмо отправлено успешно:", result);
+    console.log("✅ ДИАГНОСТИКА EmailJS: Письмо отправлено успешно!");
+    console.log("✅ ДИАГНОСТИКА EmailJS: Результат:", result);
     
     return {
       success: true,
@@ -229,11 +250,47 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     };
     
   } catch (error) {
-    console.error("❌ Ошибка отправки через EmailJS:", error);
+    console.error("❌ ДИАГНОСТИКА EmailJS: Детальная ошибка:", error);
+    console.error("❌ ДИАГНОСТИКА EmailJS: Тип ошибки:", typeof error);
+    console.error("❌ ДИАГНОСТИКА EmailJS: Конструктор ошибки:", error?.constructor?.name);
     
-    // Проверяем тип ошибки для более точной обработки
+    // Логируем все свойства ошибки
+    if (error && typeof error === 'object') {
+      console.error("❌ ДИАГНОСТИКА EmailJS: Свойства ошибки:");
+      for (const [key, value] of Object.entries(error)) {
+        console.error(`  ${key}:`, value);
+      }
+    }
+    
+    // Специальная обработка для EmailJS ошибок
+    if (error && typeof error === 'object' && 'status' in error) {
+      const emailJsError = error as { status: number; text: string };
+      console.error("❌ ДИАГНОСТИКА EmailJS: Статус ошибки:", emailJsError.status);
+      console.error("❌ ДИАГНОСТИКА EmailJS: Текст ошибки:", emailJsError.text);
+      
+      switch (emailJsError.status) {
+        case 404:
+          console.error("❌ ДИАГНОСТИКА EmailJS: 404 - Аккаунт не найден. Проверьте Service ID и учетные данные.");
+          throw new Error("EMAILJS_ACCOUNT_NOT_FOUND");
+        case 400:
+          console.error("❌ ДИАГНОСТИКА EmailJS: 400 - Неверные параметры запроса.");
+          throw new Error("EMAILJS_BAD_REQUEST");
+        case 403:
+          console.error("❌ ДИАГНОСТИКА EmailJS: 403 - Доступ запрещен. Проверьте Public Key.");
+          throw new Error("EMAILJS_FORBIDDEN");
+        case 422:
+          console.error("❌ ДИАГНОСТИКА EmailJS: 422 - Неверный шаблон или параметры.");
+          throw new Error("EMAILJS_INVALID_TEMPLATE");
+        default:
+          console.error("❌ ДИАГНОСТИКА EmailJS: Неизвестная ошибка статус:", emailJsError.status);
+          throw new Error("EMAILJS_UNKNOWN_ERROR");
+      }
+    }
+    
+    // Проверяем тип ошибки для общих случаев
     if (error instanceof Error) {
-      if (error.message.includes('fetch')) {
+      console.error("❌ ДИАГНОСТИКА EmailJS: Стандартная ошибка:", error.message);
+      if (error.message.includes('fetch') || error.message.includes('network')) {
         throw new Error("NETWORK_ERROR");
       }
       if (error.message.includes('forbidden') || error.message.includes('unauthorized')) {
@@ -241,6 +298,7 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
       }
     }
     
+    console.error("❌ ДИАГНОСТИКА EmailJS: Неопознанная ошибка, переходим к fallback");
     throw new Error("EMAIL_SEND_ERROR");
   }
 };
