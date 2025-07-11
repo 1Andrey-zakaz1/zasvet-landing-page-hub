@@ -182,12 +182,8 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
 };
 
 export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
-  console.log("📧 ДИАГНОСТИКА EmailJS: Начинаем отправку");
-  console.log("📧 ДИАГНОСТИКА EmailJS: Входные данные:", data);
-  
-  // Статический импорт EmailJS - исправляем проблему с динамическим импортом
-  const emailjs = (await import('@emailjs/browser')).default;
-  console.log("📧 ДИАГНОСТИКА EmailJS: Библиотека загружена:", emailjs);
+  console.log("🎯 ERPNext API: Начинаем отправку заявки");
+  console.log("🎯 ERPNext API: Входные данные:", data);
   
   // Очищаем и валидируем данные
   const cleanData = {
@@ -197,107 +193,131 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     message: data.message ? String(data.message).trim() : ''
   };
   
-  console.log("📧 ДИАГНОСТИКА EmailJS: Очищенные данные:", cleanData);
+  console.log("🎯 ERPNext API: Очищенные данные:", cleanData);
   
   if (!cleanData.name || !cleanData.phone) {
     throw new Error("Имя и телефон обязательны для заполнения");
   }
   
-  // Учетные данные EmailJS - исправленные данные от пользователя
-  const serviceId = 'service_qw65yii';  // Исправленный service ID
-  const templateId = 'template_yb1rrki';
-  const publicKey = 'EKSgYUwgXasi-p-UW';
+  // Учетные данные ERPNext API
+  const erpUrl = "https://erp.pkzasvet.ru";
+  const apiKey = "21c69324f115682";
+  const apiSecret = "f60fe9bdacf6644";
   
-  console.log("📧 ДИАГНОСТИКА EmailJS: Учетные данные:");
-  console.log("  Service ID:", serviceId);
-  console.log("  Template ID:", templateId);  
-  console.log("  Public Key:", publicKey);
+  console.log("🎯 ERPNext API: Подготовка к отправке");
+  console.log("🎯 ERPNext API: URL:", erpUrl);
   
-  // Параметры для EmailJS шаблона
-  const templateParams = {
-    from_name: cleanData.name,
-    from_phone: cleanData.phone,
-    from_email: cleanData.email || 'Не указан',
-    message: cleanData.message || 'Не указано',
-    to_email: 'zakaz@pkzasvet.ru',
-    reply_to: cleanData.email || 'noreply@pkzasvet.ru',
-    submission_time: new Date().toLocaleString('ru-RU')
+  // Подготавливаем данные для создания Communication документа
+  const communicationData = {
+    doctype: "Communication",
+    communication_type: "Communication", 
+    content: `Новая заявка с сайта:
+
+Имя: ${cleanData.name}
+Телефон: ${cleanData.phone}
+Email: ${cleanData.email || 'Не указан'}
+Сообщение: ${cleanData.message || 'Не указано'}
+
+Дата подачи: ${new Date().toLocaleString('ru-RU')}`,
+    sender: cleanData.email || "website@pkzasvet.ru",
+    sender_full_name: cleanData.name,
+    phone_no: cleanData.phone,
+    subject: `Заявка с сайта от ${cleanData.name}`,
+    communication_medium: "Website",
+    sent_or_received: "Received",
+    status: "Open"
   };
   
-  console.log("📧 ДИАГНОСТИКА EmailJS: Параметры шаблона:", templateParams);
+  console.log("🎯 ERPNext API: Данные документа:", communicationData);
   
   try {
-    console.log("📤 ДИАГНОСТИКА EmailJS: Отправляем через EmailJS напрямую...");
+    console.log("📤 ERPNext API: Отправляем запрос...");
     
-    // Отправляем письмо через EmailJS с правильными параметрами
-    const result = await emailjs.send(
-      serviceId,
-      templateId,
-      templateParams,
-      {
-        publicKey: publicKey  // Передаем как объект с publicKey
+    const response = await fetch(`${erpUrl}/api/resource/Communication`, {
+      method: "POST",
+      headers: {
+        "Authorization": `token ${apiKey}:${apiSecret}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      mode: 'cors',
+      credentials: 'omit',
+      body: JSON.stringify(communicationData)
+    });
+    
+    console.log("📡 ERPNext API: Статус ответа:", response.status);
+    console.log("📡 ERPNext API: Status text:", response.statusText);
+    
+    const responseText = await response.text();
+    console.log("📡 ERPNext API: Ответ сервера:", responseText);
+    
+    if (response.ok) {
+      console.log("✅ ERPNext API: Заявка успешно создана!");
+      
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+        console.log("✅ ERPNext API: Parsed data:", responseData);
+      } catch (e) {
+        console.log("✅ ERPNext API: Ответ не JSON, но статус OK");
       }
-    );
-    
-    console.log("✅ ДИАГНОСТИКА EmailJS: Письмо отправлено успешно!");
-    console.log("✅ ДИАГНОСТИКА EmailJS: Результат:", result);
-    
-    return {
-      success: true,
-      message: "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
-    };
+      
+      return {
+        success: true,
+        message: "Заявка успешно отправлена в CRM систему! Мы свяжемся с вами в ближайшее время."
+      };
+    } else {
+      console.error("❌ ERPNext API: Ошибка сервера");
+      console.error("❌ ERPNext API: Статус:", response.status);
+      console.error("❌ ERPNext API: Ответ:", responseText);
+      
+      // Попробуем понять ошибку из ответа
+      let errorMessage = "Не удалось отправить заявку";
+      try {
+        const errorData = JSON.parse(responseText);
+        if (errorData.message) {
+          errorMessage = errorData.message;
+        } else if (errorData.exc) {
+          errorMessage = "Ошибка сервера CRM";
+        }
+      } catch (e) {
+        // Если не JSON, используем стандартное сообщение
+      }
+      
+      throw new Error(`ERPNext API Error: ${response.status} - ${errorMessage}`);
+    }
     
   } catch (error) {
-    console.error("❌ ДИАГНОСТИКА EmailJS: Детальная ошибка:", error);
-    console.error("❌ ДИАГНОСТИКА EmailJS: Тип ошибки:", typeof error);
-    console.error("❌ ДИАГНОСТИКА EmailJS: Конструктор ошибки:", error?.constructor?.name);
+    console.error("💥 ERPNext API: Детальная ошибка:", error);
     
-    // Логируем все свойства ошибки
-    if (error && typeof error === 'object') {
-      console.error("❌ ДИАГНОСТИКА EmailJS: Свойства ошибки:");
-      for (const [key, value] of Object.entries(error)) {
-        console.error(`  ${key}:`, value);
-      }
-    }
-    
-    // Специальная обработка для EmailJS ошибок
-    if (error && typeof error === 'object' && 'status' in error) {
-      const emailJsError = error as { status: number; text: string };
-      console.error("❌ ДИАГНОСТИКА EmailJS: Статус ошибки:", emailJsError.status);
-      console.error("❌ ДИАГНОСТИКА EmailJS: Текст ошибки:", emailJsError.text);
-      
-      switch (emailJsError.status) {
-        case 404:
-          console.error("❌ ДИАГНОСТИКА EmailJS: 404 - Аккаунт не найден. Проверьте Service ID и учетные данные.");
-          throw new Error("EMAILJS_ACCOUNT_NOT_FOUND");
-        case 400:
-          console.error("❌ ДИАГНОСТИКА EmailJS: 400 - Неверные параметры запроса.");
-          throw new Error("EMAILJS_BAD_REQUEST");
-        case 403:
-          console.error("❌ ДИАГНОСТИКА EmailJS: 403 - Доступ запрещен. Проверьте Public Key.");
-          throw new Error("EMAILJS_FORBIDDEN");
-        case 422:
-          console.error("❌ ДИАГНОСТИКА EmailJS: 422 - Неверный шаблон или параметры.");
-          throw new Error("EMAILJS_INVALID_TEMPLATE");
-        default:
-          console.error("❌ ДИАГНОСТИКА EmailJS: Неизвестная ошибка статус:", emailJsError.status);
-          throw new Error("EMAILJS_UNKNOWN_ERROR");
-      }
-    }
-    
-    // Проверяем тип ошибки для общих случаев
     if (error instanceof Error) {
-      console.error("❌ ДИАГНОСТИКА EmailJS: Стандартная ошибка:", error.message);
-      if (error.message.includes('fetch') || error.message.includes('network')) {
-        throw new Error("NETWORK_ERROR");
+      console.error("💥 ERPNext API: Сообщение ошибки:", error.message);
+      
+      // Анализируем тип ошибки
+      if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+        throw new Error("CORS_ERROR: Проблема с доступом к CRM серверу. Обратитесь к администратору.");
       }
-      if (error.message.includes('forbidden') || error.message.includes('unauthorized')) {
-        throw new Error("AUTH_ERROR");
+      
+      if (error.message.includes('401') || error.message.includes('403')) {
+        throw new Error("AUTH_ERROR: Ошибка авторизации в CRM системе.");
+      }
+      
+      if (error.message.includes('404')) {
+        throw new Error("API_ERROR: CRM API недоступен.");
+      }
+      
+      if (error.message.includes('500')) {
+        throw new Error("SERVER_ERROR: Внутренняя ошибка CRM сервера.");
+      }
+      
+      // Если это наша кастомная ошибка, пробрасываем как есть
+      if (error.message.includes('ERPNext API Error:')) {
+        throw error;
       }
     }
     
-    console.error("❌ ДИАГНОСТИКА EmailJS: Неопознанная ошибка, переходим к fallback");
-    throw new Error("EMAIL_SEND_ERROR");
+    console.error("💥 ERPNext API: Неопознанная ошибка");
+    throw new Error("Ошибка отправки заявки в CRM систему. Попробуйте позже или свяжитесь с нами по телефону +7 383 312-00-91");
   }
 };
 
