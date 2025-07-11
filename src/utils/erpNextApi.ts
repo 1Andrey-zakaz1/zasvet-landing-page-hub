@@ -185,8 +185,8 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
   console.log("📧 ДИАГНОСТИКА EmailJS: Начинаем отправку");
   console.log("📧 ДИАГНОСТИКА EmailJS: Входные данные:", data);
   
-  // Динамический импорт EmailJS
-  const emailjs = await import('@emailjs/browser');
+  // Статический импорт EmailJS - исправляем проблему с динамическим импортом
+  const emailjs = (await import('@emailjs/browser')).default;
   console.log("📧 ДИАГНОСТИКА EmailJS: Библиотека загружена:", emailjs);
   
   // Очищаем и валидируем данные
