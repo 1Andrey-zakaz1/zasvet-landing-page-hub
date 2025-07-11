@@ -300,30 +300,3 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
   }
 };
 
-export const submitFallback = async (data: LeadData): Promise<{ success: boolean; method: string }> => {
-  console.log("📧 Используем резервный метод отправки");
-  
-  // Формируем данные для копирования
-  const formattedData = `
-Заявка с сайта:
-Имя: ${data.name}
-Телефон: ${data.phone}
-Email: ${data.email || 'Не указан'}
-Сообщение: ${data.message || 'Не указано'}
-Время: ${new Date().toLocaleString('ru-RU')}
-  `.trim();
-  
-  // Копируем в буфер обмена
-  try {
-    await navigator.clipboard.writeText(formattedData);
-    alert(`Данные заявки скопированы в буфер обмена. Отправьте их на zakaz@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
-  } catch (error) {
-    alert(`Данные заявки:
-
-${formattedData}
-
-Отправьте их на zakaz@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
-  }
-  
-  return { success: true, method: "clipboard" };
-};
