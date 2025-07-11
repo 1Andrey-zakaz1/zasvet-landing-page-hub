@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { submitToERPNext, submitFallback, LeadData } from "@/utils/erpNextApi";
+import { sendEmail, submitFallback, LeadData } from "@/utils/erpNextApi";
 
 export const useContactFormSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,16 +16,16 @@ export const useContactFormSubmit = () => {
     setIsSubmitting(true);
 
     try {
-      console.log("🎯 ДИАГНОСТИКА: Вызываем submitToERPNext...");
-      const result = await submitToERPNext(data);
+      console.log("📧 ДИАГНОСТИКА: Отправляем заявку по email...");
+      const result = await sendEmail(data);
       
-      console.log("🎉 ДИАГНОСТИКА: Форма успешно отправлена!");
+      console.log("🎉 ДИАГНОСТИКА: Email отправлен!");
       console.log("📋 ДИАГНОСТИКА: Результат:", result);
       console.log("⏰ ДИАГНОСТИКА: Время успеха:", new Date().toISOString());
       
       toast({
-        title: "Лид успешно создан",
-        description: `Заявка от ${data.name} отправлена в ERPNext. ID лида: ${result.data?.name || 'неизвестен'}`,
+        title: "Заявка отправлена",
+        description: result.message,
       });
       
       console.log("🎯 ДИАГНОСТИКА: Вызываем onSuccess callback");

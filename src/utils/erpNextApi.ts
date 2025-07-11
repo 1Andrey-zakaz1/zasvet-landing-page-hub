@@ -5,6 +5,11 @@ export interface LeadData {
   message?: string;
 }
 
+export interface EmailResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface ERPNextLeadRequest {
   first_name: string;
   mobile_no?: string;
@@ -176,217 +181,86 @@ export const testERPNextConnection = async (): Promise<{ success: boolean; detai
   }
 };
 
-export const submitToERPNext = async (data: LeadData): Promise<ERPNextResponse> => {
-  const erpUrl = "https://erp.pkzasvet.ru";
-  const apiKey = "21c69324f115682";
-  const apiSecret = "f60fe9bdacf6644";
-  
-  console.log("🚀 Начинаем отправку данных в ERPNext:", data);
-  console.log("🔑 Используемые учетные данные:", { apiKey, apiSecret: apiSecret.substring(0, 5) + "..." });
+export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
+  console.log("📧 Отправляем заявку на email:", data);
   
   // Очищаем и валидируем данные
   const cleanData = {
     name: String(data.name || '').trim(),
     phone: String(data.phone || '').trim(),
-    email: data.email ? String(data.email).trim() : undefined,
-    message: data.message ? String(data.message).trim() : undefined
+    email: data.email ? String(data.email).trim() : '',
+    message: data.message ? String(data.message).trim() : ''
   };
   
-  console.log("🧹 Очищенные данные:", cleanData);
-  
   if (!cleanData.name || !cleanData.phone) {
-    console.log("❌ Отсутствуют обязательные поля");
     throw new Error("Имя и телефон обязательны для заполнения");
   }
   
-  // Создаем правильную структуру данных для ERPNext
-  const leadData: ERPNextLeadRequest = {
-    first_name: cleanData.name,
-    mobile_no: cleanData.phone,
-    source: "Website",
-    status: "Lead"
-  };
+  // Формируем письмо
+  const emailSubject = `Новая заявка с сайта от ${cleanData.name}`;
+  const emailBody = `
+Новая заявка с сайта:
 
-  if (cleanData.email) {
-    leadData.email_id = cleanData.email;
-  }
+Имя: ${cleanData.name}
+Телефон: ${cleanData.phone}
+Email: ${cleanData.email || 'Не указан'}
+Сообщение: ${cleanData.message || 'Не указано'}
+
+Время подачи заявки: ${new Date().toLocaleString('ru-RU')}
+`;
+
+  // Используем mailto для открытия почтовой программы
+  const mailtoLink = `mailto:info@pkzasvet.ru?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
   
-  if (cleanData.message) {
-    leadData.title = cleanData.message;
-    
-    if (cleanData.message.includes("Подписка")) {
-      leadData.blog_subscriber = 1;
-      console.log("📧 Отмечаем как подписчика блога");
-    }
-  }
-
-  console.log("📋 Финальные данные для лида:", leadData);
-  console.log("📋 JSON данные для отправки:", JSON.stringify(leadData, null, 2));
-
-  const requestUrl = `${erpUrl}/api/resource/Lead`;
-  console.log("🔗 URL запроса:", requestUrl);
-  
-  const headers = {
-    "Content-Type": "application/json",
-    "Authorization": `token ${apiKey}:${apiSecret}`,
-    "Accept": "application/json"
-  };
-
-  console.log("📡 Заголовки запроса:", {
-    ...headers,
-    Authorization: `token ${apiKey}:${apiSecret.substring(0, 5)}...`
-  });
-
-  const requestOptions: RequestInit = {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify(leadData),
-    mode: 'cors',
-    credentials: 'omit'
-  };
-  
-  console.log("⚙️ Полные параметры запроса:", {
-    ...requestOptions,
-    body: "см. выше",
-    headers: "см. выше"
-  });
-  
-  console.log("⚙️ Отправляем запрос...");
-  console.log("⏰ Время отправки:", new Date().toISOString());
-
   try {
-    const response = await fetch(requestUrl, requestOptions);
+    // Открываем почтовую программу
+    window.open(mailtoLink, '_blank');
     
-    console.log("📡 Получен ответ");
-    console.log("📡 Статус:", response.status);
-    console.log("📡 Статус текст:", response.statusText);
-    console.log("📡 OK статус:", response.ok);
-    console.log("📡 Заголовки ответа:", Object.fromEntries(response.headers.entries()));
+    console.log("✅ Почтовая программа открыта для отправки заявки");
     
-    const responseText = await response.text();
-    console.log("📡 Тело ответа (RAW):", responseText);
-    console.log("📡 Длина ответа:", responseText.length);
+    return {
+      success: true,
+      message: "Почтовая программа открыта. Отправьте письмо для завершения заявки."
+    };
+  } catch (error) {
+    console.error("❌ Ошибка при открытии почтовой программы:", error);
+    
+    // В качестве fallback показываем данные для ручного копирования
+    alert(`Не удалось открыть почтовую программу. Пожалуйста, отправьте письмо вручную на info@pkzasvet.ru со следующими данными:
 
-    if (!response.ok) {
-      console.log("❌ Ответ сервера не OK");
-      console.log("❌ Детальный анализ ошибки начинается...");
-      
-      let errorDetails = "Неизвестная ошибка";
-      let errorType = "UNKNOWN";
-      
-      try {
-        const errorJson = JSON.parse(responseText);
-        console.log("❌ Ошибка как JSON:", errorJson);
-        console.log("❌ Структура ошибки:", Object.keys(errorJson));
-        
-        // Проверяем различные типы ошибок ERPNext
-        if (errorJson.exc_type === "DuplicateEntryError" || 
-            (errorJson.message && errorJson.message.includes("Duplicate entry"))) {
-          console.log("❌ Обнаружено дублирование email");
-          errorType = "DUPLICATE_EMAIL";
-        } else if (errorJson.message && errorJson.message.includes("Permission")) {
-          console.log("❌ Ошибка прав доступа");
-          errorType = "PERMISSION_ERROR";
-        } else if (errorJson.message && errorJson.message.includes("Authentication")) {
-          console.log("❌ Ошибка аутентификации");
-          errorType = "AUTH_ERROR";
-        }
-        
-        if (errorJson.message) {
-          errorDetails = errorJson.message;
-        } else if (errorJson.exc) {
-          errorDetails = errorJson.exc;
-        }
-        
-      } catch (parseError) {
-        console.log("❌ Не удалось парсить ответ как JSON:", parseError);
-        console.log("❌ Возможно, это HTML или другой формат");
-        
-        // Проверяем, не HTML ли это (часто при CORS ошибках)
-        if (responseText.includes("<html") || responseText.includes("<!DOCTYPE")) {
-          console.log("❌ Ответ содержит HTML - возможно CORS проблема");
-          errorType = "CORS_ERROR";
-          errorDetails = "Получен HTML вместо JSON - проблема с CORS";
-        } else {
-          errorDetails = responseText || response.statusText;
-        }
-      }
-      
-      console.log("❌ Тип ошибки:", errorType);
-      console.log("❌ Детали ошибки:", errorDetails);
-      
-      if (errorType === "DUPLICATE_EMAIL") {
-        throw new Error("DUPLICATE_EMAIL");
-      } else if (errorType === "CORS_ERROR") {
-        throw new Error("NETWORK_ERROR");
-      }
-      
-      const finalError = `Ошибка сервера ERPNext (${response.status}): ${errorDetails}`;
-      console.log("❌ Финальная ошибка:", finalError);
-      throw new Error(finalError);
-    }
-
-    // Обрабатываем успешный ответ
-    console.log("✅ Запрос выполнен успешно");
+${emailBody}`);
     
-    let result: ERPNextResponse;
-    try {
-      result = JSON.parse(responseText);
-      console.log("✅ Успешно создан лид:", result);
-      console.log("🆔 ID созданного лида:", result.data?.name);
-      console.log("👤 Владелец лида:", result.data?.lead_owner);
-      console.log("🏢 Территория:", result.data?.territory);
-      console.log("📊 Статус:", result.data?.status);
-    } catch (parseError) {
-      console.log("⚠️ Ответ не JSON, но запрос успешен:", responseText);
-      result = { message: "success" };
-    }
-    
-    return result;
-    
-  } catch (fetchError) {
-    console.log("💥 Критическая ошибка при выполнении fetch:", fetchError);
-    console.log("💥 Тип ошибки:", typeof fetchError);
-    console.log("💥 Название ошибки:", fetchError instanceof Error ? fetchError.name : "неизвестно");
-    console.log("💥 Сообщение ошибки:", fetchError instanceof Error ? fetchError.message : String(fetchError));
-    
-    if (fetchError instanceof Error) {
-      const errorMessage = fetchError.message.toLowerCase();
-      const errorName = fetchError.name.toLowerCase();
-      
-      console.log("🔍 Анализ типа ошибки...");
-      console.log("🔍 Сообщение (нижний регистр):", errorMessage);
-      console.log("🔍 Имя (нижний регистр):", errorName);
-      
-      if (errorMessage.includes('failed to fetch') ||
-          errorMessage.includes('networkerror') ||
-          errorMessage.includes('cors') ||
-          errorMessage.includes('network') ||
-          errorName === 'typeerror' ||
-          errorMessage.includes('connection')) {
-        console.log("🌐 Обнаружена сетевая/CORS ошибка");
-        throw new Error("NETWORK_ERROR");
-      }
-      
-      if (fetchError.message === "DUPLICATE_EMAIL") {
-        console.log("📧 Проброс ошибки дублирования email");
-        throw fetchError;
-      }
-    }
-    
-    console.log("💥 Неизвестный тип ошибки, пробрасываем дальше");
-    throw fetchError;
+    return {
+      success: true,
+      message: "Данные для отправки показаны в уведомлении."
+    };
   }
 };
 
 export const submitFallback = async (data: LeadData): Promise<{ success: boolean; method: string }> => {
   console.log("📧 Используем резервный метод отправки");
-  console.log("📧 Данные для резервного сохранения:", data);
   
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("📧 Данные сохранены в резервном методе");
-      resolve({ success: true, method: "fallback" });
-    }, 1000);
-  });
+  // Формируем данные для копирования
+  const formattedData = `
+Заявка с сайта:
+Имя: ${data.name}
+Телефон: ${data.phone}
+Email: ${data.email || 'Не указан'}
+Сообщение: ${data.message || 'Не указано'}
+Время: ${new Date().toLocaleString('ru-RU')}
+  `.trim();
+  
+  // Копируем в буфер обмена
+  try {
+    await navigator.clipboard.writeText(formattedData);
+    alert(`Данные заявки скопированы в буфер обмена. Отправьте их на info@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
+  } catch (error) {
+    alert(`Данные заявки:
+
+${formattedData}
+
+Отправьте их на info@pkzasvet.ru или свяжитесь с менеджером по телефону +7 383 312-00-91`);
+  }
+  
+  return { success: true, method: "clipboard" };
 };
