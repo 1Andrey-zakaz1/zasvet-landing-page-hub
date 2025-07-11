@@ -215,7 +215,7 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     
     // Отправляем письмо через EmailJS
     const result = await emailjs.send(
-      'service_yandex', // Service ID (нужно заменить на реальный)
+      'service_mne7c78', // Service ID из EmailJS
       'template_yb1rrki', // Template ID из EmailJS
       templateParams,
       'EKSgYUwgXasi-p-UW' // Public Key из EmailJS
