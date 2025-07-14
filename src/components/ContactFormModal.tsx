@@ -68,7 +68,14 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       }
 
       const result = await response.json();
-      console.log('✅ Успешно отправлено:', result);
+      console.log('✅ Полный ответ от сервера:', result);
+      console.log('📋 Детали ответа:', JSON.stringify(result, null, 2));
+      
+      // Проверим, действительно ли лид создался
+      if (result.success === false) {
+        throw new Error(`Сервер вернул ошибку: ${result.error}`);
+      }
+      
       return result;
 
     } catch (error) {
