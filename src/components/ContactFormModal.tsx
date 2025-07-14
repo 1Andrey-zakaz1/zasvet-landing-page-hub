@@ -44,19 +44,39 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       message: data.message || ''
     };
 
-    const response = await fetch('http://147.45.158.24:8090/contact_api.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(apiData)
-    });
+    console.log('🚀 Отправляем данные в API:', apiData);
+    console.log('🔗 URL:', 'http://147.45.158.24:8090/contact_api.php');
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch('http://147.45.158.24:8090/contact_api.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData)
+      });
+
+      console.log('📡 Ответ сервера:', response.status, response.statusText);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Успешно отправлено:', result);
+      return result;
+
+    } catch (error) {
+      console.error('❌ Ошибка отправки:', error);
+      
+      // Специальная обработка для CORS/смешанного контента
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.error('🚫 Вероятно проблема с CORS или смешанным контентом (HTTPS -> HTTP)');
+        throw new Error('CORS_OR_MIXED_CONTENT');
+      }
+      
+      throw error;
     }
-
-    return await response.json();
   };
 
   const createMailtoLink = (data: any) => {
@@ -124,10 +144,16 @@ ${data.message}
     } catch (error) {
       console.error("Ошибка отправки формы:", error);
       
+      let errorMessage = "Пожалуйста, свяжитесь с нами напрямую: info@pkzasvet.ru или +7 (999) 123-45-67";
+      
+      if (error instanceof Error && error.message === 'CORS_OR_MIXED_CONTENT') {
+        errorMessage = "Обнаружена проблема с безопасностью (HTTPS→HTTP). Используйте альтернативные способы связи.";
+      }
+      
       // Показываем альтернативные способы связи
       toast({
         title: "Возникла техническая проблема",
-        description: "Пожалуйста, свяжитесь с нами напрямую: info@pkzasvet.ru или +7 (999) 123-45-67",
+        description: errorMessage,
         variant: "destructive",
       });
       
