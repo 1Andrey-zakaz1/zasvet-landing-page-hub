@@ -39,8 +39,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     const apiData = {
       first_name: data.firstName,
       last_name: data.lastName,
-      email_id: data.email,  // ERPNext требует именно email_id
+      email_id: data.email,
+      email_ids: [{ email_id: data.email, is_primary: 1 }], // Добавим структуру email
       phone: data.phone || '',
+      phone_nos: [{ phone: data.phone || '', is_primary_phone: 1 }], // Добавим структуру телефона
       message: data.message || ''
     };
 
