@@ -30,12 +30,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         
         <div className="flex-1 w-full">
           <iframe 
-            src="https://erp.pkzasvet.ru/форма-обратной-связи" 
+            src="https://erp.pkzasvet.ru/contact-us" 
             style={{ 
               border: "none", 
               width: "100%", 
-              height: "630px",
-              display: "block"
+              height: "inherit"
             }}
             title="Форма обратной связи ERPNext"
           />
