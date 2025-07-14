@@ -35,19 +35,28 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const { toast } = useToast();
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
-  const sendNotification = async (data: any) => {
-    // Сохраняем в localStorage для администратора
-    const contacts = JSON.parse(localStorage.getItem('formContacts') || '[]');
-    contacts.push({
-      ...data,
-      timestamp: new Date().toISOString(),
-      id: Date.now()
+  const sendToAPI = async (data: any) => {
+    const apiData = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      phone: data.phone || '',
+      message: data.message || ''
+    };
+
+    const response = await fetch('http://147.45.158.24:8090/contact_api.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(apiData)
     });
-    localStorage.setItem('formContacts', JSON.stringify(contacts));
-    
-    // Записываем в консоль для администратора
-    console.log('📝 Новое сообщение с формы:', data);
-    console.log('💡 Данные сохранены в localStorage. Администратор может просмотреть через: JSON.parse(localStorage.getItem("formContacts"))');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
   };
 
   const createMailtoLink = (data: any) => {
@@ -92,19 +101,11 @@ ${data.message}
     setIsLoading(true);
 
     try {
-      const data = {
-        name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        message: formData.message
-      };
-
-      await sendNotification(data);
+      await sendToAPI(formData);
       
       toast({
         title: "Спасибо!",
-        description: "Ваше сообщение получено. Мы свяжемся с вами в ближайшее время.",
+        description: "Ваше сообщение отправлено в ERPNext. Мы свяжемся с вами в ближайшее время.",
       });
       
       // Очищаем форму
