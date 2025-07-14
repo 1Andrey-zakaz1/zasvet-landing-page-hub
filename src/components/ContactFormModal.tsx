@@ -36,17 +36,17 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
+    // Используем упрощенную структуру без child tables чтобы избежать серверных скриптов
     const apiData = {
       first_name: data.firstName,
       last_name: data.lastName,
-      email_id: data.email,
-      email_ids: [{ email_id: data.email, is_primary: 1 }], // Добавим структуру email
+      email: data.email, // Изменено на простой email
       phone: data.phone || '',
-      phone_nos: [{ phone: data.phone || '', is_primary_phone: 1 }], // Добавим структуру телефона
+      company: data.company || '',
       message: data.message || ''
     };
 
-    console.log('🚀 Отправляем данные в API:', apiData);
+    console.log('🚀 Отправляем данные в API (правильные поля):', apiData);
     console.log('🔗 URL:', 'http://147.45.158.24:8090/contact_api.php');
 
     try {
