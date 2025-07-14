@@ -79,21 +79,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     }
   };
 
-  const createMailtoLink = (data: any) => {
-    const subject = encodeURIComponent('Новое сообщение с сайта');
-    const body = encodeURIComponent(`
-Имя: ${data.name}
-Email: ${data.email}
-Телефон: ${data.phone}
-Компания: ${data.company}
-
-Сообщение:
-${data.message}
-    `.trim());
-    
-    const mailtoLink = `mailto:info@pkzasvet.ru?subject=${subject}&body=${body}`;
-    window.open(mailtoLink, '_blank');
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,17 +142,6 @@ ${data.message}
         variant: "destructive",
       });
       
-      // Создаем mailto ссылку как резерв
-      setTimeout(() => {
-        const data = {
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          phone: formData.phone,
-          company: formData.company,
-          message: formData.message
-        };
-        createMailtoLink(data);
-      }, 2000);
       
     } finally {
       setIsLoading(false);
