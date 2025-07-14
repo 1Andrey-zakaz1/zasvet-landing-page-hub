@@ -36,7 +36,7 @@ export interface ERPNextResponse {
 export const testERPNextConnection = async (): Promise<{ success: boolean; details: string }> => {
   const erpUrl = "https://erp.pkzasvet.ru";
   const apiKey = "21c69324f115682";
-  const apiSecret = "f60fe9bdacf6644";
+  const apiSecret = "b930ef6ed914347";
   
   console.log("🔍 РАСШИРЕННАЯ ДИАГНОСТИКА API ПОДКЛЮЧЕНИЯ");
   console.log("=" .repeat(50));
@@ -202,38 +202,32 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
   // Учетные данные ERPNext API
   const erpUrl = "https://erp.pkzasvet.ru";
   const apiKey = "21c69324f115682";
-  const apiSecret = "f60fe9bdacf6644";
+  const apiSecret = "b930ef6ed914347";
   
   console.log("🎯 ERPNext API: Подготовка к отправке");
   console.log("🎯 ERPNext API: URL:", erpUrl);
   
-  // Подготавливаем данные для создания Communication документа
-  const communicationData = {
-    doctype: "Communication",
-    communication_type: "Communication", 
-    content: `Новая заявка с сайта:
-
-Имя: ${cleanData.name}
-Телефон: ${cleanData.phone}
-Email: ${cleanData.email || 'Не указан'}
-Сообщение: ${cleanData.message || 'Не указано'}
-
-Дата подачи: ${new Date().toLocaleString('ru-RU')}`,
-    sender: cleanData.email || "website@pkzasvet.ru",
-    sender_full_name: cleanData.name,
-    phone_no: cleanData.phone,
-    subject: `Заявка с сайта от ${cleanData.name}`,
-    communication_medium: "Website",
-    sent_or_received: "Received",
-    status: "Open"
+  // Подготавливаем данные для создания Lead документа
+  const leadData = {
+    doctype: "Lead",
+    first_name: cleanData.name,
+    mobile_no: cleanData.phone,
+    email_id: cleanData.email || "",
+    lead_name: cleanData.name,
+    source: "Website",
+    status: "Lead",
+    territory: "Russia",
+    company: "ПК Засвет",
+    notes: cleanData.message || "",
+    qualification_status: "Unqualified"
   };
   
-  console.log("🎯 ERPNext API: Данные документа:", communicationData);
+  console.log("🎯 ERPNext API: Данные лида:", leadData);
   
   try {
     console.log("📤 ERPNext API: Отправляем запрос...");
     
-    const response = await fetch(`${erpUrl}/api/resource/Communication`, {
+    const response = await fetch(`${erpUrl}/api/resource/Lead`, {
       method: "POST",
       headers: {
         "Authorization": `token ${apiKey}:${apiSecret}`,
@@ -242,7 +236,7 @@ Email: ${cleanData.email || 'Не указан'}
       },
       mode: 'cors',
       credentials: 'omit',
-      body: JSON.stringify(communicationData)
+      body: JSON.stringify(leadData)
     });
     
     console.log("📡 ERPNext API: Статус ответа:", response.status);
