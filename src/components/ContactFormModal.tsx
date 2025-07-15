@@ -48,11 +48,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       
       console.log('📤 Отправка на Production API:', apiData);
       console.log('🌐 Origin:', window.location.origin);
-      console.log('🔗 Target URL: https://api.pkzasvet.ru/production_api.php');
+      console.log('🔗 Target URL: https://api.pkzasvet.ru/production_api_cors.php');
       
       // Сначала проверим доступность API простым GET запросом
       try {
-        const testResponse = await fetch('https://api.pkzasvet.ru/production_api.php', {
+        const testResponse = await fetch('https://api.pkzasvet.ru/production_api_cors.php', {
           method: 'OPTIONS'
         });
         console.log('✅ OPTIONS запрос успешен:', testResponse.status);
@@ -60,7 +60,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         console.log('❌ OPTIONS запрос неудачен:', optionsError);
       }
       
-      const response = await fetch('https://api.pkzasvet.ru/production_api.php', {
+      const response = await fetch('https://api.pkzasvet.ru/production_api_cors.php', {
         method: 'POST',
         mode: 'cors',
         headers: {
