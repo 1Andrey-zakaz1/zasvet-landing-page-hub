@@ -36,11 +36,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    const fullName = `${data.firstName} ${data.lastName}`.trim();
+    const fullName = `${data.firstName} ${data.lastName || ''}`.trim();
+    const customerName = fullName || data.firstName || 'Клиент'; // Гарантируем непустое имя
+    
     const apiData = {
       first_name: data.firstName,
       last_name: data.lastName || '',
-      customer_name: fullName, // Добавляем обязательное поле
+      customer_name: customerName, // Обязательное поле для ERPNext
       email: data.email,
       phone: data.phone || '',
       company: data.company || '',
