@@ -47,12 +47,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_fixed.php');
 
     try {
-      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_fixed.php'), {
+      const response = await fetch('https://cors-anywhere.herokuapp.com/http://147.45.158.24:8090/customer_with_task_fixed.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Secret': '2ecd4babbaec895',
-          'X-Api-Key': 'a2880258cc82ef9'
+          'X-Api-Key': 'a2880258cc82ef9',
+          'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(apiData)
       });
