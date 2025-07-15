@@ -35,67 +35,42 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    // Структура данных для JSONP API
     const apiData = {
       first_name: data.firstName?.trim() || '',
-      last_name: '', 
+      last_name: '',
       email: data.email?.trim() || '',
       phone: data.phone?.trim() || ''
     };
 
-    console.log('🚀 Отправляем данные через JSONP:', apiData);
+    console.log('🚀 Возврат к рабочему прокси решению:', apiData);
 
-    return new Promise((resolve, reject) => {
-      // Создаем уникальное имя callback функции
-      const callbackName = 'jsonpCallback_' + Date.now();
+    try {
+      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_cors.php'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(apiData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Ответ сервера:', result);
       
-      // Создаем глобальную callback функцию
-      (window as any)[callbackName] = (response: any) => {
-        console.log('✅ JSONP ответ:', response);
-        
-        // Очищаем callback функцию и script тег
-        delete (window as any)[callbackName];
-        const script = document.querySelector(`script[src*="${callbackName}"]`);
-        if (script) {
-          script.remove();
-        }
-        
-        if (response.success) {
-          resolve(response);
-        } else {
-          reject(new Error(response.error || 'Ошибка сервера'));
-        }
-      };
-      
-      // Создаем script тег для JSONP запроса (добавим логирование URL)
-      const jsonpUrl = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
-      console.log('🔗 JSONP URL:', jsonpUrl);
-      
-      const script = document.createElement('script');
-      script.src = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
-      
-      // Обработка ошибок загрузки скрипта
-      script.onerror = () => {
-        delete (window as any)[callbackName];
-        script.remove();
-        reject(new Error('JSONP request failed'));
-      };
-      
-      // Добавляем script на страницу
-      document.head.appendChild(script);
-      
-      // Timeout через 10 секунд
-      setTimeout(() => {
-        if ((window as any)[callbackName]) {
-          delete (window as any)[callbackName];
-          script.remove();
-          reject(new Error('Request timeout'));
-        }
-      }, 10000);
-    });
+      if (result.success) {
+        return result;
+      } else {
+        throw new Error(result.error || 'Ошибка сервера');
+      }
+
+    } catch (error) {
+      console.error('❌ Ошибка:', error);
+      throw error;
+    }
   };
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,7 +251,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
               className="bg-zasvet-black/50 border-zasvet-gold/30 text-zasvet-white placeholder:text-zasvet-white/60 resize-none focus:border-zasvet-gold focus:ring-zasvet-gold/20"
             />
           </div>
-
 
           <Button
             type="submit"
