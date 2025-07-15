@@ -38,24 +38,18 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    // Формируем полное имя как требует ERPNext
-    const fullName = `${data.firstName} ${data.lastName}`.trim();
-    
     const apiData = {
-      lead_name: fullName, // ERPNext требует это поле
       first_name: data.firstName,
       last_name: data.lastName,
       email: data.email,
-      phone: data.phone || '',
-      company_name: data.company || '', // Если есть компания
-      message: data.message || ''
+      phone: data.phone || ''
     };
 
-    console.log('🚀 Отправляем данные в API (правильные поля):', apiData);
-    console.log('🔗 URL:', 'http://147.45.158.24:8090/contact_api.php');
+    console.log('🚀 Отправляем данные в новый API:', apiData);
+    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_fixed.php');
 
     try {
-      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/contact_api.php'), {
+      const response = await fetch('http://147.45.158.24:8090/customer_with_task_fixed.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,14 +65,13 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
       const result = await response.json();
       console.log('✅ Полный ответ от сервера:', result);
-      console.log('📋 Детали ответа:', JSON.stringify(result, null, 2));
       
-      // Проверим, действительно ли лид создался
-      if (result.success === false) {
-        throw new Error(`Сервер вернул ошибку: ${result.error}`);
+      // Проверяем успешность создания клиента и задачи
+      if (result.success && result.task_created) {
+        return result;
+      } else {
+        throw new Error(`Ошибка создания: ${result.error || 'Неизвестная ошибка'}`);
       }
-      
-      return result;
 
     } catch (error) {
       console.error('❌ Ошибка отправки:', error);
@@ -171,7 +164,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         title: "Спасибо!",
         description: useZapier 
           ? "Заявка отправлена через Zapier. Проверьте историю Zap для подтверждения."
-          : "Ваше сообщение отправлено в ERPNext. Мы свяжемся с вами в ближайшее время.",
+          : "Ваша заявка принята, с вами свяжутся.",
       });
       
       // Очищаем форму
