@@ -67,7 +67,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         }
       };
       
-      // Создаем script тег для JSONP запроса
+      // Создаем script тег для JSONP запроса (добавим логирование URL)
+      const jsonpUrl = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
+      console.log('🔗 JSONP URL:', jsonpUrl);
+      
       const script = document.createElement('script');
       script.src = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
       
