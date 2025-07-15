@@ -46,18 +46,37 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         message: data.message?.trim() || ''
       };
       
-      console.log('📤 Sending to Production API:', apiData);
+      console.log('📤 Отправка на Production API:', apiData);
+      console.log('🌐 Origin:', window.location.origin);
+      console.log('🔗 Target URL: https://api.pkzasvet.ru/production_api.php');
+      
+      // Сначала проверим доступность API простым GET запросом
+      try {
+        const testResponse = await fetch('https://api.pkzasvet.ru/production_api.php', {
+          method: 'OPTIONS'
+        });
+        console.log('✅ OPTIONS запрос успешен:', testResponse.status);
+      } catch (optionsError) {
+        console.log('❌ OPTIONS запрос неудачен:', optionsError);
+      }
       
       const response = await fetch('https://api.pkzasvet.ru/production_api.php', {
         method: 'POST',
+        mode: 'cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(apiData)
       });
 
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response headers:', [...response.headers.entries()]);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ HTTP Error Response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
 
       const result = await response.json();
@@ -75,6 +94,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       }
     } catch (error) {
       console.error('❌ Production API Error:', error);
+      console.error('❌ Error name:', error.name);
+      console.error('❌ Error message:', error.message);
       throw error;
     }
   };
