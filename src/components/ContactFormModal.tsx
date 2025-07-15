@@ -48,11 +48,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       account_manager: 'site@spektra-nsk.ru'
     };
 
-    console.log('🚀 Отправляем данные через прокси:', apiData);
-    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_cors.php');
+    console.log('🚀 Отправляем данные через защищенный API:', apiData);
+    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_secure.php');
 
     try {
-      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_cors.php'), {
+      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_secure.php'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
