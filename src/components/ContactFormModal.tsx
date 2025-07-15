@@ -34,70 +34,49 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const { toast } = useToast();
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
-  const sendToAPI = async (data: any) => {
-    const apiData = {
-      first_name: data.firstName?.trim() || '',
-      last_name: '', // Обязательное поле
-      email: data.email?.trim() || '',
-      phone: data.phone?.trim() || ''
-    };
+  const sendToAPI = async (data: any): Promise<any> => {
+    try {
+      // Подготавливаем данные для production API
+      const apiData = {
+        first_name: data.firstName?.trim() || '',
+        last_name: '', // Можно добавить поле фамилии в форму
+        email: data.email?.trim() || '',
+        phone: data.phone?.trim() || '',
+        company: data.company?.trim() || '',
+        message: data.message?.trim() || ''
+      };
+      
+      console.log('📤 Sending to Production API:', apiData);
+      
+      const response = await fetch('https://api.pkzasvet.ru/production_api.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(apiData)
+      });
 
-    console.log('🚀 JSONP запрос (исправленная версия):', apiData);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    return new Promise((resolve, reject) => {
-      const callbackName = 'jsonpCallback_' + Date.now();
+      const result = await response.json();
+      console.log('✅ Production API Response:', result);
       
-      // Создаем глобальную callback функцию
-      (window as any)[callbackName] = function(response: any) {
-        console.log('✅ JSONP ответ получен:', response);
-        
-        // Очищаем
-        delete (window as any)[callbackName];
-        const scriptElement = document.querySelector(`script[src*="${callbackName}"]`);
-        if (scriptElement) {
-          scriptElement.remove();
-        }
-        
-        // Проверяем успех
-        if (response && response.success) {
-          resolve(response);
-        } else {
-          reject(new Error(response?.error || 'Неизвестная ошибка API'));
-        }
-      };
-      
-      // Создаем script элемент
-      const script = document.createElement('script');
-      const url = `https://api.pkzasvet.ru/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
-      
-      console.log('🔗 HTTPS JSONP URL:', url);
-      script.src = url;
-      
-      // Обработка ошибок
-      script.onerror = function() {
-        console.error('❌ JSONP script failed to load');
-        delete (window as any)[callbackName];
-        script.remove();
-        reject(new Error('JSONP script loading failed'));
-      };
-      
-      script.onload = function() {
-        console.log('📜 JSONP script loaded successfully');
-      };
-      
-      // Добавляем на страницу
-      document.head.appendChild(script);
-      
-      // Timeout 15 секунд
-      setTimeout(() => {
-        if ((window as any)[callbackName]) {
-          console.error('⏰ JSONP timeout');
-          delete (window as any)[callbackName];
-          script.remove();
-          reject(new Error('JSONP timeout'));
-        }
-      }, 15000);
-    });
+      if (result.success) {
+        return {
+          success: true,
+          customer_name: result.customer_name,
+          task_id: result.task_id,
+          message: `Клиент создан: ${result.customer_name}${result.task_id ? `, задача: ${result.task_id}` : ''}`
+        };
+      } else {
+        throw new Error(result.error || 'Неизвестная ошибка API');
+      }
+    } catch (error) {
+      console.error('❌ Production API Error:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
