@@ -53,6 +53,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Secret': '2ecd4babbaec895',
+          'X-Api-Key': 'a2880258cc82ef9'
         },
         body: JSON.stringify(apiData)
       });
