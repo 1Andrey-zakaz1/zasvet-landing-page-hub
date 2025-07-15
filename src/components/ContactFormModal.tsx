@@ -35,53 +35,61 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    // Точная структура данных как ожидает скрипт
+    // Структура данных для JSONP API
     const apiData = {
       first_name: data.firstName?.trim() || '',
-      last_name: '', // Обязательное поле в скрипте, даже если пустое
+      last_name: '', 
       email: data.email?.trim() || '',
       phone: data.phone?.trim() || ''
     };
 
-    console.log('🚀 Отправляем данные напрямую:', apiData);
-    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_secure.php');
+    console.log('🚀 Отправляем данные через JSONP:', apiData);
 
-    try {
-      const response = await fetch('http://147.45.158.24:8090/customer_with_task_secure.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(apiData)
-      });
-
-      console.log('📡 Ответ сервера:', response.status, response.statusText);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('✅ Полный ответ от сервера:', result);
+    return new Promise((resolve, reject) => {
+      // Создаем уникальное имя callback функции
+      const callbackName = 'jsonpCallback_' + Date.now();
       
-      // Проверяем успешность создания клиента и задачи
-      if (result.success && result.task_created) {
-        return result;
-      } else {
-        throw new Error(`Ошибка создания: ${result.error || 'Неизвестная ошибка'}`);
-      }
-
-    } catch (error) {
-      console.error('❌ Ошибка отправки:', error);
+      // Создаем глобальную callback функцию
+      (window as any)[callbackName] = (response: any) => {
+        console.log('✅ JSONP ответ:', response);
+        
+        // Очищаем callback функцию и script тег
+        delete (window as any)[callbackName];
+        const script = document.querySelector(`script[src*="${callbackName}"]`);
+        if (script) {
+          script.remove();
+        }
+        
+        if (response.success) {
+          resolve(response);
+        } else {
+          reject(new Error(response.error || 'Ошибка сервера'));
+        }
+      };
       
-      // Специальная обработка для CORS/смешанного контента
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        console.error('🚫 Вероятно проблема с CORS или смешанным контентом (HTTPS -> HTTP)');
-        throw new Error('CORS_OR_MIXED_CONTENT');
-      }
+      // Создаем script тег для JSONP запроса
+      const script = document.createElement('script');
+      script.src = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
       
-      throw error;
-    }
+      // Обработка ошибок загрузки скрипта
+      script.onerror = () => {
+        delete (window as any)[callbackName];
+        script.remove();
+        reject(new Error('JSONP request failed'));
+      };
+      
+      // Добавляем script на страницу
+      document.head.appendChild(script);
+      
+      // Timeout через 10 секунд
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          delete (window as any)[callbackName];
+          script.remove();
+          reject(new Error('Request timeout'));
+        }
+      }, 10000);
+    });
   };
 
 
