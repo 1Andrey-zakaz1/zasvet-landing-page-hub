@@ -25,7 +25,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
     email: "",
     phone: "",
     company: "",
@@ -36,12 +35,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    const fullName = `${data.firstName} ${data.lastName || ''}`.trim();
-    const customerName = fullName || data.firstName || 'Клиент'; // Гарантируем непустое имя
+    const customerName = data.firstName || 'Клиент'; // Используем только имя
     
     const apiData = {
       first_name: data.firstName,
-      last_name: data.lastName || '',
+      last_name: '', // Пустая фамилия
       customer_name: customerName, // Обязательное поле для ERPNext
       email: data.email,
       phone: data.phone || '',
@@ -128,7 +126,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       // Очищаем форму
       setFormData({
         firstName: "",
-        lastName: "",
         email: "",
         phone: "",
         company: "",
@@ -208,21 +205,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
               value={formData.firstName}
               onChange={handleInputChange}
               required
-              className="bg-zasvet-black/50 border-zasvet-gold/30 text-zasvet-white placeholder:text-zasvet-white/60 focus:border-zasvet-gold focus:ring-zasvet-gold/20"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-zasvet-white">
-              Фамилия
-            </Label>
-            <Input
-              id="lastName"
-              name="lastName"
-              type="text"
-              placeholder="Введите вашу фамилию"
-              value={formData.lastName}
-              onChange={handleInputChange}
               className="bg-zasvet-black/50 border-zasvet-gold/30 text-zasvet-white placeholder:text-zasvet-white/60 focus:border-zasvet-gold focus:ring-zasvet-gold/20"
             />
           </div>
