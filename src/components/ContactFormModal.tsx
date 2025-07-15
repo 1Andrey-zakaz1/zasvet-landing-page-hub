@@ -43,16 +43,16 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       phone: data.phone || ''
     };
 
-    console.log('🚀 Отправляем данные в новый API:', apiData);
-    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_fixed.php');
+    console.log('🚀 Отправляем данные в новый API с усиленным CORS:', apiData);
+    console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_cors.php');
 
     try {
-      const response = await fetch('https://thingproxy.freeboard.io/fetch/http://147.45.158.24:8090/customer_with_task_fixed.php', {
+      const response = await fetch('http://147.45.158.24:8090/customer_with_task_cors.php', {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
         headers: {
-          'Content-Type': 'application/json',
-          'X-Secret': '2ecd4babbaec895',
-          'X-Api-Key': 'a2880258cc82ef9'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(apiData)
       });
