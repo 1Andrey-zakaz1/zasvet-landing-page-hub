@@ -43,14 +43,12 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       phone: data.phone || ''
     };
 
-    console.log('🚀 Отправляем данные в новый API с усиленным CORS:', apiData);
+    console.log('🚀 Отправляем данные через прокси:', apiData);
     console.log('🔗 URL:', 'http://147.45.158.24:8090/customer_with_task_cors.php');
 
     try {
-      const response = await fetch('http://147.45.158.24:8090/customer_with_task_cors.php', {
+      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_cors.php'), {
         method: 'POST',
-        mode: 'cors',
-        credentials: 'omit',
         headers: {
           'Content-Type': 'application/json'
         },
