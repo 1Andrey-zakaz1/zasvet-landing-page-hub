@@ -68,9 +68,9 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       
       // Создаем script элемент
       const script = document.createElement('script');
-      const url = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
+      const url = `https://api.pkzasvet.ru/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
       
-      console.log('🔗 JSONP URL:', url);
+      console.log('🔗 HTTPS JSONP URL:', url);
       script.src = url;
       
       // Обработка ошибок
