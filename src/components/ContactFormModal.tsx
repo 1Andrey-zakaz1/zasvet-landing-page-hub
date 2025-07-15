@@ -36,11 +36,15 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
+    const fullName = `${data.firstName} ${data.lastName}`.trim();
     const apiData = {
       first_name: data.firstName,
-      last_name: data.lastName,
+      last_name: data.lastName || '',
+      customer_name: fullName, // Добавляем обязательное поле
       email: data.email,
-      phone: data.phone || ''
+      phone: data.phone || '',
+      company: data.company || '',
+      message: data.message || ''
     };
 
     console.log('🚀 Отправляем данные через прокси:', apiData);
