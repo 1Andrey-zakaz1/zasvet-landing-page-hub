@@ -35,14 +35,12 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    // Структура данных как в оригинальном скрипте
+    // Точная структура данных как ожидает скрипт
     const apiData = {
       first_name: data.firstName?.trim() || '',
-      last_name: '', // Пустая фамилия
+      last_name: '', // Обязательное поле в скрипте, даже если пустое
       email: data.email?.trim() || '',
-      phone: data.phone?.trim() || '',
-      company: data.company?.trim() || '',
-      message: data.message?.trim() || ''
+      phone: data.phone?.trim() || ''
     };
 
     console.log('🚀 Отправляем данные через защищенный API:', apiData);
