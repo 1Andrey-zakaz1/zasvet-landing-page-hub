@@ -35,17 +35,14 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const title = formType === "contact" ? "Связаться с нами" : "Оставить заявку";
 
   const sendToAPI = async (data: any) => {
-    // Убеждаемся что имя клиента не пустое
-    const customerName = data.firstName?.trim() || 'Клиент с сайта';
-    
+    // Структура данных как в оригинальном скрипте
     const apiData = {
       first_name: data.firstName?.trim() || '',
-      last_name: data.lastName?.trim() || '',
-      customer_name: customerName, // Обязательное поле для ERPNext
-      customer_type: 'Individual',
+      last_name: '', // Пустая фамилия
       email: data.email?.trim() || '',
-      mobile_no: data.phone?.trim() || '',
-      account_manager: 'site@spektra-nsk.ru'
+      phone: data.phone?.trim() || '',
+      company: data.company?.trim() || '',
+      message: data.message?.trim() || ''
     };
 
     console.log('🚀 Отправляем данные через защищенный API:', apiData);
