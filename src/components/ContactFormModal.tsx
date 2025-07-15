@@ -37,39 +37,67 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   const sendToAPI = async (data: any) => {
     const apiData = {
       first_name: data.firstName?.trim() || '',
-      last_name: '',
+      last_name: '', // Обязательное поле
       email: data.email?.trim() || '',
       phone: data.phone?.trim() || ''
     };
 
-    console.log('🚀 Возврат к рабочему прокси решению:', apiData);
+    console.log('🚀 JSONP запрос (исправленная версия):', apiData);
 
-    try {
-      const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('http://147.45.158.24:8090/customer_with_task_cors.php'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(apiData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('✅ Ответ сервера:', result);
+    return new Promise((resolve, reject) => {
+      const callbackName = 'jsonpCallback_' + Date.now();
       
-      if (result.success) {
-        return result;
-      } else {
-        throw new Error(result.error || 'Ошибка сервера');
-      }
-
-    } catch (error) {
-      console.error('❌ Ошибка:', error);
-      throw error;
-    }
+      // Создаем глобальную callback функцию
+      (window as any)[callbackName] = function(response: any) {
+        console.log('✅ JSONP ответ получен:', response);
+        
+        // Очищаем
+        delete (window as any)[callbackName];
+        const scriptElement = document.querySelector(`script[src*="${callbackName}"]`);
+        if (scriptElement) {
+          scriptElement.remove();
+        }
+        
+        // Проверяем успех
+        if (response && response.success) {
+          resolve(response);
+        } else {
+          reject(new Error(response?.error || 'Неизвестная ошибка API'));
+        }
+      };
+      
+      // Создаем script элемент
+      const script = document.createElement('script');
+      const url = `http://147.45.158.24:8090/jsonp_api.php?callback=${callbackName}&data=${encodeURIComponent(JSON.stringify(apiData))}`;
+      
+      console.log('🔗 JSONP URL:', url);
+      script.src = url;
+      
+      // Обработка ошибок
+      script.onerror = function() {
+        console.error('❌ JSONP script failed to load');
+        delete (window as any)[callbackName];
+        script.remove();
+        reject(new Error('JSONP script loading failed'));
+      };
+      
+      script.onload = function() {
+        console.log('📜 JSONP script loaded successfully');
+      };
+      
+      // Добавляем на страницу
+      document.head.appendChild(script);
+      
+      // Timeout 15 секунд
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          console.error('⏰ JSONP timeout');
+          delete (window as any)[callbackName];
+          script.remove();
+          reject(new Error('JSONP timeout'));
+        }
+      }, 15000);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
