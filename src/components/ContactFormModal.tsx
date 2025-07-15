@@ -23,7 +23,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
   formType = "contact",
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [useZapier, setUseZapier] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -31,7 +30,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     phone: "",
     company: "",
     message: "",
-    zapierWebhook: "", // Добавляем поле для Zapier webhook
   });
   
   const { toast } = useToast();
@@ -88,36 +86,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     }
   };
 
-  const sendToZapier = async (data: any) => {
-    if (!data.zapierWebhook) {
-      throw new Error('Zapier webhook URL не указан');
-    }
-
-    const zapierData = {
-      lead_name: `${data.firstName} ${data.lastName}`.trim(),
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      phone: data.phone || '',
-      company: data.company || '',
-      message: data.message || '',
-      timestamp: new Date().toISOString(),
-      source: 'Website Contact Form'
-    };
-
-    console.log('🔗 Отправляем в Zapier:', zapierData);
-
-    const response = await fetch(data.zapierWebhook, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'no-cors',
-      body: JSON.stringify(zapierData)
-    });
-
-    return { success: true, method: 'zapier' };
-  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -146,27 +114,11 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     setIsLoading(true);
 
     try {
-      let result;
-      
-      if (useZapier) {
-        if (!formData.zapierWebhook) {
-          toast({
-            title: "Ошибка",
-            description: "Пожалуйста, укажите Zapier webhook URL",
-            variant: "destructive",
-          });
-          return;
-        }
-        result = await sendToZapier(formData);
-      } else {
-        result = await sendToAPI(formData);
-      }
+      const result = await sendToAPI(formData);
       
       toast({
         title: "Спасибо!",
-        description: useZapier 
-          ? "Заявка отправлена через Zapier. Проверьте историю Zap для подтверждения."
-          : "Ваша заявка принята, с вами свяжутся.",
+        description: "Ваша заявка принята, с вами свяжутся.",
       });
       
       // Очищаем форму
@@ -177,7 +129,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         phone: "",
         company: "",
         message: "",
-        zapierWebhook: "",
       });
       
       // Закрываем модальное окно
@@ -185,16 +136,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       
     } catch (error) {
       console.error("Ошибка отправки формы:", error);
-      
-      if (error instanceof Error && error.message === 'CORS_OR_MIXED_CONTENT' && !useZapier) {
-        toast({
-          title: "Проблема с безопасностью",
-          description: "HTTPS→HTTP запрос заблокирован. Попробуйте через Zapier или свяжитесь напрямую.",
-          variant: "destructive",
-        });
-        setUseZapier(true); // Автоматически переключаем на Zapier
-        return;
-      }
       
       let errorMessage = "Пожалуйста, свяжитесь с нами напрямую: info@pkzasvet.ru или +7 (999) 123-45-67";
       
@@ -204,7 +145,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         description: errorMessage,
         variant: "destructive",
       });
-      
       
     } finally {
       setIsLoading(false);
@@ -344,38 +284,6 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
             />
           </div>
 
-          {/* Переключатель метода отправки */}
-          <div className="space-y-3 pt-4 border-t border-zasvet-gold/30">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="useZapier"
-                checked={useZapier}
-                onChange={(e) => setUseZapier(e.target.checked)}
-                className="rounded border-zasvet-gold/30 text-zasvet-gold focus:ring-zasvet-gold/20"
-              />
-              <Label htmlFor="useZapier" className="text-zasvet-white text-sm cursor-pointer">
-                Использовать Zapier webhook (если есть проблемы с безопасностью)
-              </Label>
-            </div>
-            
-            {useZapier && (
-              <div className="space-y-2">
-                <Label htmlFor="zapierWebhook" className="text-zasvet-white text-sm">
-                  Zapier Webhook URL
-                </Label>
-                <Input
-                  id="zapierWebhook"
-                  name="zapierWebhook"
-                  type="url"
-                  placeholder="https://hooks.zapier.com/hooks/catch/..."
-                  value={formData.zapierWebhook}
-                  onChange={handleInputChange}
-                  className="bg-zasvet-black/50 border-zasvet-gold/30 text-zasvet-white placeholder:text-zasvet-white/60 focus:border-zasvet-gold focus:ring-zasvet-gold/20"
-                />
-              </div>
-            )}
-          </div>
 
           <Button
             type="submit"
