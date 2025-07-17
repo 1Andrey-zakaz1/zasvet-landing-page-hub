@@ -56,9 +56,15 @@ const Index = () => {
           </section>
           
           <div className="container mx-auto px-4 mt-20">
-            <LedCalculator />
-            <CableCalculator />
-            <IlluminationCalculator />
+            <div id="led-calculator">
+              <LedCalculator />
+            </div>
+            <div id="cable-calculator">
+              <CableCalculator />
+            </div>
+            <div id="illumination-calculator">
+              <IlluminationCalculator />
+            </div>
           </div>
           
           {/* Каталог светильников добавлен после калькуляторов */}
