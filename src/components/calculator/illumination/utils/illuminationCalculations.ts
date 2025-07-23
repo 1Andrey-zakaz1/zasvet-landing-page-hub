@@ -46,10 +46,10 @@ export function calculatePointAverage(
           if (d <= 0) continue;
           
           const cosT = H / d;
-          // Use luminous intensity assuming uniform distribution
-          const I = flux / (4 * Math.PI); // lm/sr for sphere distribution
+          // Use cosine distribution for office lighting (more realistic)
+          const I = flux / Math.PI; // lm/sr for cosine distribution downward
           
-          Ept += (I * cosT) / (d * d);
+          Ept += (I * cosT * cosT) / (d * d);
         }
       }
       sumE += Ept;
