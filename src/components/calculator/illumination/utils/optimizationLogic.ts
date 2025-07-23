@@ -1,7 +1,7 @@
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { findExactGrid } from './gridCalculations';
-import { Kz, eta } from './illuminationCalculations';
+import { Kz, eta, calculatePointAverage } from './illuminationCalculations';
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
@@ -29,9 +29,9 @@ export const calculateOptimalLuminaires = (
     if (nFloor > 0) candidates.push(nFloor);
     if (nCeil > 0 && nCeil !== nFloor) candidates.push(nCeil);
     
-    // 4) For each candidate calculate average illumination
+    // 4) For each candidate calculate average illumination using point method
     const options = candidates.map(N => {
-      const avgLux = (effFlux * N) / area;
+      const avgLux = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
       return {
         N,
         avgLux,
