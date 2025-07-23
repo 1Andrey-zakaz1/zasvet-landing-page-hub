@@ -1,7 +1,7 @@
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { findExactGrid } from './gridCalculations';
-import { Kz, eta, calculatePointAverage } from './illuminationCalculations';
+import { Kz, zeta, calculateRequiredLuminaires, calculateActualIllumination } from './illuminationCalculations';
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
@@ -10,45 +10,31 @@ export const calculateOptimalLuminaires = (
   luminaireType: string,
   roomHeight: number = 3
 ): { tableData: TableData[], bestResult: TableData | null } => {
-  const area = roomLength * roomWidth;
   const models = luminaireModels[luminaireType as keyof typeof luminaireModels] || [];
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // Multiple estimation approaches for more reliable starting points
-    const estimatedFluxNeeded = requiredLux * area;
+    // Calculate required number of luminaires using proper formula
+    const requiredCount = calculateRequiredLuminaires(requiredLux, roomLength, roomWidth, roomHeight, m.flux);
     
-    // Approach 1: Simple flux-based estimate
-    const simpleEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * eta / Kz)));
-    
-    // Approach 2: Conservative estimate (assuming lower efficiency)
-    const conservativeEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * 0.5)));
-    
-    // Approach 3: Aggressive estimate (assuming higher efficiency)  
-    const aggressiveEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * 1.2)));
-    
-    // Use the widest range from all estimates
-    const allEstimates = [simpleEstimate, conservativeEstimate, aggressiveEstimate];
-    const minEstimate = Math.min(...allEstimates);
-    const maxEstimate = Math.max(...allEstimates);
-    
-    // Expanded search range - at least from 1 to 3x max estimate
-    const minTest = 1;
-    const maxTest = Math.max(100, maxEstimate * 3);
+    // Test a range around the calculated value to find the best match
+    const testRange = Math.max(5, Math.ceil(requiredCount * 0.3));
+    const minTest = Math.max(1, requiredCount - testRange);
+    const maxTest = requiredCount + testRange;
     
     let bestOption = null;
     let minDiff = Infinity;
     
-    // Test different quantities in the expanded range
+    // Find the count that gives closest match to required lux
     for (let N = minTest; N <= maxTest; N++) {
-      const avgLux = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
-      const diff = Math.abs(avgLux - requiredLux);
+      const actualLux = calculateActualIllumination(N, roomLength, roomWidth, roomHeight, m.flux);
+      const diff = Math.abs(actualLux - requiredLux);
       
       if (diff < minDiff) {
         minDiff = diff;
         bestOption = {
           N,
-          avgLux,
+          actualLux,
           diff
         };
       }
@@ -57,7 +43,7 @@ export const calculateOptimalLuminaires = (
     if (bestOption) {
       const N = bestOption.N;
       const grid = findExactGrid(N, roomLength, roomWidth);
-      const achievedLux = bestOption.avgLux;
+      const achievedLux = bestOption.actualLux;
       
       tableData.push({
         ...m,
@@ -69,8 +55,11 @@ export const calculateOptimalLuminaires = (
     }
   });
   
-  // Select the best option by minimal total cost
-  const best = tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
+  // Select the best option by minimal total cost among those that meet requirements
+  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.9);
+  const best = validOptions.length > 0 
+    ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
+    : tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
   
   return { tableData, bestResult: best };
 };
@@ -95,7 +84,7 @@ export const calculateIllumination = (
       minimum: 0,
       uniformity: 0,
       kz: Kz,
-      eta: eta
+      eta: zeta
     }
   };
 };

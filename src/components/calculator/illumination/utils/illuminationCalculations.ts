@@ -1,31 +1,59 @@
 
-import { findBestGrid } from './gridCalculations';
-
-// Constants - adjusted to match DIALux results
-export const Kz = 1.3;   // safety coefficient increased to match real conditions
-export const eta = 0.65;  // utilization coefficient reduced for more realistic results
+// Constants for illumination calculation
+export const Kz = 1.2;   // safety coefficient
+export const zeta = 1.15; // non-uniformity coefficient
 
 /**
- * Calculates average illumination using point method for given number of luminaires
+ * Calculates utilization coefficient based on room geometry
  */
-export function calculatePointAverage(
-  n: number, 
-  L: number, 
-  W: number, 
-  H: number, 
+function calculateUtilizationCoefficient(L: number, W: number, H: number): number {
+  // Room index calculation
+  const roomIndex = (L * W) / ((L + W) * H);
+  
+  // Utilization coefficient based on room index and typical reflectances
+  // For typical office/industrial spaces with moderate reflectances
+  if (roomIndex < 0.6) return 0.35;
+  if (roomIndex < 1.0) return 0.45;
+  if (roomIndex < 1.5) return 0.55;
+  if (roomIndex < 2.0) return 0.65;
+  if (roomIndex < 3.0) return 0.70;
+  return 0.75;
+}
+
+/**
+ * Calculates required number of luminaires for target illumination
+ */
+export function calculateRequiredLuminaires(
+  targetLux: number,
+  L: number,
+  W: number,
+  H: number,
   flux: number
 ): number {
   const area = L * W;
-  const totalFlux = n * flux;
+  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  // Account for room height - at greater heights, we need more light to achieve same illumination
-  // Standard calculation height is 2.7m, at greater heights illumination decreases
-  const standardHeight = 2.7;
-  const heightFactor = Math.pow(H / standardHeight, 2);
+  // Standard illumination formula: n = (E * S * Kz * ζ) / (Φ * η)
+  const requiredCount = (targetLux * area * Kz * zeta) / (flux * eta);
   
-  // Basic illumination formula: E = (Φ * η) / (A * Kz * heightFactor)
-  // heightFactor increases denominator for greater heights, reducing illumination
-  const avgIllumination = (totalFlux * eta) / (area * Kz * heightFactor);
+  return Math.ceil(requiredCount);
+}
+
+/**
+ * Calculates actual illumination for given number of luminaires
+ */
+export function calculateActualIllumination(
+  n: number,
+  L: number,
+  W: number,
+  H: number,
+  flux: number
+): number {
+  const area = L * W;
+  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  return avgIllumination;
+  // Actual illumination: E = (n * Φ * η) / (S * Kz * ζ)
+  const actualLux = (n * flux * eta) / (area * Kz * zeta);
+  
+  return actualLux;
 }
