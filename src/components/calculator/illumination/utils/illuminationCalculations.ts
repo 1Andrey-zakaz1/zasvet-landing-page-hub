@@ -15,48 +15,15 @@ export function calculatePointAverage(
   H: number, 
   flux: number
 ): number {
-  const grid = findBestGrid(n, L, W);
+  // Simplified calculation using uniform illumination method
+  // This is more predictable and matches industry practice
   
-  // Spacing between luminaires
-  const xSp = L / grid.cols;
-  const ySp = W / grid.rows;
+  const area = L * W;
+  const totalFlux = n * flux;
   
-  const gp = 5;  // 5×5 points
-  let sumE = 0;
+  // Basic illumination formula: E = (Φ * η * Kz) / A
+  // Where Φ is total luminous flux, η is utilization factor, Kz is maintenance factor
+  const avgIllumination = (totalFlux * eta) / (area * Kz);
   
-  for (let i = 0; i < gp; i++) {
-    for (let j = 0; j < gp; j++) {
-      const px = (i + 0.5) * (L / gp);
-      const py = (j + 0.5) * (W / gp);
-      let Ept = 0;
-      
-      for (let r = 0; r < grid.rows; r++) {
-        for (let c = 0; c < grid.cols; c++) {
-          const idx = r * grid.cols + c;
-          if (idx >= n) break;
-          
-          const lx = (c + 0.5) * xSp;
-          const ly = (r + 0.5) * ySp;
-          const lz = H; 
-          
-          const dx = px - lx;
-          const dy = py - ly;
-          const dz = -lz;
-          const d = Math.hypot(dx, dy, dz);
-          if (d <= 0) continue;
-          
-          const cosT = H / d;
-          // Use cosine distribution for office lighting (more realistic)
-          const I = flux / Math.PI; // lm/sr for cosine distribution downward
-          
-          Ept += (I * cosT * cosT) / (d * d);
-        }
-      }
-      sumE += Ept;
-    }
-  }
-  const avgIllumination = sumE / (gp * gp);
-  
-  // Apply utilization coefficient and safety factor
-  return (avgIllumination * eta) / Kz;
+  return avgIllumination;
 }
