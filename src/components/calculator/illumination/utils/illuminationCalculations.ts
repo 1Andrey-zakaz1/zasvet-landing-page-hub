@@ -1,9 +1,9 @@
 
 import { findBestGrid } from './gridCalculations';
 
-// Constants
-export const Kz = 1.1;   // safety coefficient updated from 1.2 to 1.1
-export const eta = 0.90;  // utilization coefficient remains the same
+// Constants - adjusted to match DIALux results
+export const Kz = 1.3;   // safety coefficient increased to match real conditions
+export const eta = 0.65;  // utilization coefficient reduced for more realistic results
 
 /**
  * Calculates average illumination using point method for given number of luminaires
