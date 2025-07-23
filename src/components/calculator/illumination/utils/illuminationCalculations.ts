@@ -18,14 +18,14 @@ export function calculatePointAverage(
   const area = L * W;
   const totalFlux = n * flux;
   
-  // Account for room height using distance factor
-  // At standard height (2.7m), factor = 1
-  // At greater heights, illumination decreases proportionally to square of distance
+  // Account for room height - at greater heights, we need more light to achieve same illumination
+  // Standard calculation height is 2.7m, at greater heights illumination decreases
   const standardHeight = 2.7;
-  const heightFactor = Math.pow(standardHeight / H, 2);
+  const heightFactor = Math.pow(H / standardHeight, 2);
   
-  // Basic illumination formula with height correction: E = (Φ * η * heightFactor) / (A * Kz)
-  const avgIllumination = (totalFlux * eta * heightFactor) / (area * Kz);
+  // Basic illumination formula: E = (Φ * η) / (A * Kz * heightFactor)
+  // heightFactor increases denominator for greater heights, reducing illumination
+  const avgIllumination = (totalFlux * eta) / (area * Kz * heightFactor);
   
   return avgIllumination;
 }
