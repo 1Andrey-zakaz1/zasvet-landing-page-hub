@@ -15,19 +15,31 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // Start with an estimated quantity based on flux and area
+    // Multiple estimation approaches for more reliable starting points
     const estimatedFluxNeeded = requiredLux * area;
-    const estimatedQuantity = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * eta / Kz)));
     
-    // Test quantities around the estimate
-    const testRange = Math.max(10, Math.ceil(estimatedQuantity * 0.5)); // test range
-    const minTest = Math.max(1, estimatedQuantity - testRange);
-    const maxTest = estimatedQuantity + testRange;
+    // Approach 1: Simple flux-based estimate
+    const simpleEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * eta / Kz)));
+    
+    // Approach 2: Conservative estimate (assuming lower efficiency)
+    const conservativeEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * 0.5)));
+    
+    // Approach 3: Aggressive estimate (assuming higher efficiency)  
+    const aggressiveEstimate = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * 1.2)));
+    
+    // Use the widest range from all estimates
+    const allEstimates = [simpleEstimate, conservativeEstimate, aggressiveEstimate];
+    const minEstimate = Math.min(...allEstimates);
+    const maxEstimate = Math.max(...allEstimates);
+    
+    // Expanded search range - at least from 1 to 3x max estimate
+    const minTest = 1;
+    const maxTest = Math.max(100, maxEstimate * 3);
     
     let bestOption = null;
     let minDiff = Infinity;
     
-    // Test different quantities in the range
+    // Test different quantities in the expanded range
     for (let N = minTest; N <= maxTest; N++) {
       const avgLux = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
       const diff = Math.abs(avgLux - requiredLux);
