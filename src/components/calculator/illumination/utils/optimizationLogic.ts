@@ -15,45 +15,42 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // 1) Calculate effective flux considering efficiency and safety factor
-    const effFlux = m.flux * eta / Kz;
-    const phiReq = requiredLux * area;
+    // Try different numbers of luminaires and find the one that gives closest illumination to required
+    const maxLuminaires = Math.ceil(area / 10); // reasonable maximum based on area
+    let bestOption = null;
+    let minDiff = Infinity;
     
-    // 2) Calculate ideal fractional number
-    const rawN = phiReq / effFlux;
-    const nFloor = Math.floor(rawN);
-    const nCeil = Math.ceil(rawN);
-    
-    // 3) Candidates - both variants > 0
-    const candidates = [];
-    if (nFloor > 0) candidates.push(nFloor);
-    if (nCeil > 0 && nCeil !== nFloor) candidates.push(nCeil);
-    
-    // 4) For each candidate calculate average illumination using point method
-    const options = candidates.map(N => {
+    // Test different quantities from 1 to maxLuminaires
+    for (let N = 1; N <= maxLuminaires; N++) {
       const avgLux = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
-      return {
-        N,
-        avgLux,
-        diff: Math.abs(avgLux - requiredLux)
-      };
-    });
+      const diff = Math.abs(avgLux - requiredLux);
+      
+      if (diff < minDiff) {
+        minDiff = diff;
+        bestOption = {
+          N,
+          avgLux,
+          diff
+        };
+      }
+      
+      // If we've achieved the required lux or exceeded it significantly, we can stop
+      if (avgLux >= requiredLux * 1.1) break;
+    }
     
-    // 5) Choose the option with minimal difference
-    const bestOpt = options.reduce((a, b) => a.diff <= b.diff ? a : b);
-    
-    // 6) Final N and exact grid calculation
-    const N = bestOpt.N;
-    const grid = findExactGrid(N, roomLength, roomWidth);
-    const achievedLux = bestOpt.avgLux;
-    
-    tableData.push({
-      ...m,
-      count: N,
-      totalCost: N * m.price,
-      achieved: achievedLux.toFixed(1),
-      grid
-    });
+    if (bestOption) {
+      const N = bestOption.N;
+      const grid = findExactGrid(N, roomLength, roomWidth);
+      const achievedLux = bestOption.avgLux;
+      
+      tableData.push({
+        ...m,
+        count: N,
+        totalCost: N * m.price,
+        achieved: achievedLux.toFixed(1),
+        grid
+      });
+    }
   });
   
   // Select the best option by minimal total cost
