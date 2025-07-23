@@ -46,7 +46,8 @@ export function calculatePointAverage(
           if (d <= 0) continue;
           
           const cosT = H / d;
-          const I = (flux * eta / Kz) / (2 * Math.PI);
+          // Use luminous intensity assuming uniform distribution
+          const I = flux / (4 * Math.PI); // lm/sr for sphere distribution
           
           Ept += (I * cosT) / (d * d);
         }
@@ -54,6 +55,8 @@ export function calculatePointAverage(
       sumE += Ept;
     }
   }
+  const avgIllumination = sumE / (gp * gp);
   
-  return sumE / (gp * gp);
+  // Apply utilization coefficient and safety factor
+  return (avgIllumination * eta) / Kz;
 }
