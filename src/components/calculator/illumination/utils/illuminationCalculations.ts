@@ -15,15 +15,17 @@ export function calculatePointAverage(
   H: number, 
   flux: number
 ): number {
-  // Simplified calculation using uniform illumination method
-  // This is more predictable and matches industry practice
-  
   const area = L * W;
   const totalFlux = n * flux;
   
-  // Basic illumination formula: E = (Φ * η * Kz) / A
-  // Where Φ is total luminous flux, η is utilization factor, Kz is maintenance factor
-  const avgIllumination = (totalFlux * eta) / (area * Kz);
+  // Account for room height using distance factor
+  // At standard height (2.7m), factor = 1
+  // At greater heights, illumination decreases proportionally to square of distance
+  const standardHeight = 2.7;
+  const heightFactor = Math.pow(standardHeight / H, 2);
+  
+  // Basic illumination formula with height correction: E = (Φ * η * heightFactor) / (A * Kz)
+  const avgIllumination = (totalFlux * eta * heightFactor) / (area * Kz);
   
   return avgIllumination;
 }
