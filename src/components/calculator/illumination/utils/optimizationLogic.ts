@@ -15,13 +15,20 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // Try different numbers of luminaires and find the one that gives closest illumination to required
-    const maxLuminaires = Math.ceil(area / 10); // reasonable maximum based on area
+    // Start with an estimated quantity based on flux and area
+    const estimatedFluxNeeded = requiredLux * area;
+    const estimatedQuantity = Math.max(1, Math.ceil(estimatedFluxNeeded / (m.flux * eta / Kz)));
+    
+    // Test quantities around the estimate
+    const testRange = Math.max(10, Math.ceil(estimatedQuantity * 0.5)); // test range
+    const minTest = Math.max(1, estimatedQuantity - testRange);
+    const maxTest = estimatedQuantity + testRange;
+    
     let bestOption = null;
     let minDiff = Infinity;
     
-    // Test different quantities from 1 to maxLuminaires
-    for (let N = 1; N <= maxLuminaires; N++) {
+    // Test different quantities in the range
+    for (let N = minTest; N <= maxTest; N++) {
       const avgLux = calculatePointAverage(N, roomLength, roomWidth, roomHeight, m.flux);
       const diff = Math.abs(avgLux - requiredLux);
       
@@ -33,9 +40,6 @@ export const calculateOptimalLuminaires = (
           diff
         };
       }
-      
-      // If we've achieved the required lux or exceeded it significantly, we can stop
-      if (avgLux >= requiredLux * 1.1) break;
     }
     
     if (bestOption) {
