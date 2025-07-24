@@ -59,20 +59,28 @@ const IlluminationCalculator = () => {
       const E_req = parseFloat(formData.requiredLux);
       const category = formData.luminaireType;
       
-      if (L && W && H && E_req) {
-        const { tableData: newTableData, bestResult: newBestResult } = 
-          calculateOptimalLuminaires(L, W, E_req, category, H);
-        
-        if (newBestResult) {
-          setTableData(newTableData);
-          setBestResult(newBestResult);
-          setLayout({
-            cols: newBestResult.grid!.cols, 
-            rows: newBestResult.grid!.rows, 
-            xSp: 0, 
-            ySp: 0, 
-            N: newBestResult.count
-          });
+      // Validate dimensions before calculating
+      if (L && W && H && E_req && 
+          L <= 50 && W <= 50 && L >= 0.5 && W >= 0.5 && 
+          H >= 1 && H <= 20) {
+        try {
+          const { tableData: newTableData, bestResult: newBestResult } = 
+            calculateOptimalLuminaires(L, W, E_req, category, H);
+          
+          if (newBestResult) {
+            setTableData(newTableData);
+            setBestResult(newBestResult);
+            setLayout({
+              cols: newBestResult.grid!.cols, 
+              rows: newBestResult.grid!.rows, 
+              xSp: 0, 
+              ySp: 0, 
+              N: newBestResult.count
+            });
+          }
+        } catch (error) {
+          console.error('Calculation error:', error);
+          setShowResults(false);
         }
       }
     }
@@ -93,6 +101,22 @@ const IlluminationCalculator = () => {
     
     if (!L || !W || !H || !E_req) {
       alert("Пожалуйста, заполните все поля.");
+      return;
+    }
+    
+    // Validate room dimensions (maximum 50m per side for performance)
+    if (L > 50 || W > 50) {
+      alert("Максимальные размеры помещения: 50м × 50м. Для расчета больших помещений обратитесь к специалистам.");
+      return;
+    }
+    
+    if (L < 0.5 || W < 0.5) {
+      alert("Минимальные размеры помещения: 0.5м × 0.5м.");
+      return;
+    }
+    
+    if (H < 1 || H > 20) {
+      alert("Высота помещения должна быть от 1м до 20м.");
       return;
     }
     
