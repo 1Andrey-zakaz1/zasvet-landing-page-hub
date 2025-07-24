@@ -48,7 +48,10 @@ export function findBestGrid(N: number, L: number, W: number): IlluminationGrid 
   const target = L / W;
   let best: { rows: number; cols: number; diff: number; wasted: number } | null = null;
   
-  for (let rows = 1; rows <= Math.min(N, 50); rows++) {
+  // Limit iterations based on room size to prevent performance issues
+  const maxIterations = (L > 30 || W > 30) ? 20 : Math.min(N, 50);
+  
+  for (let rows = 1; rows <= maxIterations; rows++) {
     const cols = Math.ceil(N / rows);
     const cells = rows * cols;
     const wasted = cells - N;

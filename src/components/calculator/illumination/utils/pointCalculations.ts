@@ -53,18 +53,20 @@ function generateCalculationGrid(
   // Adaptive grid size based on room dimensions
   let adaptiveGridSize = gridSize;
   if (!adaptiveGridSize) {
-    const maxDimension = Math.max(roomLength, roomWidth);
-    if (maxDimension <= 10) {
+    const area = roomLength * roomWidth;
+    if (area <= 100) {  // Up to 10x10m
       adaptiveGridSize = 0.5;
-    } else if (maxDimension <= 25) {
+    } else if (area <= 625) {  // Up to 25x25m
       adaptiveGridSize = 1.0;
-    } else {
-      adaptiveGridSize = 2.0;
+    } else if (area <= 2500) {  // Up to 50x50m
+      adaptiveGridSize = 2.5;
+    } else {  // Larger rooms
+      adaptiveGridSize = 5.0;
     }
   }
   
-  // Limit maximum number of points to 2500 (50x50 grid max)
-  const maxPointsPerSide = 50;
+  // Limit maximum number of points to 1600 (40x40 grid max)
+  const maxPointsPerSide = 40;
   const pointsX = Math.min(Math.floor(roomLength / adaptiveGridSize), maxPointsPerSide);
   const pointsY = Math.min(Math.floor(roomWidth / adaptiveGridSize), maxPointsPerSide);
   

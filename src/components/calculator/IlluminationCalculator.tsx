@@ -24,6 +24,7 @@ const IlluminationCalculator = () => {
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [bestResult, setBestResult] = useState<TableData | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
   const [layout, setLayout] = useState({ 
     cols: 0, 
     rows: 0, 
@@ -90,7 +91,7 @@ const IlluminationCalculator = () => {
     setIsExpanded(!isExpanded);
   };
   
-  const calculateResults = (e: React.FormEvent) => {
+  const calculateResults = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const L = parseFloat(formData.roomLength);
@@ -120,27 +121,38 @@ const IlluminationCalculator = () => {
       return;
     }
     
-    const { tableData: newTableData, bestResult: newBestResult } = 
-      calculateOptimalLuminaires(L, W, E_req, category, H);
+    setIsCalculating(true);
     
-    if (!newBestResult) {
-      alert("Не удалось подобрать оптимальный светильник.");
-      return;
+    try {
+      // Use setTimeout to allow UI to update with loading state
+      await new Promise(resolve => setTimeout(resolve, 10));
+      
+      const { tableData: newTableData, bestResult: newBestResult } = 
+        calculateOptimalLuminaires(L, W, E_req, category, H);
+      
+      if (!newBestResult) {
+        alert("Не удалось подобрать оптимальный светильник.");
+        return;
+      }
+      
+      setTableData(newTableData);
+      setBestResult(newBestResult);
+      
+      setLayout({
+        cols: newBestResult.grid!.cols, 
+        rows: newBestResult.grid!.rows, 
+        xSp: 0, 
+        ySp: 0, 
+        N: newBestResult.count
+      });
+      
+      setShowResults(true);
+    } catch (error) {
+      console.error('Calculation error:', error);
+      alert("Ошибка при расчете. Попробуйте уменьшить размеры помещения.");
+    } finally {
+      setIsCalculating(false);
     }
-    
-    setTableData(newTableData);
-    setBestResult(newBestResult);
-    
-    setLayout({
-      cols: newBestResult.grid!.cols, 
-      rows: newBestResult.grid!.rows, 
-      xSp: 0, 
-      ySp: 0, 
-      N: newBestResult.count
-    });
-    
-    setShowResults(true);
-    // Don't hide the form after calculation
   };
   
   return (
@@ -187,6 +199,7 @@ const IlluminationCalculator = () => {
                       handleChange={handleChange}
                       handleSelectChange={handleSelectChange}
                       calculateResults={calculateResults}
+                      isCalculating={isCalculating}
                     />
                   </div>
                 </CardContent>

@@ -12,13 +12,15 @@ interface IlluminationFormProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (id: string, value: string) => void;
   calculateResults: (e: React.FormEvent) => void;
+  isCalculating?: boolean;
 }
 
 const IlluminationForm: React.FC<IlluminationFormProps> = ({
   formData,
   handleChange,
   handleSelectChange,
-  calculateResults
+  calculateResults,
+  isCalculating = false
 }) => {
   // Sort room types by illumination level
   const sortedRoomTypes = Object.entries(recommendedLux)
@@ -141,8 +143,8 @@ const IlluminationForm: React.FC<IlluminationFormProps> = ({
         </div>
       </div>
       
-      <Button type="submit" variant="gold" className="w-full mt-6">
-        Рассчитать
+      <Button type="submit" variant="gold" className="w-full mt-6" disabled={isCalculating}>
+        {isCalculating ? "Расчет..." : "Рассчитать"}
       </Button>
     </form>
   );
