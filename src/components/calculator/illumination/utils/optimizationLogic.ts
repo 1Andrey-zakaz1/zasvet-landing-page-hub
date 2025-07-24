@@ -1,7 +1,7 @@
 import { TableData } from '../types';
 import { luminaireModels } from '../data';
-import { findExactGrid } from './gridCalculations';
-import { Kz, zeta, calculateRequiredLuminaires, calculateActualIllumination } from './illuminationCalculations';
+import { findExactGrid, findBestGrid } from './gridCalculations';
+import { findOptimalLuminaireCount, calculatePointBasedIllumination } from './pointCalculations';
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
@@ -14,49 +14,56 @@ export const calculateOptimalLuminaires = (
   const tableData: TableData[] = [];
   
   models.forEach((m) => {
-    // Calculate required number of luminaires using proper formula
-    const requiredCount = calculateRequiredLuminaires(requiredLux, roomLength, roomWidth, roomHeight, m.flux);
+    let bestOption: {grid: any, actualLux: number, uniformity: number} | null = null;
+    let bestScore = Infinity;
     
-    // Test a range around the calculated value to find the best match
-    const testRange = Math.max(5, Math.ceil(requiredCount * 0.3));
-    const minTest = Math.max(1, requiredCount - testRange);
-    const maxTest = requiredCount + testRange;
-    
-    let bestOption = null;
-    let minDiff = Infinity;
-    
-    // Find the count that gives closest match to required lux
-    for (let N = minTest; N <= maxTest; N++) {
-      const actualLux = calculateActualIllumination(N, roomLength, roomWidth, roomHeight, m.flux);
-      const diff = Math.abs(actualLux - requiredLux);
+    // Test different grid configurations
+    for (let testCount = 1; testCount <= 50; testCount++) {
+      const testGrid = findBestGrid(testCount, roomLength, roomWidth);
+      const actualCount = testGrid.rows * testGrid.cols;
       
-      if (diff < minDiff) {
-        minDiff = diff;
+      const result = findOptimalLuminaireCount(
+        roomLength, 
+        roomWidth, 
+        roomHeight, 
+        requiredLux, 
+        m.flux, 
+        testGrid
+      );
+      
+      // Score based on cost and requirements compliance
+      const costScore = actualCount * m.price;
+      const luxDiff = Math.abs(result.actualLux - requiredLux);
+      const uniformityPenalty = result.uniformity < 0.4 ? 1000 : 0;
+      const minLuxPenalty = result.actualLux < requiredLux * 0.8 ? 2000 : 0;
+      
+      const totalScore = costScore + luxDiff * 10 + uniformityPenalty + minLuxPenalty;
+      
+      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.8) {
+        bestScore = totalScore;
         bestOption = {
-          N,
-          actualLux,
-          diff
+          grid: testGrid,
+          actualLux: result.actualLux,
+          uniformity: result.uniformity
         };
       }
     }
     
     if (bestOption) {
-      const N = bestOption.N;
-      const grid = findExactGrid(N, roomLength, roomWidth);
-      const achievedLux = bestOption.actualLux;
+      const actualCount = bestOption.grid.rows * bestOption.grid.cols;
       
       tableData.push({
         ...m,
-        count: N,
-        totalCost: N * m.price,
-        achieved: achievedLux.toFixed(1),
-        grid
+        count: actualCount,
+        totalCost: actualCount * m.price,
+        achieved: bestOption.actualLux.toFixed(1),
+        grid: bestOption.grid
       });
     }
   });
   
   // Select the best option by minimal total cost among those that meet requirements
-  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.9);
+  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.8);
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
     : tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
@@ -76,15 +83,24 @@ export const calculateIllumination = (
   const xSp = roomLength / cols;
   const ySp = roomWidth / rows;
   
+  // Calculate actual illumination values using point-based method
+  const pointResults = calculatePointBasedIllumination(
+    roomLength,
+    roomWidth,
+    roomHeight,
+    best.grid!,
+    best.flux
+  );
+  
   return {
     layout: { cols, rows, xSp, ySp, N },
     illuminationValues: {
-      avgByFlux: 0,
-      average: 0,
-      minimum: 0,
-      uniformity: 0,
-      kz: Kz,
-      eta: zeta
+      avgByFlux: pointResults.average,
+      average: pointResults.average,
+      minimum: pointResults.minimum,
+      uniformity: pointResults.uniformity,
+      kz: 1.2,
+      eta: 1.15
     }
   };
 };
