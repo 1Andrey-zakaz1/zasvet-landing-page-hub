@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -49,6 +49,35 @@ const IlluminationCalculator = () => {
     }
   };
   
+  
+  // Auto-recalculate when data changes and results are shown
+  useEffect(() => {
+    if (showResults && formData.roomLength && formData.roomWidth && formData.roomHeight && formData.requiredLux) {
+      const L = parseFloat(formData.roomLength);
+      const W = parseFloat(formData.roomWidth);
+      const H = parseFloat(formData.roomHeight);
+      const E_req = parseFloat(formData.requiredLux);
+      const category = formData.luminaireType;
+      
+      if (L && W && H && E_req) {
+        const { tableData: newTableData, bestResult: newBestResult } = 
+          calculateOptimalLuminaires(L, W, E_req, category, H);
+        
+        if (newBestResult) {
+          setTableData(newTableData);
+          setBestResult(newBestResult);
+          setLayout({
+            cols: newBestResult.grid!.cols, 
+            rows: newBestResult.grid!.rows, 
+            xSp: 0, 
+            ySp: 0, 
+            N: newBestResult.count
+          });
+        }
+      }
+    }
+  }, [formData, showResults]);
+
   const toggleForm = () => {
     setIsExpanded(!isExpanded);
   };
