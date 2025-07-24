@@ -41,22 +41,47 @@ function calculatePointIllumination(
 }
 
 /**
- * Generates a grid of calculation points
+ * Generates a grid of calculation points with adaptive grid size
  */
 function generateCalculationGrid(
   roomLength: number,
   roomWidth: number,
-  gridSize: number = 0.5
+  gridSize?: number
 ): Point[] {
   const points: Point[] = [];
   
-  // Start from edge with offset
-  const offsetX = gridSize / 2;
-  const offsetY = gridSize / 2;
+  // Adaptive grid size based on room dimensions
+  let adaptiveGridSize = gridSize;
+  if (!adaptiveGridSize) {
+    const maxDimension = Math.max(roomLength, roomWidth);
+    if (maxDimension <= 10) {
+      adaptiveGridSize = 0.5;
+    } else if (maxDimension <= 25) {
+      adaptiveGridSize = 1.0;
+    } else {
+      adaptiveGridSize = 2.0;
+    }
+  }
   
-  for (let x = offsetX; x < roomLength; x += gridSize) {
-    for (let y = offsetY; y < roomWidth; y += gridSize) {
-      points.push({ x, y, illumination: 0 });
+  // Limit maximum number of points to 2500 (50x50 grid max)
+  const maxPointsPerSide = 50;
+  const pointsX = Math.min(Math.floor(roomLength / adaptiveGridSize), maxPointsPerSide);
+  const pointsY = Math.min(Math.floor(roomWidth / adaptiveGridSize), maxPointsPerSide);
+  
+  const actualGridSizeX = roomLength / pointsX;
+  const actualGridSizeY = roomWidth / pointsY;
+  
+  // Start from edge with offset
+  const offsetX = actualGridSizeX / 2;
+  const offsetY = actualGridSizeY / 2;
+  
+  for (let i = 0; i < pointsX; i++) {
+    for (let j = 0; j < pointsY; j++) {
+      points.push({ 
+        x: offsetX + i * actualGridSizeX, 
+        y: offsetY + j * actualGridSizeY, 
+        illumination: 0 
+      });
     }
   }
   

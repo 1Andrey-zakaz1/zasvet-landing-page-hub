@@ -61,7 +61,7 @@ const IlluminationCalculator = () => {
       
       // Validate dimensions before calculating
       if (L && W && H && E_req && 
-          L <= 50 && W <= 50 && L >= 0.5 && W >= 0.5 && 
+          L <= 100 && W <= 100 && L >= 0.5 && W >= 0.5 && 
           H >= 1 && H <= 20) {
         try {
           const { tableData: newTableData, bestResult: newBestResult } = 
@@ -104,9 +104,9 @@ const IlluminationCalculator = () => {
       return;
     }
     
-    // Validate room dimensions (maximum 50m per side for performance)
-    if (L > 50 || W > 50) {
-      alert("Максимальные размеры помещения: 50м × 50м. Для расчета больших помещений обратитесь к специалистам.");
+    // Validate room dimensions (maximum 100m per side with optimized calculations)
+    if (L > 100 || W > 100) {
+      alert("Максимальные размеры помещения: 100м × 100м. Для расчета больших помещений обратитесь к специалистам.");
       return;
     }
     
