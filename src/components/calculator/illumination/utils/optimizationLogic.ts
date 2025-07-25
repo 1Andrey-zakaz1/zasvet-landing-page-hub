@@ -67,6 +67,10 @@ export const calculateOptimalLuminaires = (
   });
   
   // Select the best option by minimal total cost among those that meet requirements
+  if (tableData.length === 0) {
+    return { tableData: [], bestResult: null };
+  }
+  
   const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.8);
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
