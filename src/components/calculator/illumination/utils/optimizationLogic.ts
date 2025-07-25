@@ -35,15 +35,15 @@ export const calculateOptimalLuminaires = (
         testGrid
       );
       
-      // Score based on cost and requirements compliance
+      // Score based on cost and requirements compliance - more flexible for large rooms
       const costScore = actualCount * m.price;
       const luxDiff = Math.abs(result.actualLux - requiredLux);
-      const uniformityPenalty = result.uniformity < 0.4 ? 1000 : 0;
-      const minLuxPenalty = result.actualLux < requiredLux * 0.8 ? 2000 : 0;
+      const uniformityPenalty = result.uniformity < 0.3 ? 1000 : 0; // Reduced from 0.4 for large rooms
+      const minLuxPenalty = result.actualLux < requiredLux * 0.6 ? 2000 : 0; // Reduced from 0.8 for large rooms
       
       const totalScore = costScore + luxDiff * 10 + uniformityPenalty + minLuxPenalty;
       
-      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.8) {
+      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.6) { // Reduced threshold
         bestScore = totalScore;
         bestOption = {
           grid: testGrid,
@@ -71,7 +71,7 @@ export const calculateOptimalLuminaires = (
     return { tableData: [], bestResult: null };
   }
   
-  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.8);
+  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.6); // More flexible for large rooms
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
     : tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
