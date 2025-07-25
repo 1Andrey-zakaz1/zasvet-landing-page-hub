@@ -24,7 +24,11 @@ export const luminaireModels = {
     { model: "Гармония 34-20-5000-Д-220-универсальное", flux: 4250, power: 34, size: [595,595,40], price: 3418 },
     { model: "Гармония 40-20-5000-Д-220-универсальное", flux: 5400, power: 40, size: [595,595,40], price: 3533 },
     { model: "Гармония 42-20-5000-Д-220-универсальное", flux: 6000, power: 42, size: [595,595,40], price: 3700 },
-    { model: "Гармония 52-20-5000-Д-220-универсальное", flux: 7300, power: 52, size: [595,595,40], price: 4000 }
+    { model: "Гармония 52-20-5000-Д-220-универсальное", flux: 7300, power: 52, size: [595,595,40], price: 4000 },
+    // Higher power office luminaires for large spaces
+    { model: "Гармония 70-20-5000-Д-220-универсальное", flux: 10500, power: 70, size: [595,595,40], price: 5200 },
+    { model: "Гармония 100-20-5000-Д-220-универсальное", flux: 15000, power: 100, size: [595,595,40], price: 7500 },
+    { model: "Гармония 150-20-5000-Д-220-универсальное", flux: 22500, power: 150, size: [595,595,40], price: 11000 }
   ],
   // Commercial - Boutique series
   "commercial": [

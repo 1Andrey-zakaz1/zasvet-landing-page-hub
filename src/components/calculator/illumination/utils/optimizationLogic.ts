@@ -71,10 +71,14 @@ export const calculateOptimalLuminaires = (
     return { tableData: [], bestResult: null };
   }
   
-  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * 0.6); // More flexible for large rooms
+  // For very large rooms, be even more flexible
+  const area = roomLength * roomWidth;
+  const flexibilityThreshold = area > 1000 ? 0.4 : area > 500 ? 0.5 : 0.6;
+  
+  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * flexibilityThreshold);
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
-    : tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b);
+    : tableData.length > 0 ? tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b) : null;
   
   return { tableData, bestResult: best };
 };
