@@ -18,7 +18,8 @@ export const calculateOptimalLuminaires = (
     let bestScore = Infinity;
     
     // Limit iterations for large rooms to improve performance
-    const maxIterations = (roomLength > 20 || roomWidth > 20) ? 20 : 50;
+    const area = roomLength * roomWidth;
+    const maxIterations = area > 1000 ? 10 : area > 400 ? 15 : area > 100 ? 25 : 50;
     
     // Test different grid configurations
     for (let testCount = 1; testCount <= maxIterations; testCount++) {
