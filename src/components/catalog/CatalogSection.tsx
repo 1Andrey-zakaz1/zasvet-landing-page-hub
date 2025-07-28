@@ -100,10 +100,14 @@ function filterFixtures(data: Fixture[], filters: FilterValues): Fixture[] {
   });
 }
 
-const CatalogSection: React.FC = () => {
+interface CatalogSectionProps {
+  initialSeriesFilter?: string;
+}
+
+const CatalogSection: React.FC<CatalogSectionProps> = ({ initialSeriesFilter = "" }) => {
   const [filters, setFilters] = React.useState<FilterValues>({
     query: "",
-    series: "",
+    series: initialSeriesFilter,
     power_min: "",
     power_max: "",
     lumen_min: "",
@@ -140,7 +144,7 @@ const CatalogSection: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <h1 className="section-title text-zasvet-white flex items-center gap-2">
               <Search className="h-6 w-6 text-zasvet-gold" />
-              Каталог светильников
+              {initialSeriesFilter ? `Серия "${initialSeriesFilter}"` : "Каталог светильников"}
             </h1>
             <Button
               variant="gold"

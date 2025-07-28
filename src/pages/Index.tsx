@@ -71,6 +71,11 @@ const Index = () => {
           <div id="catalog" className="container mx-auto px-4 mt-20">
             <CatalogSection />
           </div>
+          
+          {/* Якорная ссылка для серии Буран */}
+          <div id="buran" className="container mx-auto px-4 mt-20">
+            <CatalogSection initialSeriesFilter="Буран" />
+          </div>
 
           {/* Блок с видео скрыт */}
           <div className="hidden">
