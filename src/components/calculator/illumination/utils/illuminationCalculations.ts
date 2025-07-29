@@ -31,10 +31,9 @@ export function calculateRequiredLuminaires(
   flux: number
 ): number {
   const area = L * W;
-  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  // Standard illumination formula: n = (E * S * Kz * ζ) / (Φ * η)
-  const requiredCount = (targetLux * area * Kz * zeta) / (flux * eta);
+  // Standard illumination formula without utilization coefficient: n = (E * S * Kz * ζ) / Φ
+  const requiredCount = (targetLux * area * Kz * zeta) / flux;
   
   return Math.ceil(requiredCount);
 }
@@ -50,10 +49,9 @@ export function calculateActualIllumination(
   flux: number
 ): number {
   const area = L * W;
-  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  // Actual illumination: E = (n * Φ * η) / (S * Kz * ζ)
-  const actualLux = (n * flux * eta) / (area * Kz * zeta);
+  // Actual illumination without utilization coefficient: E = (n * Φ) / (S * Kz * ζ)
+  const actualLux = (n * flux) / (area * Kz * zeta);
   
   return actualLux;
 }
