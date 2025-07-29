@@ -33,10 +33,10 @@ function calculatePointIllumination(
   // Cosine of angle between vertical and line to point
   const cosTheta = height / distance;
   
-  // Point source illumination formula with safety coefficients: E = I * cos³(θ) / (r² * Kz * ζ)
+  // Point source illumination formula: E = I * cos³(θ) / r²
   // For diffuse sources, we use flux/π as intensity approximation
   const intensity = flux / Math.PI;
-  const illumination = (intensity * Math.pow(cosTheta, 3)) / (distance * distance * Kz * zeta);
+  const illumination = (intensity * Math.pow(cosTheta, 3)) / (distance * distance);
   
   return illumination;
 }
@@ -212,7 +212,7 @@ export function findOptimalLuminaireCount(
   );
   
   const count = testGrid.rows * testGrid.cols;
-  const meetsRequirements = result.uniformity >= 0.4;
+  const meetsRequirements = result.average >= targetLux * Kz * zeta && result.uniformity >= 0.4;
   
   return {
     count,
