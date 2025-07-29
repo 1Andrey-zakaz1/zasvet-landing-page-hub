@@ -1,5 +1,6 @@
 // Point-based illumination calculations
 import { IlluminationGrid } from '../types';
+import { Kz, zeta } from './illuminationCalculations';
 
 export interface Point {
   x: number;
@@ -32,10 +33,10 @@ function calculatePointIllumination(
   // Cosine of angle between vertical and line to point
   const cosTheta = height / distance;
   
-  // Point source illumination formula: E = I * cos³(θ) / r²
+  // Point source illumination formula with safety coefficients: E = I * cos³(θ) / (r² * Kz * ζ)
   // For diffuse sources, we use flux/π as intensity approximation
   const intensity = flux / Math.PI;
-  const illumination = (intensity * Math.pow(cosTheta, 3)) / (distance * distance);
+  const illumination = (intensity * Math.pow(cosTheta, 3)) / (distance * distance * Kz * zeta);
   
   return illumination;
 }
