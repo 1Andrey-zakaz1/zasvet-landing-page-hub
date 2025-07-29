@@ -18,12 +18,14 @@ export const calculateOptimalLuminaires = (
   console.log(`Available models count: ${models.length}`);
   
   models.forEach((m) => {
+    console.log(`Testing model: ${m.model}, flux: ${m.flux}, price: ${m.price}`);
     let bestOption: {grid: any, actualLux: number, uniformity: number} | null = null;
     let bestScore = Infinity;
     
     // More iterations to find better solutions, especially for large rooms
     const area = roomLength * roomWidth;
     const maxIterations = area > 1000 ? 30 : area > 400 ? 40 : area > 100 ? 50 : 60;
+    console.log(`Room area: ${area}, maxIterations: ${maxIterations}`);
     
     // Test different grid configurations
     for (let testCount = 1; testCount <= maxIterations; testCount++) {
@@ -59,11 +61,17 @@ export const calculateOptimalLuminaires = (
           actualLux: result.actualLux,
           uniformity: result.uniformity
         };
+        console.log(`Found valid option for ${m.model}: actualLux=${result.actualLux}, uniformity=${result.uniformity}, score=${totalScore}`);
+      } else {
+        if (testCount <= 5) { // Log only first few attempts to avoid spam
+          console.log(`Option rejected for ${m.model}: actualLux=${result.actualLux} (target: ${requiredLux}), uniformity=${result.uniformity}, score=${totalScore}`);
+        }
       }
     }
     
     if (bestOption) {
       const actualCount = bestOption.grid.rows * bestOption.grid.cols;
+      console.log(`Adding to results: ${m.model} with ${actualCount} units, ${bestOption.actualLux} lux`);
       
       tableData.push({
         ...m,
@@ -72,6 +80,8 @@ export const calculateOptimalLuminaires = (
         achieved: bestOption.actualLux.toFixed(1),
         grid: bestOption.grid
       });
+    } else {
+      console.log(`No valid option found for model: ${m.model}`);
     }
   });
   
