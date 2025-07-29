@@ -14,6 +14,9 @@ export const calculateOptimalLuminaires = (
   const models = luminaireModels[luminaireType as keyof typeof luminaireModels] || [];
   const tableData: TableData[] = [];
   
+  console.log(`Calculating for room ${roomLength}x${roomWidth}, required lux: ${requiredLux}`);
+  console.log(`Available models count: ${models.length}`);
+  
   models.forEach((m) => {
     let bestOption: {grid: any, actualLux: number, uniformity: number} | null = null;
     let bestScore = Infinity;
@@ -74,6 +77,7 @@ export const calculateOptimalLuminaires = (
   
   // Select the best option by minimal total cost among those that meet requirements
   if (tableData.length === 0) {
+    console.log('No solutions found - tableData is empty');
     return { tableData: [], bestResult: null };
   }
   
@@ -85,6 +89,10 @@ export const calculateOptimalLuminaires = (
     const achieved = parseFloat(item.achieved);
     return achieved >= requiredLux * minThreshold && achieved <= requiredLux * maxThreshold;
   });
+  
+  console.log(`Valid options count: ${validOptions.length} out of ${tableData.length} total options`);
+  console.log(`Min threshold: ${requiredLux * minThreshold}, Max threshold: ${requiredLux * maxThreshold}`);
+  
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
     : tableData.length > 0 ? tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b) : null;
