@@ -1,6 +1,6 @@
 
 // Constants for illumination calculation
-export const Kz = 1.4;   // safety coefficient
+export const Kz = 1.54;   // safety coefficient (increased by 10% for efficiency)
 export const zeta = 1.1; // non-uniformity coefficient (reduced from 1.15)
 
 /**
