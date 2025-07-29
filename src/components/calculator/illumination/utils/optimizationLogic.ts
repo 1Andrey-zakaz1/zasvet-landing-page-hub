@@ -32,7 +32,7 @@ export const calculateOptimalLuminaires = (
         roomWidth, 
         roomHeight, 
         requiredLux, 
-        m.flux / (Kz * zeta), // Apply safety coefficients to luminous flux
+        m.flux * (Kz * zeta), // Apply safety coefficients to make luminaires more effective
         testGrid
       );
       
@@ -110,7 +110,7 @@ export const calculateIllumination = (
     roomWidth,
     roomHeight,
     best.grid!,
-    best.flux / (Kz * zeta) // Apply safety coefficients to luminous flux
+    best.flux * (Kz * zeta) // Apply safety coefficients to make luminaires more effective
   );
   
   return {
