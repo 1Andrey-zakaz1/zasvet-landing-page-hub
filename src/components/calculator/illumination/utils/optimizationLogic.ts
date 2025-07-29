@@ -17,9 +17,9 @@ export const calculateOptimalLuminaires = (
     let bestOption: {grid: any, actualLux: number, uniformity: number} | null = null;
     let bestScore = Infinity;
     
-    // Limit iterations for large rooms to improve performance
+    // More iterations to find better solutions, especially for large rooms
     const area = roomLength * roomWidth;
-    const maxIterations = area > 1000 ? 10 : area > 400 ? 15 : area > 100 ? 25 : 50;
+    const maxIterations = area > 1000 ? 30 : area > 400 ? 40 : area > 100 ? 50 : 60;
     
     // Test different grid configurations
     for (let testCount = 1; testCount <= maxIterations; testCount++) {
@@ -35,15 +35,19 @@ export const calculateOptimalLuminaires = (
         testGrid
       );
       
-      // Score based on cost and requirements compliance - more flexible for large rooms
+      // Score based on achieving target illumination first, then cost
       const costScore = actualCount * m.price;
       const luxDiff = Math.abs(result.actualLux - requiredLux);
-      const uniformityPenalty = result.uniformity < 0.3 ? 1000 : 0; // Reduced from 0.4 for large rooms
-      const minLuxPenalty = result.actualLux < requiredLux * 0.6 ? 2000 : 0; // Reduced from 0.8 for large rooms
+      const luxDeficiency = Math.max(0, requiredLux - result.actualLux);
       
-      const totalScore = costScore + luxDiff * 10 + uniformityPenalty + minLuxPenalty;
+      // Heavy penalties for not meeting requirements
+      const uniformityPenalty = result.uniformity < 0.4 ? 10000 : 0;
+      const minLuxPenalty = result.actualLux < requiredLux * 0.9 ? luxDeficiency * 100 : 0;
       
-      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.6) { // Reduced threshold
+      // Score heavily penalizes insufficient illumination
+      const totalScore = costScore + luxDiff * 50 + uniformityPenalty + minLuxPenalty;
+      
+      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.85) { // Stricter threshold
         bestScore = totalScore;
         bestOption = {
           grid: testGrid,
@@ -71,11 +75,10 @@ export const calculateOptimalLuminaires = (
     return { tableData: [], bestResult: null };
   }
   
-  // For very large rooms, be even more flexible
-  const area = roomLength * roomWidth;
-  const flexibilityThreshold = area > 1000 ? 0.4 : area > 500 ? 0.5 : 0.6;
+  // Strict requirements - always aim for at least 90% of required lux
+  const strictThreshold = 0.9;
   
-  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * flexibilityThreshold);
+  const validOptions = tableData.filter(item => parseFloat(item.achieved) >= requiredLux * strictThreshold);
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
     : tableData.length > 0 ? tableData.reduce((a, b) => a.totalCost < b.totalCost ? a : b) : null;
