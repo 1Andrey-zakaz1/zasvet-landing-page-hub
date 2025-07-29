@@ -2,6 +2,7 @@ import { TableData } from '../types';
 import { luminaireModels } from '../data';
 import { findExactGrid, findBestGrid } from './gridCalculations';
 import { findOptimalLuminaireCount, calculatePointBasedIllumination } from './pointCalculations';
+import { Kz, zeta } from './illuminationCalculations';
 
 export const calculateOptimalLuminaires = (
   roomLength: number,
@@ -37,18 +38,20 @@ export const calculateOptimalLuminaires = (
       
       // Score based on achieving target illumination first, then cost
       const costScore = actualCount * m.price;
-      const luxDiff = Math.abs(result.actualLux - requiredLux);
-      const luxDeficiency = Math.max(0, requiredLux - result.actualLux);
+      // Adjust target for safety coefficients
+      const adjustedTarget = requiredLux * Kz * zeta;
+      const luxDiff = Math.abs(result.actualLux - adjustedTarget);
+      const luxDeficiency = Math.max(0, adjustedTarget - result.actualLux);
       
       // Heavy penalties for not meeting requirements (max 2% below, up to 15% above)
       const uniformityPenalty = result.uniformity < 0.4 ? 10000 : 0;
-      const minLuxPenalty = result.actualLux < requiredLux * 0.98 ? luxDeficiency * 200 : 0; // 2% threshold
-      const maxLuxPenalty = result.actualLux > requiredLux * 1.15 ? (result.actualLux - requiredLux * 1.15) * 50 : 0; // 15% above threshold
+      const minLuxPenalty = result.actualLux < adjustedTarget * 0.98 ? luxDeficiency * 200 : 0; // 2% threshold
+      const maxLuxPenalty = result.actualLux > adjustedTarget * 1.15 ? (result.actualLux - adjustedTarget * 1.15) * 50 : 0; // 15% above threshold
       
       // Score heavily penalizes insufficient illumination and excessive over-illumination
       const totalScore = costScore + luxDiff * 30 + uniformityPenalty + minLuxPenalty + maxLuxPenalty;
       
-      if (totalScore < bestScore && result.actualLux >= requiredLux * 0.98 && result.actualLux <= requiredLux * 1.15) {
+      if (totalScore < bestScore && result.actualLux >= adjustedTarget * 0.98 && result.actualLux <= adjustedTarget * 1.15) {
         bestScore = totalScore;
         bestOption = {
           grid: testGrid,
@@ -76,13 +79,14 @@ export const calculateOptimalLuminaires = (
     return { tableData: [], bestResult: null };
   }
   
-  // Precise requirements - max 2% below, up to 15% above target
+  // Precise requirements - max 2% below, up to 15% above adjusted target
+  const adjustedTarget = requiredLux * Kz * zeta;
   const minThreshold = 0.98; // 98% of required (max 2% below)
   const maxThreshold = 1.15; // 115% of required (max 15% above)
   
   const validOptions = tableData.filter(item => {
     const achieved = parseFloat(item.achieved);
-    return achieved >= requiredLux * minThreshold && achieved <= requiredLux * maxThreshold;
+    return achieved >= adjustedTarget * minThreshold && achieved <= adjustedTarget * maxThreshold;
   });
   const best = validOptions.length > 0 
     ? validOptions.reduce((a, b) => a.totalCost < b.totalCost ? a : b)
