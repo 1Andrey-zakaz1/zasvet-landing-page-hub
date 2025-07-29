@@ -24,7 +24,8 @@ export const calculateOptimalLuminaires = (
     
     // More iterations to find better solutions, especially for large rooms
     const area = roomLength * roomWidth;
-    const maxIterations = area > 1000 ? 30 : area > 400 ? 40 : area > 100 ? 50 : 60;
+    // Significantly increase max iterations for large rooms to test more luminaires
+    const maxIterations = area > 1000 ? 200 : area > 400 ? 150 : area > 100 ? 100 : 80;
     console.log(`Room area: ${area}, maxIterations: ${maxIterations}`);
     
     // Test different grid configurations
