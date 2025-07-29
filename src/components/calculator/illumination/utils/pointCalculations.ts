@@ -211,7 +211,7 @@ export function findOptimalLuminaireCount(
   );
   
   const count = testGrid.rows * testGrid.cols;
-  const meetsRequirements = result.minimum >= targetLux * 0.8 && result.uniformity >= 0.4;
+  const meetsRequirements = result.uniformity >= 0.4;
   
   return {
     count,
