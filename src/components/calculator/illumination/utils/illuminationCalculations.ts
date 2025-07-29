@@ -1,7 +1,7 @@
 
 // Constants for illumination calculation
-export const Kz = 1.2;   // safety coefficient
-export const zeta = 1.15; // non-uniformity coefficient
+export const Kz = 1.1;   // safety coefficient (reduced from 1.2)
+export const zeta = 1.1; // non-uniformity coefficient (reduced from 1.15)
 
 /**
  * Calculates utilization coefficient based on room geometry
@@ -31,9 +31,10 @@ export function calculateRequiredLuminaires(
   flux: number
 ): number {
   const area = L * W;
+  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  // Standard illumination formula without utilization coefficient: n = (E * S * Kz * ζ) / Φ
-  const requiredCount = (targetLux * area * Kz * zeta) / flux;
+  // Standard illumination formula with utilization coefficient: n = (E * S * Kz * ζ) / (Φ * η)
+  const requiredCount = (targetLux * area * Kz * zeta) / (flux * eta);
   
   return Math.ceil(requiredCount);
 }
@@ -49,9 +50,10 @@ export function calculateActualIllumination(
   flux: number
 ): number {
   const area = L * W;
+  const eta = calculateUtilizationCoefficient(L, W, H);
   
-  // Actual illumination without utilization coefficient: E = (n * Φ) / (S * Kz * ζ)
-  const actualLux = (n * flux) / (area * Kz * zeta);
+  // Actual illumination with utilization coefficient: E = (n * Φ * η) / (S * Kz * ζ)
+  const actualLux = (n * flux * eta) / (area * Kz * zeta);
   
   return actualLux;
 }
