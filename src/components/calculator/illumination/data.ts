@@ -19,12 +19,17 @@ export const luminaireModels = {
     { model: "Гранит 240-67-5000-Д-220-Кронштейн", flux: 43490, power: 240, size: [1250,110,70], price: 25042 },
     { model: "Гранит 288-67-5000-Д-220-Кронштейн", flux: 52188, power: 288, size: [1500,110,70], price: 30045 }
   ],
-  // Office - Harmony series
+  // Office - Harmony series (including high-power models for large spaces)
   "office": [
     { model: "Гармония 34-20-5000-Д-220-универсальное", flux: 4250, power: 34, size: [595,595,40], price: 3418 },
     { model: "Гармония 40-20-5000-Д-220-универсальное", flux: 5400, power: 40, size: [595,595,40], price: 3533 },
     { model: "Гармония 42-20-5000-Д-220-универсальное", flux: 6000, power: 42, size: [595,595,40], price: 3700 },
-    { model: "Гармония 52-20-5000-Д-220-универсальное", flux: 7300, power: 52, size: [595,595,40], price: 4000 }
+    { model: "Гармония 52-20-5000-Д-220-универсальное", flux: 7300, power: 52, size: [595,595,40], price: 4000 },
+    // High-power Harmony series for large office spaces
+    { model: "Гармония 72-20-5000-Д-220-универсальное", flux: 12500, power: 72, size: [595,595,40], price: 5500 },
+    { model: "Гармония 96-20-5000-Д-220-универсальное", flux: 18000, power: 96, size: [1200,600,40], price: 8500 },
+    { model: "Гармония 144-20-5000-Д-220-универсальное", flux: 26000, power: 144, size: [1200,600,40], price: 12000 },
+    { model: "Гармония 192-20-5000-Д-220-универсальное", flux: 35000, power: 192, size: [1200,600,40], price: 16000 }
   ],
   // Commercial - Boutique series
   "commercial": [
