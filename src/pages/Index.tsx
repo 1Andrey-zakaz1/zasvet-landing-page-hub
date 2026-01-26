@@ -9,6 +9,7 @@ import EnergeticsSection from '@/components/sections/EnergeticsSection';
 import BuyersSection from '@/components/sections/BuyersSection';
 import DesignersSection from '@/components/sections/DesignersSection';
 import InstallersSection from '@/components/sections/InstallersSection';
+import ProjectsSection from '@/components/sections/ProjectsSection';
 import VideoSlider from '@/components/VideoSlider';
 import ProductSlider from '@/components/ProductSlider';
 import LedCalculator from '@/components/LedCalculator';
@@ -95,6 +96,11 @@ const Index = () => {
           
           {/* Блок отзывов клиентов добавлен после сервисного обслуживания */}
           <TestimonialsSection />
+          
+          {/* Блок реализованных проектов */}
+          <div id="our-projects" className="container mx-auto px-4 mt-20">
+            <ProjectsSection />
+          </div>
         </main>
         <Footer />
         <ChatWidget />
