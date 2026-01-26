@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 // Импортируем изображения
 import tomskUniversity1 from '@/assets/projects/tomsk-university-1.jpg';
 import tomskUniversity2 from '@/assets/projects/tomsk-university-2.jpg';
+import parkLighting1 from '@/assets/projects/park-lighting-1.jpg';
+import parkLighting2 from '@/assets/projects/park-lighting-2.jpg';
 
 interface Project {
   id: number;
@@ -23,6 +25,13 @@ const projects: Project[] = [
     location: "г. Томск",
     description: "Архитектурная подсветка главного корпуса Томского государственного университета. Использованы светильники серии для создания эффектного освещения фасада в вечернее время.",
     images: [tomskUniversity1, tomskUniversity2],
+  },
+  {
+    id: 2,
+    title: "Архитектурная подсветка парка",
+    location: "Россия",
+    description: "Декоративная RGB-подсветка деревьев в парковой зоне. Многоцветные светильники создают праздничную атмосферу и подчёркивают красоту зимнего пейзажа.",
+    images: [parkLighting1, parkLighting2],
   },
 ];
 
