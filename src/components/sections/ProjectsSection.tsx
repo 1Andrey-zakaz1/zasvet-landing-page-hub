@@ -10,6 +10,8 @@ import tomskUniversity2 from '@/assets/projects/tomsk-university-2.jpg';
 import parkLighting1 from '@/assets/projects/park-lighting-1.jpg';
 import parkLighting2 from '@/assets/projects/park-lighting-2.jpg';
 import parkLightingVideo from '@/assets/projects/park-lighting-video.mp4';
+import bikePath1 from '@/assets/projects/bike-path-1.jpg';
+import bikePath2 from '@/assets/projects/bike-path-2.jpg';
 
 interface Project {
   id: number;
@@ -34,6 +36,13 @@ const projects: Project[] = [
     description: "Декоративная RGB-подсветка деревьев в парковой зоне. Многоцветные светильники создают праздничную атмосферу и подчёркивают красоту зимнего пейзажа.",
     images: [parkLighting1, parkLighting2],
     video: parkLightingVideo,
+  },
+  {
+    id: 3,
+    title: "Освещение велодорожки",
+    location: "г. Новосибирск",
+    description: "Функциональное освещение велодорожки в парковой зоне. Современные светильники обеспечивают комфортное и безопасное передвижение в вечернее время.",
+    images: [bikePath1, bikePath2],
   },
 ];
 
