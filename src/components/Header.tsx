@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useContactForm } from "@/hooks/use-contact-form";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -9,25 +10,23 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { openContactForm } = useContactForm();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      // Get scroll position
       const currentScrollY = window.scrollY;
       const threshold = 50;
       
-      // Set scrolled state for header background
       if (currentScrollY > threshold) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      // Hide header when scrolling down, show when scrolling up
       if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setHideHeader(true); // Hide when scrolling down
+        setHideHeader(true);
       } else {
-        setHideHeader(false); // Show when scrolling up or at top
+        setHideHeader(false);
       }
       
       setLastScrollY(currentScrollY);
@@ -44,7 +43,6 @@ const Header = () => {
   };
 
   const handleContactClick = () => {
-    // Скроллим к секции контактов (футер)
     const footer = document.querySelector('footer');
     if (footer) {
       footer.scrollIntoView({ behavior: 'smooth' });
@@ -54,45 +52,24 @@ const Header = () => {
     }
   };
 
-  const handleCalculatorsClick = () => {
-    // Скроллим к секции калькуляторов
-    const calculatorSection = document.querySelector('#calculator');
-    if (calculatorSection) {
-      calculatorSection.scrollIntoView({ behavior: 'smooth' });
+  const handleScrollTo = (selector: string) => {
+    const el = document.querySelector(selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
   };
 
-  const handleCatalogClick = () => {
-    // Скроллим к секции каталога
-    const catalogSection = document.querySelector('#catalog');
-    if (catalogSection) {
-      catalogSection.scrollIntoView({ behavior: 'smooth' });
-    }
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  };
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const handleProductsClick = () => {
-    console.log('Клик по кнопке "Продукция"');
-    // Скроллим к секции продукции
-    const productsSection = document.querySelector('#products');
-    console.log('Найден элемент #products:', productsSection);
-    
-    if (productsSection) {
-      console.log('Прокручиваем к секции продукции');
-      productsSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.log('Элемент #products не найден!');
-    }
-    
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  };
+  const navLinks = [
+    { to: "/owners", label: "Собственникам" },
+    { to: "/buyers", label: "Закупщикам" },
+    { to: "/designers", label: "Проектировщикам" },
+    { to: "/installers", label: "Монтажникам" },
+  ];
 
   return (
     <header 
@@ -103,34 +80,41 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img 
             src="/lovable-uploads/4569d5b4-87f4-40ae-aba3-b6fd8fcedf96.png" 
             alt="Zасвет" 
             className="h-12 md:h-16" 
           />
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <a href="#owners" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Собственникам</a>
-          <a href="#buyers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Закупщикам</a>
-          <a href="#designers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Проектировщикам</a>
-          <a href="#installers" className="text-zasvet-white hover:text-zasvet-gold transition-colors">Монтажникам</a>
+          {navLinks.map(link => (
+            <Link 
+              key={link.to}
+              to={link.to} 
+              className={`text-zasvet-white hover:text-zasvet-gold transition-colors ${
+                location.pathname === link.to ? 'text-zasvet-gold' : ''
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
           <button 
-            onClick={handleProductsClick}
+            onClick={() => handleScrollTo('#products')}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
             Продукция
           </button>
           <button 
-            onClick={handleCalculatorsClick}
+            onClick={() => handleScrollTo('#calculator')}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
             Калькуляторы
           </button>
           <button 
-            onClick={handleCatalogClick}
+            onClick={() => handleScrollTo('#catalog')}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
             Каталог
@@ -157,48 +141,32 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-zasvet-black/95 py-4 animate-fade-in">
           <nav className="flex flex-col space-y-4 px-4">
-            <a 
-              href="#owners" 
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Собственникам
-            </a>
-            <a 
-              href="#buyers" 
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Закупщикам
-            </a>
-            <a 
-              href="#designers" 
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Проектировщикам
-            </a>
-            <a 
-              href="#installers" 
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Монтажникам
-            </a>
+            {navLinks.map(link => (
+              <Link 
+                key={link.to}
+                to={link.to} 
+                className={`text-zasvet-white hover:text-zasvet-gold transition-colors py-2 ${
+                  location.pathname === link.to ? 'text-zasvet-gold' : ''
+                }`}
+                onClick={closeMobileMenu}
+              >
+                {link.label}
+              </Link>
+            ))}
             <button 
-              onClick={handleProductsClick}
+              onClick={() => handleScrollTo('#products')}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
               Продукция
             </button>
             <button 
-              onClick={handleCalculatorsClick}
+              onClick={() => handleScrollTo('#calculator')}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
               Калькуляторы
             </button>
             <button 
-              onClick={handleCatalogClick}
+              onClick={() => handleScrollTo('#catalog')}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
               Каталог
