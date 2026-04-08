@@ -15,9 +15,9 @@ import {
 } from './calculator/utils/calculatorUtils';
 import { FormData, CalculationResult } from './calculator/types';
 
-const LedCalculator = () => {
+const LedCalculator = ({ defaultExpanded = false }: { defaultExpanded?: boolean }) => {
   const { toast } = useToast();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [formData, setFormData] = useState<FormData>({
     old_quantity: '',
     old_power: '',

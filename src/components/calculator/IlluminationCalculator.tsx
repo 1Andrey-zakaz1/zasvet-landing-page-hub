@@ -10,8 +10,8 @@ import IlluminationForm from './illumination/IlluminationForm';
 import IlluminationResults from './illumination/IlluminationResults';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-const IlluminationCalculator = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const IlluminationCalculator = ({ defaultExpanded = false }: { defaultExpanded?: boolean }) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [formData, setFormData] = useState<IlluminationFormData>({
     roomLength: '',
     roomWidth: '',
