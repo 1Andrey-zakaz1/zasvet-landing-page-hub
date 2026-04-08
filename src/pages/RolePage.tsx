@@ -51,13 +51,13 @@ const RolePage: React.FC<RolePageProps> = ({ roleSection }) => {
           
           <div className="container mx-auto px-4 mt-20">
             <div id="led-calculator">
-              <LedCalculator />
+              <LedCalculator defaultExpanded={true} />
             </div>
             <div id="cable-calculator">
-              <CableCalculator />
+              <CableCalculator defaultExpanded={true} />
             </div>
             <div id="illumination-calculator">
-              <IlluminationCalculator />
+              <IlluminationCalculator defaultExpanded={true} />
             </div>
           </div>
           
