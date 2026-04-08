@@ -8,6 +8,11 @@ import { ContactFormProvider } from "@/hooks/use-contact-form";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CatalogPage from "./pages/CatalogPage";
+import OwnersPage from "./pages/OwnersPage";
+import EnergeticsPage from "./pages/EnergeticsPage";
+import BuyersPage from "./pages/BuyersPage";
+import DesignersPage from "./pages/DesignersPage";
+import InstallersPage from "./pages/InstallersPage";
 
 const queryClient = new QueryClient();
 
