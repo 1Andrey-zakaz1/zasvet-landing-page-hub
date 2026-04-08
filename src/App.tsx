@@ -8,6 +8,11 @@ import { ContactFormProvider } from "@/hooks/use-contact-form";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CatalogPage from "./pages/CatalogPage";
+import OwnersPage from "./pages/OwnersPage";
+import EnergeticsPage from "./pages/EnergeticsPage";
+import BuyersPage from "./pages/BuyersPage";
+import DesignersPage from "./pages/DesignersPage";
+import InstallersPage from "./pages/InstallersPage";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +25,11 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/owners" element={<OwnersPage />} />
+            <Route path="/energetics" element={<EnergeticsPage />} />
+            <Route path="/buyers" element={<BuyersPage />} />
+            <Route path="/designers" element={<DesignersPage />} />
+            <Route path="/installers" element={<InstallersPage />} />
             <Route path="/catalog" element={<CatalogPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
