@@ -14,9 +14,9 @@ import {
   type InstallationType 
 } from './utils/cableCalculatorUtils';
 
-const CableCalculator = () => {
+const CableCalculator = ({ defaultExpanded = false }: { defaultExpanded?: boolean }) => {
   const { toast } = useToast();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [formData, setFormData] = useState({
     power: '',
     voltage: '220',
