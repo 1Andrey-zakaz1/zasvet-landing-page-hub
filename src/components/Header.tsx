@@ -42,6 +42,47 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
   );
 };
 
+const ProductsDropdown = ({ closeMobileMenu, handleScrollTo }: { closeMobileMenu: () => void; handleScrollTo: (s: string) => void }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 text-zasvet-white hover:text-zasvet-gold transition-colors"
+      >
+        Продукция
+        <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-2 bg-zasvet-black/95 border border-zasvet-gold/20 rounded-lg py-2 min-w-[200px] shadow-xl">
+          <button
+            onClick={() => { setOpen(false); handleScrollTo('#catalog'); }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Каталог
+          </button>
+          <button
+            onClick={() => { setOpen(false); handleScrollTo('#products'); }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Описание серий
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
