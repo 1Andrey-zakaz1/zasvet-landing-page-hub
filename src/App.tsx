@@ -13,6 +13,7 @@ import EnergeticsPage from "./pages/EnergeticsPage";
 import BuyersPage from "./pages/BuyersPage";
 import DesignersPage from "./pages/DesignersPage";
 import InstallersPage from "./pages/InstallersPage";
+import AuditPage from "./pages/AuditPage";
 
 const queryClient = new QueryClient();
 
