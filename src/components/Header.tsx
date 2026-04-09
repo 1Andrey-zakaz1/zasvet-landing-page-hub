@@ -234,12 +234,15 @@ const Header = () => {
                 Аудит смет
               </Link>
             </div>
-            <button 
-              onClick={() => handleScrollTo('#catalog')}
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
-            >
-              Каталог
-            </button>
+            <div className="py-2">
+              <span className="text-zasvet-white/60 text-sm uppercase tracking-wider">Продукция</span>
+              <button onClick={() => handleScrollTo('#catalog')} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
+                Каталог
+              </button>
+              <button onClick={() => handleScrollTo('#products')} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
+                Описание серий
+              </button>
+            </div>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
               onClick={handleContactClick}
