@@ -187,12 +187,7 @@ const Header = () => {
             Калькуляторы
           </button>
           <ServicesDropdown location={location} closeMobileMenu={closeMobileMenu} />
-          <button 
-            onClick={() => handleScrollTo('#catalog')}
-            className="text-zasvet-white hover:text-zasvet-gold transition-colors"
-          >
-            Каталог
-          </button>
+          <ProductsDropdown closeMobileMenu={closeMobileMenu} handleScrollTo={handleScrollTo} />
         </nav>
 
         <Button 
