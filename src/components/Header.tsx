@@ -4,6 +4,54 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { Link, useLocation } from "react-router-dom";
 
+const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeMobileMenu: () => void }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const isActive = location.pathname === '/audit';
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className={`flex items-center gap-1 text-zasvet-white hover:text-zasvet-gold transition-colors ${isActive ? 'text-zasvet-gold' : ''}`}
+      >
+        Услуги
+        <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-2 bg-zasvet-black/95 border border-zasvet-gold/20 rounded-lg py-2 min-w-[200px] shadow-xl">
+          <Link
+            to="/audit"
+            className={`block px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors ${location.pathname === '/audit' ? 'text-zasvet-gold' : ''}`}
+            onClick={() => { setOpen(false); closeMobileMenu(); }}
+          >
+            Аудит смет
+          </Link>
+          <button
+            onClick={() => {
+              setOpen(false);
+              const el = document.querySelector('#calculator');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Калькуляторы
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
