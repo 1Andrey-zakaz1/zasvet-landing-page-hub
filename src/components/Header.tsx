@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { Link, useLocation } from "react-router-dom";
 
