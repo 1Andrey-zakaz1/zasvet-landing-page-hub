@@ -150,10 +150,10 @@ const Header = () => {
             </Link>
           ))}
           <button 
-            onClick={() => handleScrollTo('#products')}
+            onClick={() => handleScrollTo('#calculator')}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
-            Продукция
+            Калькуляторы
           </button>
           <ServicesDropdown location={location} closeMobileMenu={closeMobileMenu} />
           <button 
