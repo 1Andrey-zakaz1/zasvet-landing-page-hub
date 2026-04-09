@@ -36,16 +36,6 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
           >
             Аудит смет
           </Link>
-          <button
-            onClick={() => {
-              setOpen(false);
-              const el = document.querySelector('#calculator');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
-          >
-            Калькуляторы
-          </button>
         </div>
       )}
     </div>
@@ -150,10 +140,10 @@ const Header = () => {
             </Link>
           ))}
           <button 
-            onClick={() => handleScrollTo('#products')}
+            onClick={() => handleScrollTo('#calculator')}
             className="text-zasvet-white hover:text-zasvet-gold transition-colors"
           >
-            Продукция
+            Калькуляторы
           </button>
           <ServicesDropdown location={location} closeMobileMenu={closeMobileMenu} />
           <button 
@@ -197,19 +187,16 @@ const Header = () => {
               </Link>
             ))}
             <button 
-              onClick={() => handleScrollTo('#products')}
+              onClick={() => handleScrollTo('#calculator')}
               className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
             >
-              Продукция
+              Калькуляторы
             </button>
             <div className="py-2">
               <span className="text-zasvet-white/60 text-sm uppercase tracking-wider">Услуги</span>
               <Link to="/audit" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/audit' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
                 Аудит смет
               </Link>
-              <button onClick={() => { handleScrollTo('#calculator'); }} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
-                Калькуляторы
-              </button>
             </div>
             <button 
               onClick={() => handleScrollTo('#catalog')}
