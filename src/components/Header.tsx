@@ -42,6 +42,47 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
   );
 };
 
+const ProductsDropdown = ({ closeMobileMenu, handleScrollTo }: { closeMobileMenu: () => void; handleScrollTo: (s: string) => void }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 text-zasvet-white hover:text-zasvet-gold transition-colors"
+      >
+        Продукция
+        <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-2 bg-zasvet-black/95 border border-zasvet-gold/20 rounded-lg py-2 min-w-[200px] shadow-xl">
+          <button
+            onClick={() => { setOpen(false); handleScrollTo('#catalog'); }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Каталог
+          </button>
+          <button
+            onClick={() => { setOpen(false); handleScrollTo('#products'); }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Описание серий
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
@@ -146,12 +187,7 @@ const Header = () => {
             Калькуляторы
           </button>
           <ServicesDropdown location={location} closeMobileMenu={closeMobileMenu} />
-          <button 
-            onClick={() => handleScrollTo('#catalog')}
-            className="text-zasvet-white hover:text-zasvet-gold transition-colors"
-          >
-            Каталог
-          </button>
+          <ProductsDropdown closeMobileMenu={closeMobileMenu} handleScrollTo={handleScrollTo} />
         </nav>
 
         <Button 
@@ -198,12 +234,15 @@ const Header = () => {
                 Аудит смет
               </Link>
             </div>
-            <button 
-              onClick={() => handleScrollTo('#catalog')}
-              className="text-zasvet-white hover:text-zasvet-gold transition-colors py-2 text-left"
-            >
-              Каталог
-            </button>
+            <div className="py-2">
+              <span className="text-zasvet-white/60 text-sm uppercase tracking-wider">Продукция</span>
+              <button onClick={() => handleScrollTo('#catalog')} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
+                Каталог
+              </button>
+              <button onClick={() => handleScrollTo('#products')} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
+                Описание серий
+              </button>
+            </div>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
               onClick={handleContactClick}
