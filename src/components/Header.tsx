@@ -16,7 +16,7 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const isActive = location.pathname === '/audit';
+  const isActive = location.pathname === '/audit' || location.pathname === '/repair';
 
   return (
     <div className="relative" ref={ref}>
