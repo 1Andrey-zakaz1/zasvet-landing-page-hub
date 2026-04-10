@@ -241,6 +241,9 @@ const Header = () => {
               <Link to="/audit" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/audit' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
                 Аудит смет
               </Link>
+              <Link to="/repair" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/repair' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
+                Ремонт светильников
+              </Link>
             </div>
             <div className="py-2">
               <span className="text-zasvet-white/60 text-sm uppercase tracking-wider">Продукция</span>
