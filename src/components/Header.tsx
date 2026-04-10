@@ -145,6 +145,7 @@ const Header = () => {
 
   const navLinks = [
     { to: "/owners", label: "Собственникам" },
+    { to: "/energetics", label: "Энергетикам" },
     { to: "/buyers", label: "Закупщикам" },
     { to: "/designers", label: "Проектировщикам" },
     { to: "/installers", label: "Монтажникам" },
