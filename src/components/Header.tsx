@@ -36,6 +36,13 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
           >
             Аудит смет
           </Link>
+          <Link
+            to="/repair"
+            className={`block px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors ${location.pathname === '/repair' ? 'text-zasvet-gold' : ''}`}
+            onClick={() => { setOpen(false); closeMobileMenu(); }}
+          >
+            Ремонт светильников
+          </Link>
         </div>
       )}
     </div>
