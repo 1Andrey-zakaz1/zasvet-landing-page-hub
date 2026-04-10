@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ContactFormProvider } from "@/hooks/use-contact-form";
-import BuyersPage from "./pages/BuyersPage";
 import NotFound from "./pages/NotFound";
 import CatalogPage from "./pages/CatalogPage";
 import OwnersPage from "./pages/OwnersPage";
@@ -25,7 +24,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<BuyersPage />} />
             <Route path="/owners" element={<OwnersPage />} />
             <Route path="/energetics" element={<EnergeticsPage />} />
             <Route path="/buyers" element={<BuyersPage />} />
