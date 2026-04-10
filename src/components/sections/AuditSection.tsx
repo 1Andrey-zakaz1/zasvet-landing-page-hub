@@ -50,7 +50,7 @@ const AuditSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="text-xs uppercase tracking-wider text-zasvet-gold font-semibold mb-2">
-            Услуга для собственников
+            Услуга
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-zasvet-white mb-4">
             Аудит смет на электротехнику
