@@ -16,7 +16,7 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const isActive = location.pathname === '/audit' || location.pathname === '/repair';
+  const isActive = location.pathname === '/audit' || location.pathname === '/repair' || location.pathname === '/procurement';
 
   return (
     <div className="relative" ref={ref}>
@@ -42,6 +42,13 @@ const ServicesDropdown = ({ location, closeMobileMenu }: { location: any; closeM
             onClick={() => { setOpen(false); closeMobileMenu(); }}
           >
             Ремонт светильников
+          </Link>
+          <Link
+            to="/procurement"
+            className={`block px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors ${location.pathname === '/procurement' ? 'text-zasvet-gold' : ''}`}
+            onClick={() => { setOpen(false); closeMobileMenu(); }}
+          >
+            Аутсорсинг закупок
           </Link>
         </div>
       )}
@@ -243,6 +250,9 @@ const Header = () => {
               </Link>
               <Link to="/repair" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/repair' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
                 Ремонт светильников
+              </Link>
+              <Link to="/procurement" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/procurement' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
+                Аутсорсинг закупок
               </Link>
             </div>
             <div className="py-2">
