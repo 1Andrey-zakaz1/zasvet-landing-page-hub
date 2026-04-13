@@ -171,7 +171,7 @@ const Header = () => {
           <img 
             src="/lovable-uploads/4569d5b4-87f4-40ae-aba3-b6fd8fcedf96.png" 
             alt="Zасвет" 
-            className="h-12 md:h-16" 
+            className="h-12 md:h-16 w-auto object-contain" 
           />
         </Link>
 
