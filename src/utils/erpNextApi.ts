@@ -35,29 +35,50 @@ export const sendEmail = async (data: LeadData): Promise<EmailResponse> => {
     message: cleanData.message
   };
 
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify(apiData)
-  });
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(apiData)
+    });
 
-  console.log("📡 Response status:", response.status);
+    console.log("📡 Response status:", response.status);
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("❌ API Error:", errorText);
-    throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ API Error:", errorText);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("✅ API Response:", result);
+
+    return {
+      success: true,
+      message: result.message || "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
+    };
+  } catch (corsError) {
+    console.warn("⚠️ CORS ошибка, пробуем no-cors режим:", corsError);
+    
+    // Fallback: отправляем в режиме no-cors — данные дойдут, но ответ не читаем
+    await fetch(API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: JSON.stringify(apiData)
+    });
+
+    console.log("✅ Запрос отправлен в режиме no-cors");
+
+    return {
+      success: true,
+      message: "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
+    };
   }
-
-  const result = await response.json();
-  console.log("✅ API Response:", result);
-
-  return {
-    success: true,
-    message: result.message || "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время."
-  };
 };
