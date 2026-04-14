@@ -145,7 +145,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     } catch (error) {
       console.error("Ошибка отправки формы:", error);
       
-      let errorMessage = "Пожалуйста, свяжитесь с нами напрямую: info@pkzasvet.ru или +7 (999) 123-45-67";
+      let errorMessage = "Пожалуйста, свяжитесь с нами напрямую: info@pkzasvet.ru или +7 962 831 16 06";
       
       // Показываем альтернативные способы связи
       toast({
@@ -297,7 +297,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
           <h3 className="text-zasvet-white font-medium mb-3">Или свяжитесь с нами напрямую:</h3>
           <div className="space-y-1 text-sm text-zasvet-white/80">
             <p><strong className="text-zasvet-gold">Email:</strong> info@pkzasvet.ru</p>
-            <p><strong className="text-zasvet-gold">Телефон:</strong> +7 (999) 123-45-67</p>
+            <p><strong className="text-zasvet-gold">Телефон:</strong> +7 962 831 16 06</p>
           </div>
         </div>
       </DialogContent>
