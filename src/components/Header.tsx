@@ -98,6 +98,13 @@ const ProductsDropdown = ({ closeMobileMenu, handleScrollTo }: { closeMobileMenu
           >
             Описание серий
           </button>
+          <Link
+            to="/budget"
+            onClick={() => { setOpen(false); closeMobileMenu(); }}
+            className="block w-full text-left px-4 py-2 text-zasvet-white hover:text-zasvet-gold hover:bg-zasvet-gold/10 transition-colors"
+          >
+            Бюджетная серия
+          </Link>
         </div>
       )}
     </div>
@@ -273,6 +280,9 @@ const Header = () => {
               <button onClick={() => handleScrollTo('#products')} className="block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 text-left w-full">
                 Описание серий
               </button>
+              <Link to="/budget" className={`block text-zasvet-white hover:text-zasvet-gold transition-colors py-2 pl-4 ${location.pathname === '/budget' ? 'text-zasvet-gold' : ''}`} onClick={closeMobileMenu}>
+                Бюджетная серия
+              </Link>
             </div>
             <Button 
               className="bg-transparent border-2 border-zasvet-gold hover:bg-zasvet-gold hover:text-zasvet-black transition-all w-full mt-4"
